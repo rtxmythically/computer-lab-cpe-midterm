@@ -1,0 +1,1246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Thirteen English Computer Lab problems and a timed, four-question CPE midterm mock.">
+<title>CPE Midterm Mock · Computer Lab</title>
+<style>
+:root{color-scheme:light;--bg:#f1eee8;--sidebar-bg:#ebe7df;--panel:#faf8f3;--strong:#fffdf8;--soft:#eeebe4;--text:#28241e;--secondary:#504a40;--muted:#685f52;--border:#d7d1c6;--control:#958878;--accent:#8d3f27;--on-accent:#fffaf4;--green:#286445;--red:#a03132;--sidebar:264px;--radius:16px;--mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
+:root[data-theme=dark]{color-scheme:dark;--bg:#191816;--sidebar-bg:#151412;--panel:#211f1c;--strong:#292622;--soft:#2d2a26;--text:#f3ede3;--secondary:#cfc5b7;--muted:#b8ad9d;--border:#433d35;--control:#837665;--accent:#ffae8c;--on-accent:#2b170f;--green:#94d4ac;--red:#f4a3a2}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-variant-numeric:tabular-nums}
+h1,h2,h3,p,dl,ol,pre{margin:0}
+h1,h2,h3{line-height:1.18;letter-spacing:-.028em}
+h1{font-size:clamp(2.2rem,5vw,4.55rem);font-weight:720}
+h2{font-size:clamp(1.5rem,2.8vw,2.2rem)}
+h3{font-size:1.04rem}
+button,textarea{font:inherit;color:inherit}
+a{color:var(--accent);text-underline-offset:.22em}
+button,a,summary,textarea{touch-action:manipulation}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+a,button{overflow-wrap:anywhere}
+code,pre,.mono{font-family:var(--mono)}
+code{font-size:.92em}
+small,.muted{color:var(--muted)}
+.skip{position:fixed;left:12px;top:12px;z-index:70;transform:translateY(-150%);padding:8px 14px;background:var(--strong)}
+.skip:focus{transform:none}
+.sidebar{position:fixed;inset:0 auto 0 0;z-index:50;width:var(--sidebar);background:var(--sidebar-bg);border-right:1px solid var(--border);padding:24px 16px;overflow:auto}
+.brand{display:flex;align-items:center;gap:12px;padding:0 8px 18px;border-bottom:1px solid var(--border)}
+.brand-mark{display:grid;place-items:center;width:42px;height:42px;flex:none;border:1px solid var(--border);border-radius:8px;background:var(--panel);font:700 .76rem var(--mono)}
+.brand strong,.brand small{display:block}
+.brand strong{font-size:.95rem}.brand small{font-size:.78rem}
+.side-label{font:500 .72rem var(--mono);color:var(--muted);padding:0 8px;margin:24px 0 8px}
+.nav-link{display:flex;align-items:center;gap:9px;min-height:42px;padding:6px 8px;border-inline-start:2px solid transparent;border-radius:5px;color:var(--secondary);text-decoration:none;font-size:.875rem;line-height:1.35}
+.nav-link:hover,.nav-link[aria-current=page]{background:var(--soft);color:var(--text)}
+.nav-link[aria-current=page]{border-inline-start-color:var(--accent);font-weight:650}
+.nav-num{color:var(--accent);font:600 .73rem var(--mono)}
+.nav-mark{margin-left:auto;color:var(--green);font:600 .76rem var(--mono)}
+.progress-box{margin:25px 8px 0;padding-top:16px;border-top:1px solid var(--border)}
+.progress-title{display:flex;justify-content:space-between;gap:6px;align-items:center;font-size:.8rem}
+.progress-title output{font:650 .82rem var(--mono);color:var(--accent)}
+progress{width:100%;height:5px;appearance:none;display:block;margin-top:10px;border:0;border-radius:8px;background:var(--border);color:var(--accent)}
+progress::-webkit-progress-bar{background:var(--border);border-radius:8px}
+progress::-webkit-progress-value{background:var(--accent);border-radius:8px}
+progress::-moz-progress-bar{background:var(--accent);border-radius:8px}
+.sidebar-note{margin:11px 0 0;font-size:.77rem}
+.main{margin-left:var(--sidebar);min-height:100vh}
+.topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:10px;min-height:61px;padding:8px clamp(14px,3vw,32px);border-bottom:1px solid var(--border);background:var(--bg)}
+.crumb{min-width:0;flex:1;font-size:.88rem;color:var(--secondary);font-weight:620}
+.clock{display:flex;align-items:center;gap:8px;font:600 .83rem var(--mono);color:var(--secondary);white-space:nowrap}
+.clock small{font:400 .76rem system-ui}
+.button{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:8px 14px;border:1px solid var(--border);border-radius:8px;background:var(--strong);color:var(--text);cursor:pointer;text-decoration:none;font-size:.88rem;line-height:1.3;font-weight:620}
+.button:hover{border-color:var(--control);background:var(--soft)}
+.button.primary{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+.button.primary:hover{filter:brightness(.91)}
+.button:disabled{opacity:.5;cursor:default}
+.icon-btn{padding:0 10px;min-width:42px}
+.menu-btn,.overlay{display:none}
+.content{max-width:1160px;margin:0 auto;padding:clamp(18px,4vw,45px) clamp(14px,4vw,48px) 54px}
+.hero,.section,.card{border:1px solid var(--border);border-radius:var(--radius);background:var(--panel);min-width:0}
+.hero{overflow:hidden}
+.hero-lead{padding:clamp(21px,4vw,46px);display:grid;grid-template-columns:minmax(0,1fr) minmax(220px,.57fr);gap:clamp(20px,4vw,46px);align-items:center}
+.eyebrow{font:650 .76rem/1.45 var(--mono);color:var(--accent);letter-spacing:.018em;margin-bottom:12px}
+.hero-copy>p{max-width:54ch;margin-top:16px;color:var(--secondary)}
+.actions{display:flex;align-items:center;flex-wrap:wrap;gap:9px;margin-top:18px}
+.exam-spec{border:1px solid var(--border);border-radius:12px;background:var(--soft);padding:17px 19px}
+.exam-spec h2{font:650 .78rem var(--mono);color:var(--accent);margin-bottom:10px}
+.exam-spec dl>div{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-top:1px solid var(--border)}
+.exam-spec dt{font-size:.84rem;color:var(--secondary)}
+.exam-spec dd{margin:0;text-align:right;font:650 .83rem/1.4 var(--mono)}
+.index{padding:18px clamp(21px,4vw,46px) 26px;border-top:1px solid var(--border)}
+.index h2{font-size:1.12rem}
+.index ol{padding:0;list-style:none;margin-top:8px}
+.index a{display:grid;grid-template-columns:auto 1fr auto;gap:11px;align-items:center;min-height:47px;padding:7px 3px;border-bottom:1px solid var(--border);color:var(--text);text-decoration:none;font-weight:620}
+.index a:hover{color:var(--accent)}
+.index .index-id{color:var(--muted);font:500 .76rem var(--mono)}
+.section{padding:clamp(17px,3.2vw,35px);margin-top:18px}
+.section:first-child{margin-top:0}
+.section p{margin-top:11px;color:var(--secondary)}
+.problem-heading{display:flex;justify-content:space-between;align-items:start;gap:14px}
+.problem-heading h1{font-size:clamp(1.9rem,4vw,3.05rem)}
+.pill{display:inline-flex;align-items:center;gap:5px;padding:4px 8px;border:1px solid var(--border);border-radius:7px;font:600 .72rem/1.4 var(--mono);color:var(--muted);background:var(--strong)}
+.problem-text{max-width:82ch}
+.specs,.sample-grid,.response-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:15px}
+.card{padding:16px;background:var(--strong)}
+.card h3{margin-bottom:7px}
+.card p{margin-top:0}
+.block-label{font:650 .75rem var(--mono);color:var(--muted);margin-bottom:7px}
+pre{max-width:100%;padding:12px 13px;border:1px solid var(--border);background:var(--soft);border-radius:8px;overflow:auto;font-size:.84rem;line-height:1.55;tab-size:4}
+.sample-grid>div,.response-grid>div{min-width:0}
+details{border:1px solid var(--border);border-radius:9px;background:var(--strong);margin-top:13px}
+summary{padding:11px 13px;cursor:pointer;font-weight:650;font-size:.91rem}
+.detail-body{padding:0 13px 13px;min-width:0}
+.detail-body p{margin:0 0 8px}
+.detail-body ol{padding-left:1.25rem;margin:5px 0 12px}
+.detail-body li+li{margin-top:5px}
+.bank-group h2{font-size:1.24rem}
+.bank-problem>summary .pill{margin-left:7px;vertical-align:middle}
+.bank-problem>summary{line-height:1.55}
+.bank-problem .problem-links{margin:13px 0 4px}
+textarea{display:block;width:100%;min-height:152px;resize:vertical;padding:11px 12px;border:1px solid var(--control);border-radius:8px;background:var(--strong);font:.85rem/1.55 var(--mono);tab-size:4}
+textarea.code{min-height:210px}
+textarea[readonly]{background:var(--soft)}
+.field-label{display:block;margin:12px 0 6px;font-weight:650;font-size:.91rem}
+.field-help{font-size:.83rem}
+.section .section-note{color:var(--muted);font-size:.84rem}
+.problem-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-top:15px}
+.notice{border-left:3px solid var(--accent);padding:9px 12px;background:var(--soft);border-radius:0 8px 8px 0;margin-top:12px}
+.good{color:var(--green)}.bad{color:var(--red)}
+.review-list{list-style:none;padding:0;margin:13px 0 0}
+.review-list li{border-top:1px solid var(--border)}
+.review-list a{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 2px;text-decoration:none}
+.review-list strong{color:var(--text)}
+.review-list small{white-space:nowrap}
+.table-wrap{overflow:auto;margin:8px 0 14px}
+table{width:100%;border-collapse:collapse;font-size:.84rem;line-height:1.4}
+th,td{padding:7px 9px;border-bottom:1px solid var(--border);text-align:left}
+th{color:var(--muted);background:var(--soft)}
+footer{margin-top:22px;padding-top:12px;border-top:1px solid var(--border);color:var(--muted);font-size:.82rem}
+dialog{width:min(450px,calc(100% - 30px));max-height:calc(100% - 24px);padding:22px;border:1px solid var(--control);border-radius:14px;background:var(--panel);color:var(--text)}
+dialog p{margin-top:10px;color:var(--secondary)}
+dialog::backdrop{background:#19181691}
+@media(max-width:1050px){.hero-lead{grid-template-columns:1fr}.exam-spec{max-width:none}.exam-spec dl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.exam-spec dl>div{display:block}.exam-spec dd{text-align:left;margin-top:3px}}
+@media(max-width:790px){.main{margin-left:0}.sidebar{transform:translateX(-110%);transition:transform .18s ease}.sidebar[data-open=true]{transform:translateX(0)}.sidebar:not([data-open=true]){visibility:hidden}.menu-btn{display:inline-flex}.overlay:not([hidden]){display:block;position:fixed;inset:0;z-index:45;background:#19181691;border:0;width:100%;height:100%}}
+@media(max-width:520px){.specs,.sample-grid,.response-grid{grid-template-columns:1fr}.hero-lead{gap:17px}.problem-heading{display:block}.problem-heading .pill{margin-top:10px}.clock small{display:none}.topbar .button{font-size:.8rem}.index a{grid-template-columns:auto 1fr}.index-id{grid-column:2}.review-list a{align-items:start}.content{padding-top:17px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<aside class="sidebar" id="sidebar" aria-label="Exam navigation" data-open="false">
+  <div class="brand"><span class="brand-mark" aria-hidden="true">CPE</span><div><strong>Computer Lab</strong><small>Midterm practice</small></div></div>
+  <div class="side-label">EXAM</div>
+  <nav aria-label="Overview and problems">
+    <a class="nav-link" data-route="overview" href="#overview">Overview</a>
+    <a class="nav-link" data-route="bank" href="#bank">Problem bank · 13</a>
+    <div class="side-label">MOCK EXAM · 4 PROBLEMS</div>
+    <div id="problem-nav"></div>
+    <a class="nav-link" data-route="review" href="#review" id="review-nav" hidden>Review and solutions</a>
+  </nav>
+  <div class="progress-box">
+    <div class="progress-title"><strong>Outputs entered</strong><output id="progress-number">0 / 4</output></div>
+    <progress id="progress-bar" max="4" value="0" aria-label="Outputs entered"></progress>
+    <p class="sidebar-note muted" id="storage-status">Drafts are saved in this browser.</p>
+  </div>
+</aside>
+<button class="overlay" id="overlay" type="button" aria-label="Close navigation" hidden></button>
+<main class="main" id="main" tabindex="-1">
+  <div class="topbar">
+    <button class="button menu-btn" id="menu" type="button" aria-controls="sidebar" aria-expanded="false">Menu</button>
+    <span class="crumb" id="crumb">Midterm mock</span>
+    <span class="clock"><small>Time left</small><time id="elapsed" aria-label="Time left">02:30:00</time></span>
+    <button class="button icon-btn" id="theme" type="button" aria-label="Dark theme" aria-pressed="false">◐</button>
+  </div>
+  <div class="content">
+    <div id="page"></div>
+    <footer>Computer Lab practice · Labs 5–8 · <a href="https://cpe.mcu.edu.tw/cpe/test_data/problems" target="_blank" rel="noopener">CPE archive</a></footer>
+  </div>
+</main>
+<noscript><p>Enable JavaScript to use the exam workspace and review your answers.</p></noscript>
+<dialog id="confirm-dialog" aria-labelledby="confirm-title">
+  <h2 id="confirm-title"></h2><p id="confirm-message"></p>
+  <form method="dialog" class="actions">
+    <button class="button" value="cancel" autofocus>Cancel</button>
+    <button class="button primary" id="confirm-action" value="yes"></button>
+  </form>
+</dialog>
+<template id="overview-template">
+  <section class="hero" aria-labelledby="overview-title">
+    <div class="hero-lead">
+      <div class="hero-copy">
+        <p class="eyebrow">COMPUTER LAB · CPE PRACTICE</p>
+        <h1 id="overview-title" tabindex="-1">CPE Midterm<br>Mock Exam</h1>
+        <p>Study all 13 programming problems from Labs 5–8. Take a timed mock with four questions drawn from the 12 problems listed in past CPE sessions, then review your work.</p>
+        <div class="actions"><a class="button primary" data-start href="#p1">Start timed mock</a><a class="button" href="#bank">Study all 13 problems</a></div>
+      </div>
+      <div class="exam-spec">
+        <h2>PRACTICE FORMAT</h2>
+        <dl><div><dt>Mock questions</dt><dd>04</dd></div><div><dt>Time limit</dt><dd>2h 30m</dd></div><div><dt>Language</dt><dd>English</dd></div></dl>
+      </div>
+    </div>
+    <nav class="index" id="problem-index" aria-label="Mock exam questions"><h2>Questions in this draw</h2><ol data-index></ol></nav>
+  </section>
+  <section class="section">
+    <p class="eyebrow">BEFORE YOU START</p>
+    <h2>Read, code, check.</h2>
+    <p>Use your C++ compiler to run each program. Paste the output for the supplied self-check input. The page saves drafts and compares output text after you finish.</p>
+    <p class="section-note">The countdown starts when you open a mock question. The mock finishes when time runs out. This practice draw does not predict which questions the instructor will choose.</p>
+    <details>
+      <summary>Exam-day submission instructions</summary>
+      <div class="detail-body">
+        <ol>
+          <li>The real exam has four English questions from Labs 5–8, with no translation. It lasts 2 hours and 30 minutes.</li>
+          <li>Take the exam on a computer. Notes and internet access are not allowed.</li>
+          <li>Create a folder named with your student ID.</li>
+          <li>Name each source file by its question number. Include both the source code and the compiled executable in the folder.</li>
+          <li>When you are ready to submit, raise your hand. The instructor will collect the files using a USB drive.</li>
+          <li>After your files have been collected, you may leave without shutting down the computer.</li>
+        </ol>
+        <p class="section-note">Sources: Computer Lab 1, page 5, and Computer Lab 8, page 1.</p>
+      </div>
+    </details>
+    <div class="actions"><button class="button" data-finish type="button" hidden>Finish attempt</button><button class="button" data-reset type="button" hidden>Start a new attempt</button></div>
+  </section>
+</template>
+<template id="problem-template">
+  <article class="section" aria-labelledby="problem-title">
+    <div class="problem-heading">
+      <div><div class="eyebrow" data-kicker></div><h1 id="problem-title" tabindex="-1"></h1></div>
+      <span class="pill" data-date></span>
+    </div>
+    <p class="problem-text" data-task></p>
+    <div class="specs">
+      <div class="card"><h3>Input</h3><p data-input></p></div>
+      <div class="card"><h3>Output</h3><p data-output></p></div>
+    </div>
+    <div class="sample-grid">
+      <div><div class="block-label">SAMPLE INPUT</div><pre data-sample-in></pre></div>
+      <div><div class="block-label">SAMPLE OUTPUT</div><pre data-sample-out></pre></div>
+    </div>
+    <p class="section-note"><a data-original target="_blank" rel="noopener">Original English statement</a> · <a data-archive target="_blank" rel="noopener">Past CPE session</a></p>
+  </article>
+  <section class="section" aria-labelledby="workspace-title">
+    <p class="eyebrow">YOUR WORK</p>
+    <h2 id="workspace-title">Workspace</h2>
+    <label class="field-label" for="draft">C++ draft</label>
+    <textarea class="code" id="draft" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="Write or paste your C++ solution here."></textarea>
+    <div class="actions"><button class="button" id="download-draft" type="button">Download .cpp</button></div>
+    <div class="response-grid">
+      <div><h3 class="field-label">Self-check input</h3><pre data-check-in></pre></div>
+      <div><label class="field-label" for="answer">Your program’s output</label><textarea id="answer" spellcheck="false" autocapitalize="off" autocomplete="off" aria-describedby="output-help" placeholder="Paste the exact output for the self-check input."></textarea></div>
+    </div>
+    <p id="output-help" class="section-note">Run your C++ program in your compiler. This page compares the output you paste; it does not compile code.</p>
+    <div data-feedback></div>
+    <div class="problem-footer">
+      <a class="button" data-prev>Previous</a>
+      <div class="actions" style="margin-top:0">
+        <button class="button" data-finish type="button">Finish attempt</button>
+        <a class="button primary" data-next>Next problem</a>
+      </div>
+    </div>
+  </section>
+</template>
+<script>
+"use strict";
+const originalMock = [
+  {
+    id:"10783", title:"Odd Sum", lesson:5, date:"2014-05-27",
+    task:"Write a program that adds all odd integers in the inclusive interval from a to b. Include an endpoint if it is odd.",
+    input:"The first line contains T, the number of cases (1 ≤ T ≤ 100). Each case supplies a and b on separate lines, with 0 ≤ a ≤ b ≤ 100.",
+    output:"Print one line per case in the form Case k: S, where k starts at 1 and S is the sum. Print 0 for an interval with no odd numbers.",
+    sampleIn:"2\n1\n5\n3\n5", sampleOut:"Case 1: 9\nCase 2: 8",
+    checkIn:"4\n0\n0\n2\n6\n7\n7\n99\n100", checkOut:"Case 1: 0\nCase 2: 8\nCase 3: 7\nCase 4: 99",
+    steps:["Read the case count first. Reset total to zero for each interval.","Loop from a through b, including b. The test x % 2 != 0 selects odd values.","Print the case label, a space after the colon, and the total."],
+    trace:{headers:["x in [2, 6]","Action","total"],rows:[["2","Skip","0"],["3","Add 3","3"],["4","Skip","3"],["5","Add 5","8"],["6","Skip","8"]]},
+    code:["#include <iostream>","using namespace std;","","int main() {","    int T;","    if (!(cin >> T)) return 0;","    for (int k = 1; k <= T; ++k) {","        int a, b, total = 0;","        cin >> a >> b;","        for (int x = a; x <= b; ++x) {","            if (x % 2 != 0) total += x;","        }","        cout << \"Case \" << k << \": \" << total << '\\n';","    }","}"]
+  },
+  {
+    id:"10931", title:"Parity", lesson:6, date:"2022-12-13",
+    task:"Convert each input integer to binary and count the 1 bits. The required sentence shows the full count before the literal text (mod 2), even when the count is greater than 1.",
+    input:"Read one integer per line. Each value to process is between 1 and 2,147,483,647. Stop at 0 and produce no line for it.",
+    output:"For a binary representation B with P ones, print The parity of B is P (mod 2). Use no leading zeros in B.",
+    sampleIn:"10\n21\n0", sampleOut:"The parity of 1010 is 2 (mod 2).\nThe parity of 10101 is 3 (mod 2).",
+    checkIn:"8\n15\n2147483647\n0", checkOut:"The parity of 1000 is 1 (mod 2).\nThe parity of 1111 is 4 (mod 2).\nThe parity of 1111111111111111111111111111111 is 31 (mod 2).",
+    steps:["The remainder n % 2 is the next bit. Add that numeric bit to the count.","Convert the bit to a character with char('0' + bit). Prepend it because the remainders arrive from right to left.","Use integer division n /= 2 to remove the processed bit."],
+    trace:{headers:["n","bit","binary after prepending","ones"],rows:[["10","0","0","0"],["5","1","10","1"],["2","0","010","1"],["1","1","1010","2"]]},
+    code:["#include <iostream>","#include <string>","using namespace std;","","int main() {","    long long n;","    while (cin >> n && n != 0) {","        string binary;","        int ones = 0;","        while (n > 0) {","            int bit = n % 2;","            ones += bit;","            binary = char('0' + bit) + binary;","            n /= 2;","        }","        cout << \"The parity of \" << binary << \" is \" << ones","             << \" (mod 2).\\n\";","    }","}"]
+  },
+  {
+    id:"10035", title:"Primary Arithmetic", lesson:7, date:"2023-03-21",
+    task:"Count the carries that occur during ordinary decimal addition. Work from the units column toward the left, passing a carry of 1 to the next column whenever the current column totals 10 or more.",
+    input:"Each line contains two nonnegative decimal integers of fewer than 10 digits. Stop when both numbers are 0. A single zero operand is valid.",
+    output:"For zero carries print No carry operation. For exactly one print 1 carry operation. For C > 1 print C carry operations. Preserve the punctuation.",
+    sampleIn:"123 456\n555 555\n123 594\n0 0", sampleOut:"No carry operation.\n3 carry operations.\n1 carry operation.",
+    checkIn:"9 1\n95 7\n0 7\n999999999 1\n0 0", checkOut:"1 carry operation.\n2 carry operations.\nNo carry operation.\n9 carry operations.",
+    steps:["Read the current digit of each operand with % 10. Add the carry from the column to the right.","The new carry is 1 if the column sum is at least 10; otherwise it is 0. Count the new carry, then remove both processed digits with / 10.","Use the singular output for one carry and the plural output for two or more."],
+    trace:{headers:["Column in 95 + 7","Digit sum","New carry","Count"],rows:[["Units","5 + 7 + 0 = 12","1","1"],["Tens","9 + 0 + 1 = 10","1","2"]]},
+    code:["#include <iostream>","using namespace std;","","int main() {","    unsigned long long a, b;","    while (cin >> a >> b && (a != 0 || b != 0)) {","        int carry = 0, count = 0;","        while (a > 0 || b > 0) {","            int column = (a % 10) + (b % 10) + carry;","            carry = (column >= 10);","            count += carry;","            a /= 10;","            b /= 10;","        }","        if (count == 0) cout << \"No carry operation.\\n\";","        else if (count == 1) cout << \"1 carry operation.\\n\";","        else cout << count << \" carry operations.\\n\";","    }","}"]
+  },
+  {
+    id:"10922", title:"2 the 9s", lesson:6, date:"2015-03-24",
+    task:"Determine whether a positive decimal integer is divisible by 9. For a multiple of 9, repeatedly replace it with the sum of its decimal digits and report how many rounds are needed to reach 9. The degree of 9 itself is 1.",
+    input:"Read one positive integer per line, with at most 1,000 digits. A line containing 0 ends the input and is not processed.",
+    output:"For a multiple, print N is a multiple of 9 and has 9-degree D. Otherwise print N is not a multiple of 9. Replace N with the original input and D with the degree.",
+    sampleIn:"18\n9999\n20\n0", sampleOut:"18 is a multiple of 9 and has 9-degree 1.\n9999 is a multiple of 9 and has 9-degree 2.\n20 is not a multiple of 9.",
+    checkIn:"9\n999999999999999999999\n9998\n0", checkOut:"9 is a multiple of 9 and has 9-degree 1.\n999999999999999999999 is a multiple of 9 and has 9-degree 3.\n9998 is not a multiple of 9.",
+    steps:["Read the large number as a string. The first digit sum is at most 9,000, so an int can hold it. Subtract '0' from each digit character.","Test sum % 9. If the remainder is nonzero, the original number is not divisible by 9.","Count the first digit sum as round 1. Each time sum still has multiple digits, start temp at zero, collect its digits into temp, and then replace sum with temp and increment degree."],
+    trace:{headers:["Round","Value before","Digits added","Value after"],rows:[["1","21 copies of 9","21 × 9","189"],["2","189","9 + 8 + 1","18"],["3","18","8 + 1","9"]]},
+    code:["#include <iostream>","#include <string>","using namespace std;","","int main() {","    string n;","    while (cin >> n && n != \"0\") {","        int sum = 0;","        for (char c : n) sum += c - '0';","        if (sum % 9 != 0) {","            cout << n << \" is not a multiple of 9.\\n\";","            continue;","        }","        int degree = 1;","        while (sum >= 10) {","            int temp = 0;","            while (sum > 0) {","                temp += sum % 10;","                sum /= 10;","            }","            sum = temp;","            ++degree;","        }","        cout << n << \" is a multiple of 9 and has 9-degree \"","             << degree << \".\\n\";","    }","}"]
+  }
+];
+
+const extraProblems = [
+  {
+    "id": "10055",
+    "title": "Hashmat the Brave Warrior",
+    "lesson": 5,
+    "date": null,
+    "task": "Given the sizes of two armies in either order, find the absolute difference between them.",
+    "input": "Read pairs of nonnegative integers until end of file. Each value is at most 2^32.",
+    "output": "Print one difference per pair. Equal army sizes produce 0.",
+    "sampleIn": "10 12\n14 10",
+    "sampleOut": "2\n4",
+    "checkIn": "4294967296 0\n123 123\n2 12",
+    "checkOut": "4294967296\n0\n10",
+    "steps": [
+      "Use a 64-bit integer type: 2^32 exceeds the usual signed int limit.",
+      "Read both values together until end of file. Subtract the smaller from the larger."
+    ],
+    "trace": {
+      "headers": [
+        "a",
+        "b",
+        "Difference"
+      ],
+      "rows": [
+        [
+          "14",
+          "10",
+          "14 − 10 = 4"
+        ],
+        [
+          "123",
+          "123",
+          "0"
+        ]
+      ]
+    },
+    "code": [
+      "#include <iostream>",
+      "using namespace std;",
+      "",
+      "int main() {",
+      "    long long a, b;",
+      "    while (cin >> a >> b) {",
+      "        cout << (a >= b ? a - b : b - a) << '\\n';",
+      "    }",
+      "}"
+    ]
+  },
+  {
+    "id": "11150",
+    "title": "Cola",
+    "lesson": 5,
+    "date": "2010-12-23",
+    "task": "You buy N bottles of cola. The store trades three empty bottles for one full bottle. You may borrow empties if you repay them. Find the maximum number of bottles you can drink.",
+    "input": "Read one integer N per line until end of file (1 ≤ N ≤ 200).",
+    "output": "For each N, print the maximum total, including the bottles you bought.",
+    "sampleIn": "8\n9",
+    "sampleOut": "12\n13",
+    "checkIn": "1\n2\n3\n200",
+    "checkOut": "1\n3\n4\n300",
+    "steps": [
+      "Drinking the original N bottles gives N empty bottles.",
+      "Each trade followed by drinking costs two empties overall: you hand in three and get one empty back.",
+      "If two empties remain, borrow one for a final trade and return the empty you get back. This allows exactly floor(N / 2) extra drinks."
+    ],
+    "trace": {
+      "headers": [
+        "N",
+        "Extra drinks",
+        "Total"
+      ],
+      "rows": [
+        [
+          "1",
+          "0",
+          "1"
+        ],
+        [
+          "2",
+          "1 (borrow and repay one empty)",
+          "3"
+        ],
+        [
+          "8",
+          "4",
+          "12"
+        ]
+      ]
+    },
+    "code": [
+      "#include <iostream>",
+      "using namespace std;",
+      "",
+      "int main() {",
+      "    int n;",
+      "    while (cin >> n) cout << n + n / 2 << '\\n';",
+      "}"
+    ]
+  },
+  {
+    "id": "11332",
+    "title": "Summing Digits",
+    "lesson": 5,
+    "date": "2022-10-18",
+    "task": "Replace a positive integer with the sum of its decimal digits. Repeat until one digit remains.",
+    "input": "Read one integer N per line, with 1 ≤ N ≤ 2,000,000,000 for each case. A 0 ends the input.",
+    "output": "For each case, print the remaining digit on its own line. Do not process the final 0.",
+    "sampleIn": "11\n47\n1234567892\n0",
+    "sampleOut": "2\n2\n2",
+    "checkIn": "7\n999999999\n1999999999\n2000000000\n0",
+    "checkOut": "7\n9\n1\n2",
+    "steps": [
+      "If the value is already below 10, it is the answer.",
+      "Use n % 10 to read the rightmost digit and n /= 10 to remove it.",
+      "Accumulate the digits in a fresh total, replace n, and repeat."
+    ],
+    "trace": {
+      "headers": [
+        "Before",
+        "Digit sum",
+        "After"
+      ],
+      "rows": [
+        [
+          "1234567892",
+          "47",
+          "47"
+        ],
+        [
+          "47",
+          "4 + 7",
+          "11"
+        ],
+        [
+          "11",
+          "1 + 1",
+          "2"
+        ]
+      ]
+    },
+    "code": [
+      "#include <iostream>",
+      "using namespace std;",
+      "",
+      "int main() {",
+      "    long long n;",
+      "    while (cin >> n && n != 0) {",
+      "        while (n >= 10) {",
+      "            int total = 0;",
+      "            while (n > 0) {",
+      "                total += n % 10;",
+      "                n /= 10;",
+      "            }",
+      "            n = total;",
+      "        }",
+      "        cout << n << '\\n';",
+      "    }",
+      "}"
+    ]
+  },
+  {
+    "id": "10929",
+    "title": "You can say 11",
+    "lesson": 6,
+    "date": "2011-12-20",
+    "task": "Determine whether each positive decimal integer is divisible by 11. An input value can be too large for an integer type.",
+    "input": "Read one positive decimal integer per line, up to 1,000 digits. A line containing 0 ends input.",
+    "output": "For a multiple, print N is a multiple of 11. Otherwise print N is not a multiple of 11. Use the original input for N.",
+    "sampleIn": "112233\n112234\n0",
+    "sampleOut": "112233 is a multiple of 11.\n112234 is not a multiple of 11.",
+    "checkIn": "11\n19\n56958\n1000000000000000000001\n0",
+    "checkOut": "11 is a multiple of 11.\n19 is not a multiple of 11.\n56958 is a multiple of 11.\n1000000000000000000001 is a multiple of 11.",
+    "steps": [
+      "Keep the original number in a string.",
+      "Convert each digit with n[i] - '0'. Add digits at even indices and subtract digits at odd indices.",
+      "Because 10 is congruent to −1 modulo 11, the alternating sum is divisible by 11 exactly when the original value is."
+    ],
+    "trace": {
+      "headers": [
+        "Index",
+        "Digit",
+        "Running sum"
+      ],
+      "rows": [
+        [
+          "0",
+          "5",
+          "+5 = 5"
+        ],
+        [
+          "1",
+          "6",
+          "5 − 6 = −1"
+        ],
+        [
+          "2",
+          "9",
+          "−1 + 9 = 8"
+        ],
+        [
+          "3",
+          "5",
+          "8 − 5 = 3"
+        ],
+        [
+          "4",
+          "8",
+          "3 + 8 = 11"
+        ]
+      ]
+    },
+    "code": [
+      "#include <iostream>",
+      "#include <string>",
+      "using namespace std;",
+      "",
+      "int main() {",
+      "    string n;",
+      "    while (cin >> n && n != \"0\") {",
+      "        int sum = 0;",
+      "        for (size_t i = 0; i < n.size(); ++i) {",
+      "            int digit = n[i] - '0';",
+      "            sum += (i % 2 == 0) ? digit : -digit;",
+      "        }",
+      "        cout << n << (sum % 11 == 0 ? \" is a multiple of 11.\\n\"",
+      "                                   : \" is not a multiple of 11.\\n\");",
+      "    }",
+      "}"
+    ]
+  },
+  {
+    "id": "272",
+    "title": "TEX Quotes",
+    "lesson": 6,
+    "date": "2011-05-25",
+    "task": "Convert plain double quotation marks to TeX-style pairs. An opening quote becomes two grave accents; a closing quote becomes two apostrophes.",
+    "input": "Read the complete text until end of file. Quotation pairs may span lines.",
+    "output": "Copy every other character unchanged, including line breaks and spaces. Alternate opening and closing replacements across the entire input.",
+    "sampleIn": "She said \"hello\".\n\"Bye!\"",
+    "sampleOut": "She said ``hello''.\n``Bye!''",
+    "checkIn": "\"One\nmore\" and \"two\".\nNo quotes here.",
+    "checkOut": "``One\nmore'' and ``two''.\nNo quotes here.",
+    "steps": [
+      "Use cin.get(c) to read every character, including whitespace.",
+      "Keep one boolean that tells whether the next double quote is opening.",
+      "After replacing a quote, flip the boolean. Do not reset it at a newline."
+    ],
+    "trace": {
+      "headers": [
+        "Event",
+        "Replacement",
+        "Next quote"
+      ],
+      "rows": [
+        [
+          "First quote",
+          "``",
+          "Closing"
+        ],
+        [
+          "Line break",
+          "Unchanged",
+          "Closing"
+        ],
+        [
+          "Next quote",
+          "''",
+          "Opening"
+        ]
+      ]
+    },
+    "code": [
+      "#include <iostream>",
+      "using namespace std;",
+      "",
+      "int main() {",
+      "    bool opening = true;",
+      "    char c;",
+      "    while (cin.get(c)) {",
+      "        if (c == '\"') {",
+      "            if (opening) cout << char(96) << char(96);",
+      "            else cout << \"''\";",
+      "            opening = !opening;",
+      "        } else {",
+      "            cout << c;",
+      "        }",
+      "    }",
+      "}"
+    ]
+  },
+  {
+    "id": "100",
+    "title": "The 3n + 1 Problem",
+    "lesson": 7,
+    "date": "2025-09-30",
+    "task": "Start at n. Until reaching 1, replace an odd n with 3n + 1 and an even n with n / 2. The cycle length counts all terms, including the start and 1. Find the maximum cycle length over each inclusive interval.",
+    "input": "Read pairs i and j until end of file (0 < i, j < 1,000,000). The endpoints can arrive in either order.",
+    "output": "Print i and j in their original order, then the maximum cycle length. Separate the three numbers with one space.",
+    "sampleIn": "1 10\n100 200",
+    "sampleOut": "1 10 20\n100 200 125",
+    "checkIn": "1 1\n22 22\n10 1\n201 210\n900 1000",
+    "checkOut": "1 1 1\n22 22 16\n10 1 20\n201 210 89\n900 1000 174",
+    "steps": [
+      "Set the length of 1 to 1. For other values, the length is one plus the length of the next value.",
+      "Use long long for intermediate values and cache known lengths below 1,000,000.",
+      "Normalize the endpoints only for the loop. Print the original i and j."
+    ],
+    "trace": {
+      "headers": [
+        "Start",
+        "Sequence",
+        "Length"
+      ],
+      "rows": [
+        [
+          "1",
+          "1",
+          "1"
+        ],
+        [
+          "4",
+          "4 → 2 → 1",
+          "3"
+        ],
+        [
+          "5",
+          "5 → 16 → 8 → 4 → 2 → 1",
+          "6"
+        ]
+      ]
+    },
+    "code": [
+      "#include <algorithm>",
+      "#include <iostream>",
+      "#include <vector>",
+      "using namespace std;",
+      "",
+      "vector<int> memo(1000000);",
+      "",
+      "int cycle(long long n) {",
+      "    if (n < 1000000 && memo[n]) return memo[n];",
+      "    long long next = n % 2 ? 3 * n + 1 : n / 2;",
+      "    int length = 1 + cycle(next);",
+      "    if (n < 1000000) memo[n] = length;",
+      "    return length;",
+      "}",
+      "",
+      "int main() {",
+      "    memo[1] = 1;",
+      "    int i, j;",
+      "    while (cin >> i >> j) {",
+      "        int best = 0;",
+      "        for (int n = min(i, j); n <= max(i, j); ++n) {",
+      "            best = max(best, cycle(n));",
+      "        }",
+      "        cout << i << ' ' << j << ' ' << best << '\\n';",
+      "    }",
+      "}"
+    ]
+  },
+  {
+    "id": "299",
+    "title": "Train Swapping",
+    "lesson": 7,
+    "date": "2017-09-26",
+    "task": "Sort the numbered train carriages using only swaps of adjacent carriages. Report the smallest possible number of swaps.",
+    "input": "Read the number of cases T. Each case gives a length L (0 ≤ L ≤ 50) followed by a permutation of 1 through L.",
+    "output": "Print Optimal train swapping takes S swaps. for every case, substituting the minimum swap count for S.",
+    "sampleIn": "2\n3\n1 3 2\n4\n4 3 2 1",
+    "sampleOut": "Optimal train swapping takes 1 swaps.\nOptimal train swapping takes 6 swaps.",
+    "checkIn": "3\n0\n4\n1 2 3 4\n4\n3 1 4 2",
+    "checkOut": "Optimal train swapping takes 0 swaps.\nOptimal train swapping takes 0 swaps.\nOptimal train swapping takes 3 swaps.",
+    "steps": [
+      "An inversion is an out-of-order pair: the earlier carriage has a larger number.",
+      "Swapping an adjacent inverted pair removes exactly one inversion. Sorting this way uses exactly as many swaps as the original inversion count.",
+      "With at most 50 carriages, two nested loops can count all inversions directly."
+    ],
+    "trace": {
+      "headers": [
+        "Order",
+        "Inverted pairs",
+        "Minimum swaps"
+      ],
+      "rows": [
+        [
+          "3 1 4 2",
+          "(3,1), (3,2), (4,2)",
+          "3"
+        ],
+        [
+          "1 2 3 4",
+          "None",
+          "0"
+        ]
+      ]
+    },
+    "code": [
+      "#include <iostream>",
+      "#include <vector>",
+      "using namespace std;",
+      "",
+      "int main() {",
+      "    int cases;",
+      "    if (!(cin >> cases)) return 0;",
+      "    while (cases--) {",
+      "        int n;",
+      "        cin >> n;",
+      "        vector<int> a(n);",
+      "        for (int &x : a) cin >> x;",
+      "        int inversions = 0;",
+      "        for (int i = 0; i < n; ++i)",
+      "            for (int j = i + 1; j < n; ++j)",
+      "                if (a[i] > a[j]) ++inversions;",
+      "        cout << \"Optimal train swapping takes \" << inversions",
+      "             << \" swaps.\\n\";",
+      "    }",
+      "}"
+    ]
+  },
+  {
+    "id": "10101",
+    "title": "Bangla Numbers",
+    "lesson": 7,
+    "date": "2018-12-18",
+    "task": "Express each input using Bangla number units: kuti (10,000,000), lakh (100,000), hajar (1,000), and shata (100). A value can contain more than one kuti.",
+    "input": "Read nonnegative integers up to 999,999,999,999,999 until end of file. Zero is a normal case.",
+    "output": "For each input, print the 1-based case number right-aligned in a field of width four, then a period and the converted value. Put one space before each number or unit.",
+    "sampleIn": "0\n23764",
+    "sampleOut": "   1. 0\n   2. 23 hajar 7 shata 64",
+    "checkIn": "10000000\n100000000000000\n10000101\n45897458973958",
+    "checkOut": "   1. 1 kuti\n   2. 1 kuti kuti\n   3. 1 kuti 1 shata 1\n   4. 45 lakh 89 hajar 7 shata 45 kuti 89 lakh 73 hajar 9 shata 58",
+    "steps": [
+      "Use long long. For n ≥ 10,000,000, recursively format the quotient, then print kuti and process the remainder.",
+      "For the smaller units, print a group only when it is nonzero.",
+      "Use setw(4) for the case number. Print 0 for the whole input zero, but omit zero remainder groups."
+    ],
+    "trace": {
+      "headers": [
+        "Input",
+        "Decomposition",
+        "Output value"
+      ],
+      "rows": [
+        [
+          "23764",
+          "23 × 1,000 + 7 × 100 + 64",
+          "23 hajar 7 shata 64"
+        ],
+        [
+          "100000000000000",
+          "10,000,000 × 10,000,000",
+          "1 kuti kuti"
+        ]
+      ]
+    },
+    "code": [
+      "#include <iomanip>",
+      "#include <iostream>",
+      "using namespace std;",
+      "",
+      "void printBangla(long long n) {",
+      "    if (n >= 10000000) {",
+      "        printBangla(n / 10000000);",
+      "        cout << \" kuti\";",
+      "        n %= 10000000;",
+      "    }",
+      "    if (n >= 100000) {",
+      "        cout << ' ' << n / 100000 << \" lakh\";",
+      "        n %= 100000;",
+      "    }",
+      "    if (n >= 1000) {",
+      "        cout << ' ' << n / 1000 << \" hajar\";",
+      "        n %= 1000;",
+      "    }",
+      "    if (n >= 100) {",
+      "        cout << ' ' << n / 100 << \" shata\";",
+      "        n %= 100;",
+      "    }",
+      "    if (n != 0) cout << ' ' << n;",
+      "}",
+      "",
+      "int main() {",
+      "    long long n;",
+      "    int k = 1;",
+      "    while (cin >> n) {",
+      "        cout << setw(4) << k++ << '.';",
+      "        if (n == 0) cout << \" 0\";",
+      "        else printBangla(n);",
+      "        cout << '\\n';",
+      "    }",
+      "}"
+    ]
+  },
+  {
+    "id": "10071",
+    "title": "Back to High School Physics",
+    "lesson": 8,
+    "date": "2017-12-19",
+    "task": "A particle moves with constant acceleration. Its velocity at time t is v. Determine its signed displacement from time 0 to time 2t.",
+    "input": "Read pairs v and t until end of file, where −100 ≤ v ≤ 100 and 0 ≤ t ≤ 200. A pair of zeros is a valid case.",
+    "output": "Print the displacement as a single integer for each input pair.",
+    "sampleIn": "0 0\n5 12",
+    "sampleOut": "0\n120",
+    "checkIn": "-10 3\n7 0\n100 200\n0 20",
+    "checkOut": "-60\n0\n40000\n0",
+    "steps": [
+      "With constant acceleration, the velocity at the midpoint t equals the average velocity over the interval from 0 to 2t.",
+      "Displacement equals average velocity times elapsed time, so calculate 2 * v * t.",
+      "Process all pairs to EOF, including zero and negative values."
+    ],
+    "trace": {
+      "headers": [
+        "v",
+        "t",
+        "2 × v × t"
+      ],
+      "rows": [
+        [
+          "5",
+          "12",
+          "120"
+        ],
+        [
+          "−10",
+          "3",
+          "−60"
+        ],
+        [
+          "7",
+          "0",
+          "0"
+        ]
+      ]
+    },
+    "code": [
+      "#include <iostream>",
+      "using namespace std;",
+      "",
+      "int main() {",
+      "    int v, t;",
+      "    while (cin >> v >> t) cout << 2 * v * t << '\\n';",
+      "}"
+    ]
+  }
+];
+
+const order = ["10055","11150","11332","10783","10931","10929","10922","272","100","299","10101","10035","10071"];
+const pages = [1,6,12,17,2,7,13,19,1,8,16,23,2];
+const byId = new Map([...originalMock, ...extraProblems].map(p => [p.id, p]));
+const bank = order.map((id, i) => ({...byId.get(id), page:pages[i]}));
+const candidates = bank.filter(p => p.date).map(p => p.id);
+const KEY = "computer-lab-cpe-midterm-v2";
+const LEGACY = "computer-lab-cpe-midterm-v1";
+const SIZE = 4;
+const LIMIT = 150 * 60 * 1000;
+const $ = (selector, root = document) => root.querySelector(selector);
+const make = (tag, text = "", className = "") => {
+  const node = document.createElement(tag);
+  if (text) node.textContent = text;
+  if (className) node.className = className;
+  return node;
+};
+const page = $("#page");
+const dialog = $("#confirm-dialog");
+function draw() {
+  const pool = candidates.slice();
+  for (let i = pool.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [pool[i], pool[j]] = [pool[j], pool[i]];
+  }
+  return pool.slice(0, SIZE);
+}
+const empty = () => ({ ids:draw(), started:0, finished:0, last:0, timedOut:false, entries:Array.from({length:SIZE}, () => ({draft:"", output:""})) });
+const routeFor = i => "p" + (i + 1);
+const two = n => String(n).padStart(2, "0");
+const normalize = text => text.replace(/\r\n?/g, "\n").replace(/[ \t]+$/gm, "").replace(/\n+$/, "");
+let state = empty();
+let storageOK = true;
+let current = "";
+let confirmTask = null;
+try {
+  let saved = JSON.parse(localStorage.getItem(KEY));
+  if (!saved) {
+    const old = JSON.parse(localStorage.getItem(LEGACY));
+    if (old?.started) saved = {...old, ids:originalMock.map(p => p.id)};
+  }
+  if (saved && Array.isArray(saved.entries) && saved.entries.length === SIZE &&
+      Array.isArray(saved.ids) && saved.ids.length === SIZE &&
+      new Set(saved.ids).size === SIZE && saved.ids.every(id => candidates.includes(id))) {
+    state = {
+      ids:saved.ids,
+      started:Number.isFinite(saved.started) && saved.started > 0 ? saved.started : 0,
+      finished:Number.isFinite(saved.finished) && saved.finished > 0 ? saved.finished : 0,
+      last:Number.isInteger(saved.last) && saved.last >= 0 && saved.last < SIZE ? saved.last : 0,
+      timedOut:saved.timedOut === true,
+      entries:saved.entries.map(e => ({draft:typeof e?.draft === "string" ? e.draft : "", output:typeof e?.output === "string" ? e.output : ""}))
+    };
+  }
+} catch { storageOK = false; }
+let problems = state.ids.map(id => byId.get(id));
+
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(state)); storageOK = true; }
+  catch { storageOK = false; }
+}
+function entered(i) { return state.entries[i].output.trim().length > 0; }
+function countEntered() { return problems.filter((_, i) => entered(i)).length; }
+function result(i) {
+  if (!entered(i)) return ["Not answered", "muted"];
+  return normalize(state.entries[i].output) === normalize(problems[i].checkOut) ? ["Match", "good"] : ["Needs review", "bad"];
+}
+function updateProgress() {
+  const count = countEntered();
+  $("#progress-number").textContent = count + " / " + problems.length;
+  $("#progress-bar").value = count;
+  $("#storage-status").textContent = storageOK ? "Drafts are saved in this browser." : "Local storage is unavailable. Keep this page open to retain drafts.";
+  document.querySelectorAll("[data-mark]").forEach(el => {
+    const i = Number(el.dataset.mark);
+    el.textContent = state.finished ? (result(i)[0] === "Match" ? "✓" : "·") : (entered(i) ? "✓" : "");
+  });
+}
+function clock() {
+  const remaining = state.started ? LIMIT - ((state.finished || Date.now()) - state.started) : LIMIT;
+  const total = Math.ceil(Math.max(0, Math.min(LIMIT, remaining)) / 1000);
+  const hours = Math.floor(total / 3600);
+  $("#elapsed").textContent = two(hours) + ":" + two(Math.floor(total / 60) % 60) + ":" + two(total % 60);
+}
+function initNav() {
+  const nav = $("#problem-nav");
+  nav.replaceChildren();
+  problems.forEach((p, i) => {
+    const link = make("a", "", "nav-link");
+    link.href = "#" + routeFor(i);
+    link.dataset.route = routeFor(i);
+    const mark = make("span", "", "nav-mark");
+    mark.dataset.mark = i;
+    mark.setAttribute("aria-hidden", "true");
+    link.append(make("span", two(i + 1), "nav-num"), make("span", p.title), mark);
+    nav.append(link);
+  });
+}
+function updateNav() {
+  document.querySelectorAll(".nav-link[data-route]").forEach(link => {
+    if (link.dataset.route === current) link.setAttribute("aria-current", "page");
+    else link.removeAttribute("aria-current");
+  });
+  $("#review-nav").hidden = !state.finished;
+  updateProgress();
+  clock();
+}
+function ask(title, message, label, task) {
+  $("#confirm-title").textContent = title;
+  $("#confirm-message").textContent = message;
+  $("#confirm-action").textContent = label;
+  dialog.returnValue = "cancel";
+  confirmTask = task;
+  dialog.showModal();
+}
+dialog.addEventListener("close", () => {
+  const task = confirmTask;
+  confirmTask = null;
+  if (dialog.returnValue === "yes" && task) task();
+});
+function finish() {
+  if (state.finished) return;
+  const count = countEntered();
+  ask("Finish this attempt?", "You entered " + count + " of 4 self-check outputs. Finish to lock your answers and open the explanations.", "Finish and review", endAttempt);
+}
+function endAttempt() {
+  if (state.finished) return;
+  const now = Date.now();
+  state.started ||= now;
+  state.timedOut = now >= state.started + LIMIT;
+  state.finished = Math.min(now, state.started + LIMIT);
+  save();
+  if (location.hash === "#review") render(true);
+  else location.hash = "review";
+}
+function tick() {
+  if (state.started && !state.finished && Date.now() >= state.started + LIMIT) {
+    if (dialog.open) {
+      confirmTask = null;
+      dialog.close("cancel");
+    }
+    endAttempt();
+  }
+  clock();
+}
+function reset() {
+  ask("Draw a new set?", "This replaces this attempt and its drafts with a fresh draw of four questions.", "Draw a new set", () => {
+    state = empty();
+    problems = state.ids.map(id => byId.get(id));
+    initNav();
+    save();
+    if (location.hash === "#overview" || !location.hash) render();
+    else location.hash = "overview";
+  });
+}
+function showOverview() {
+  page.replaceChildren($("#overview-template").content.cloneNode(true));
+  const start = $("[data-start]", page);
+  if (state.finished) { start.href = "#review"; start.textContent = "Review this attempt"; }
+  else if (state.started) { start.href = "#" + routeFor(state.last); start.textContent = "Resume timed mock"; }
+  problems.forEach((p, i) => {
+    const link = make("a");
+    link.href = "#" + routeFor(i);
+    link.append(make("span", two(i + 1), "nav-num"), make("span", p.title), make("span", "UVa " + p.id, "index-id"));
+    const li = make("li");
+    li.append(link);
+    $("[data-index]", page).append(li);
+  });
+  $("[data-finish]", page).hidden = !state.started || !!state.finished;
+  $("[data-finish]", page).onclick = finish;
+  $("[data-reset]", page).hidden = false;
+  $("[data-reset]", page).onclick = reset;
+}
+function table(trace) {
+  const wrap = make("div", "", "table-wrap");
+  const grid = make("table"), top = make("thead"), head = make("tr"), body = make("tbody");
+  trace.headers.forEach(label => {
+    const th = make("th", label);
+    th.scope = "col";
+    head.append(th);
+  });
+  top.append(head);
+  trace.rows.forEach(values => {
+    const row = make("tr");
+    values.forEach(value => row.append(make("td", value)));
+    body.append(row);
+  });
+  grid.append(top, body);
+  wrap.append(grid);
+  return wrap;
+}
+function details(label, children) {
+  const panel = make("details"), body = make("div", "", "detail-body");
+  body.append(...children);
+  panel.append(make("summary", label), body);
+  return panel;
+}
+function originalURL(p) {
+  return "https://onlinejudge.org/external/" + Math.floor(Number(p.id) / 100) + "/" + p.id + ".pdf";
+}
+function archiveURL(p) {
+  const base = "https://cpe.mcu.edu.tw/cpe/test_data/";
+  return p.date && p.date >= "2013-10-01" ? base + p.date : base + "problems";
+}
+function external(label, href) {
+  const link = make("a", label);
+  link.href = href;
+  link.target = "_blank";
+  link.rel = "noopener";
+  return link;
+}
+function solutionPanels(p) {
+  const lines = make("ol");
+  p.steps.forEach(step => lines.append(make("li", step)));
+  return [
+    details("Walk through the algorithm", [lines, table(p.trace)]),
+    details("Reference solution · C++11", [make("pre", p.code.join("\n"))])
+  ];
+}
+function showBank() {
+  const intro = make("section", "", "section");
+  const heading = make("h1", "Problem bank");
+  heading.tabIndex = -1;
+  const inMock = state.started && !state.finished;
+  intro.append(make("div", "COMPUTER LAB · 13 PROBLEMS", "eyebrow"), heading,
+    make("p", "All 13 problems taught in Labs 5–8, grouped in class order. The archived CPE date beside each title identifies a documented appearance."));
+  intro.append(make("p", "UVa 10055 is in the course handout. No appearance was found in the official sessions checked, so it is available here for study and is outside this mock’s draw."));
+  if (inMock) intro.append(make("p", "Study solutions stay hidden until you finish the current mock.", "notice"));
+  page.replaceChildren(intro);
+  for (let lab = 5; lab <= 8; lab++) {
+    const group = make("section", "", "section bank-group");
+    const items = bank.filter(p => p.lesson === lab);
+    group.append(make("div", items.length + (items.length === 1 ? " PROBLEM" : " PROBLEMS"), "eyebrow"), make("h2", "Lab " + lab));
+    for (const p of items) {
+      const panel = make("details", "", "bank-problem");
+      const title = make("summary");
+      title.append(make("span", "UVa " + p.id + " · " + p.title), make("span", p.date ? "CPE " + p.date : "Class exercise", "pill"));
+      const body = make("div", "", "detail-body");
+      body.append(make("p", "Course handout: Lab " + lab + ", page " + p.page + ".", "section-note"), make("p", p.task));
+      const spec = make("div", "", "specs");
+      for (const [label, description] of [["Input",p.input],["Output",p.output]]) {
+        const card = make("div", "", "card");
+        card.append(make("h3", label), make("p", description));
+        spec.append(card);
+      }
+      const samples = make("div", "", "sample-grid");
+      for (const [label, value] of [["SAMPLE INPUT",p.sampleIn],["SAMPLE OUTPUT",p.sampleOut]]) {
+        const item = make("div");
+        item.append(make("div", label, "block-label"), make("pre", value));
+        samples.append(item);
+      }
+      const links = make("p", "", "problem-links section-note");
+      links.append(external("Original English statement", originalURL(p)));
+      if (p.date) links.append(document.createTextNode(" · "), external("CPE archive record", archiveURL(p)));
+      body.append(spec, samples, links);
+      if (!inMock) body.append(...solutionPanels(p));
+      panel.append(title, body);
+      group.append(panel);
+    }
+    page.append(group);
+  }
+}
+function feedback(p, i) {
+  const [status, tone] = result(i);
+  const wrap = make("div");
+  const note = make("div", "", "notice");
+  note.append(make("strong", status, tone));
+  if (status === "Needs review") {
+    const wanted = normalize(p.checkOut).split("\n"), given = normalize(state.entries[i].output).split("\n");
+    const at = Array.from({length:Math.max(wanted.length, given.length)}, (_, k) => k).find(k => wanted[k] !== given[k]);
+    note.append(make("p", "First difference on line " + (at + 1) + ". Compare line breaks, spelling, and punctuation."));
+  } else if (status === "Match") {
+    note.append(make("p", "Your text matches the supplied self-check output."));
+  } else {
+    note.append(make("p", "You can compare your program with the answer below."));
+  }
+  wrap.append(note);
+  wrap.append(
+    details("Expected self-check output", [make("pre", p.checkOut)]),
+    ...solutionPanels(p)
+  );
+  return wrap;
+}
+function download(i) {
+  const draft = state.entries[i].draft;
+  if (!draft.trim()) return;
+  const url = URL.createObjectURL(new Blob([draft], {type:"text/plain;charset=utf-8"}));
+  const a = make("a");
+  a.href = url;
+  a.download = "uva-" + problems[i].id + ".cpp";
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+function showProblem(i) {
+  const p = problems[i], entry = state.entries[i];
+  if (!state.finished) {
+    state.started ||= Date.now();
+    state.last = i;
+    save();
+  }
+  page.replaceChildren($("#problem-template").content.cloneNode(true));
+  const texts = {
+    "[data-kicker]":"PROBLEM " + two(i + 1) + " / 04 · UVA " + p.id + " · LAB " + p.lesson,
+    "#problem-title":p.title, "[data-date]":"CPE " + p.date, "[data-task]":p.task, "[data-input]":p.input,
+    "[data-output]":p.output, "[data-sample-in]":p.sampleIn, "[data-sample-out]":p.sampleOut, "[data-check-in]":p.checkIn
+  };
+  Object.entries(texts).forEach(([selector, value]) => $(selector, page).textContent = value);
+  $("[data-original]", page).href = originalURL(p);
+  $("[data-archive]", page).href = archiveURL(p);
+  const draft = $("#draft"), answer = $("#answer"), downloadBtn = $("#download-draft");
+  draft.value = entry.draft;
+  answer.value = entry.output;
+  draft.readOnly = answer.readOnly = !!state.finished;
+  downloadBtn.disabled = !entry.draft.trim();
+  downloadBtn.onclick = () => download(i);
+  if (!state.finished) {
+    draft.oninput = () => { entry.draft = draft.value; downloadBtn.disabled = !entry.draft.trim(); save(); updateProgress(); };
+    answer.oninput = () => { entry.output = answer.value; save(); updateProgress(); };
+  } else {
+    $("[data-feedback]", page).append(feedback(p, i));
+  }
+  const prev = $("[data-prev]", page), next = $("[data-next]", page), finishBtn = $("[data-finish]", page);
+  prev.href = i > 0 ? "#" + routeFor(i - 1) : "#overview";
+  prev.textContent = i > 0 ? "Previous problem" : "Overview";
+  if (i < problems.length - 1) next.href = "#" + routeFor(i + 1);
+  else if (state.finished) { next.href = "#review"; next.textContent = "Back to review"; }
+  else { next.hidden = true; finishBtn.classList.add("primary"); }
+  finishBtn.hidden = !!state.finished;
+  finishBtn.onclick = finish;
+}
+function showReview() {
+  const section = make("section", "", "section");
+  const h = make("h1", "Review your attempt");
+  h.tabIndex = -1;
+  const matches = problems.filter((_, i) => result(i)[0] === "Match").length;
+  section.append(make("div", "EXAM REVIEW", "eyebrow"), h,
+    make("p", matches + " of 4 self-check outputs match. This is a text check on the supplied inputs."),
+    make("p", "Open a problem to see its expected output, trace, and C++ reference solution."));
+  if (state.timedOut) section.append(make("p", "Time is up. Your drafts and outputs were saved.", "notice"));
+  const list = make("ol", "", "review-list");
+  problems.forEach((p, i) => {
+    const link = make("a");
+    link.href = "#" + routeFor(i);
+    const [status, tone] = result(i);
+    link.append(make("strong", two(i + 1) + "  " + p.title), make("small", status, tone));
+    const row = make("li"); row.append(link); list.append(row);
+  });
+  const actions = make("div", "", "actions"), restart = make("button", "Start a new attempt", "button");
+  restart.type = "button";
+  restart.onclick = reset;
+  actions.append(restart);
+  section.append(list, actions);
+  page.replaceChildren(section);
+}
+const narrow = matchMedia("(max-width: 790px)");
+function setMenu(open, restore = false) {
+  $("#sidebar").dataset.open = String(open);
+  $("#menu").setAttribute("aria-expanded", String(open));
+  $("#overlay").hidden = !open;
+  if (open) $(".nav-link[aria-current=page]")?.focus();
+  if (restore) $("#menu").focus();
+}
+function render(focus = false) {
+  const hash = location.hash.slice(1);
+  if ((hash === "problem-index" || hash === "main") && current) return;
+  const index = /^p[1-4]$/.test(hash) ? Number(hash.slice(1)) - 1 : -1;
+  current = index >= 0 ? hash : hash === "bank" ? "bank" : (hash === "review" && state.finished ? "review" : "overview");
+  if (index >= 0) showProblem(index);
+  else if (current === "review") showReview();
+  else if (current === "bank") showBank();
+  else showOverview();
+  $("#crumb").textContent = index >= 0 ? "Problem " + two(index + 1) + " of 04" : current === "review" ? "Review" : current === "bank" ? "Problem bank" : "Midterm mock";
+  setMenu(false);
+  updateNav();
+  if (focus) {
+    window.scrollTo(0, 0);
+    $("h1", page)?.focus({preventScroll:true});
+  }
+}
+$("#menu").onclick = () => setMenu($("#sidebar").dataset.open !== "true");
+$("#overlay").onclick = () => setMenu(false, true);
+document.addEventListener("keydown", e => {
+  if (e.key === "Escape" && $("#sidebar").dataset.open === "true") setMenu(false, true);
+});
+$("#sidebar").addEventListener("click", e => {
+  if (narrow.matches && e.target.closest("a")) setMenu(false);
+});
+narrow.addEventListener("change", () => setMenu(false));
+function setTheme(dark) {
+  document.documentElement.dataset.theme = dark ? "dark" : "light";
+  $("#theme").setAttribute("aria-pressed", String(dark));
+  $("#theme").title = dark ? "Use light theme" : "Use dark theme";
+}
+let dark = false;
+try { dark = (localStorage.getItem(KEY + "-theme") ?? localStorage.getItem(LEGACY + "-theme")) === "dark"; } catch {}
+setTheme(dark);
+$("#theme").onclick = () => {
+  dark = !dark; setTheme(dark);
+  try { localStorage.setItem(KEY + "-theme", dark ? "dark" : "light"); } catch {}
+};
+initNav();
+save();
+tick();
+render();
+window.addEventListener("hashchange", () => render(true));
+setInterval(tick, 1000);
+</script>
+</body>
+</html>
