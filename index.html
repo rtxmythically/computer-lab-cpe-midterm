@@ -1,142 +1,213 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh-Hant">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<meta name="description" content="All 13 English Computer Lab problems from Labs 5–8, with sample inputs, worked examples, and C++ solutions.">
-<title>13 CPE Review Problems · Computer Lab</title>
+<meta name="description" content="計算機實驗第 5 到 8 週的 13 道 UVa 題目。中文題意、解題步驟、手算例子和 C++ 參考解。">
+<title>CPE 期中複習 · 計算機實驗</title>
+<!-- Design pass guided by Unslop by Damir Sokolovsky, CC BY 4.0. -->
 <style>
-:root{color-scheme:light;--bg:#f1eee8;--rail:#ebe7df;--paper:#faf8f3;--white:#fffdf8;--soft:#eeebe4;--ink:#28241e;--muted:#685f52;--border:#d7d1c6;--accent:#8d3f27;--sidebar:252px;--mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace}
-@media(prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#191816;--rail:#151412;--paper:#211f1c;--white:#292622;--soft:#2d2a26;--ink:#f3ede3;--muted:#c7baa9;--border:#4b443b;--accent:#ffae8c}}
+:root{color-scheme:light;--paper:#faf9f6;--rail:#f0efe9;--soft:#f4f3ed;--ink:#252924;--secondary:#424941;--muted:#596157;--line:#dedfd5;--accent:#235847;--active:#e0ebe2;--active-line:#30745f;--example:#ebf0e9;--code:#222b27;--code-text:#e8eee7;--sidebar:264px;--mono:"SFMono-Regular",Consolas,"Liberation Mono",monospace;--ease:cubic-bezier(.2,.65,.3,1)}
+@media(prefers-color-scheme:dark){:root{color-scheme:dark;--paper:#1c211e;--rail:#181c19;--soft:#252b26;--ink:#eef0e8;--secondary:#d3dbd0;--muted:#acb8ab;--line:#39443b;--accent:#9bd6ba;--active:#263c31;--active-line:#82c5a7;--example:#26352c;--code:#141a16;--code-text:#e8eee7}}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.68 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-h1,h2,h3,p,ol,pre{margin:0}
-h1,h2,h3{line-height:1.18;letter-spacing:-.026em}
-h1{font-size:clamp(2.2rem,5vw,4.15rem);max-width:17ch}
-h2{font-size:clamp(1.45rem,2.9vw,2.3rem)}
-h3{font-size:1.08rem}
-a{color:var(--accent);text-underline-offset:.24em}
-:is(a,summary):focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-[id]{scroll-margin-top:18px}
-code,pre,.label,.tag,.nav-id{font-family:var(--mono)}
-.skip{position:fixed;top:12px;left:12px;padding:8px 12px;background:var(--white);z-index:5;transform:translateY(-150%)}
+[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.78 system-ui,-apple-system,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;font-variant-numeric:tabular-nums}
+h1,h2,h3,p,ol,ul,dl,dd,pre{margin:0}
+h1,h2,h3{font-weight:600;line-height:1.32}
+a{color:var(--accent);text-underline-offset:.22em}
+button{font:inherit;color:inherit}
+:is(a,button,summary):focus-visible{outline:2px solid var(--active-line);outline-offset:3px}
+svg{display:block;flex:none}
+code,pre,.mono{font-family:var(--mono)}
+code{font-size:.88em;overflow-wrap:anywhere}
+p code,li code,dd code{background:var(--soft);border-radius:4px;padding:1px 4px;color:var(--accent)}
+.skip{position:fixed;top:12px;left:12px;transform:translateY(-200%);z-index:70;padding:8px 12px;background:var(--paper)}
 .skip:focus{transform:none}
-.sidebar{position:fixed;inset:0 auto 0 0;width:var(--sidebar);overflow:auto;padding:24px 15px;background:var(--rail);border-right:1px solid var(--border)}
-.brand{display:flex;gap:11px;align-items:center;text-decoration:none;color:var(--ink);padding:0 6px 17px;border-bottom:1px solid var(--border)}
-.brand-mark{display:grid;place-items:center;flex:0 0 42px;height:42px;border:1px solid var(--border);border-radius:8px;background:var(--paper);font:700 .76rem var(--mono)}
-.brand small{display:block;color:var(--muted);font-size:.75rem}
-.sidebar .label{display:block;margin:18px 0 4px 7px;text-decoration:none}
-.nav-link{display:grid;grid-template-columns:6ch 1fr;gap:7px;min-height:36px;align-items:center;padding:5px 7px;border-radius:6px;text-decoration:none;color:var(--ink);font-size:.84rem;line-height:1.35}
-.nav-link:hover{background:var(--paper)}
-.nav-id{font-size:.72rem;color:var(--accent)}
-.main{margin-left:var(--sidebar);min-width:0}
-.content{max-width:1120px;margin:auto;padding:clamp(16px,4vw,42px) clamp(14px,4vw,42px) 42px}
-.hero,.problem{border:1px solid var(--border);border-radius:16px;background:var(--paper);padding:clamp(18px,3.6vw,34px);min-width:0}
-.hero p{max-width:65ch;margin-top:13px}
-.label{font:650 .75rem/1.55 var(--mono);color:var(--accent)}
-.hero .label{margin-top:0;margin-bottom:9px}
-.jump{display:flex;flex-wrap:wrap;gap:8px;margin-top:19px}
-.jump a{min-height:36px;display:inline-flex;align-items:center;padding:5px 11px;border:1px solid var(--border);border-radius:8px;background:var(--white);text-decoration:none;font-size:.86rem}
-.jump a:hover{border-color:var(--accent)}
-.lab-header{margin:33px 0 13px;padding-bottom:10px;border-bottom:1px solid var(--border)}
-.lab-header .label{margin-bottom:4px}
-.problem{margin-top:13px}
-.problem-head{display:flex;align-items:start;justify-content:space-between;gap:12px}
-.problem-head h3{font-size:clamp(1.27rem,2.3vw,1.76rem);margin-top:4px}
-.tag{display:inline-block;border:1px solid var(--border);border-radius:6px;padding:4px 7px;background:var(--white);color:var(--muted);font-size:.72rem;white-space:nowrap}
-.prompt{margin:12px 0 0;max-width:78ch}
-.panels,.samples{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;margin-top:14px}
-.panels section{padding:11px 13px;background:var(--white);border:1px solid var(--border);border-radius:9px}
-.problem h4{margin:0 0 6px;font-size:.91rem}
-.panels p{font-size:.9rem}
-.idea{margin-top:19px;padding:10px 13px;border-left:3px solid var(--accent);border-radius:0 8px 8px 0;background:var(--soft)}
-.method{margin-top:13px;padding-left:1.35rem;max-width:85ch}
-.method li+li{margin-top:4px}
-.watch{margin-top:12px;font-size:.9rem;color:var(--muted)}
-.watch strong{color:var(--ink)}
-.samples>div{min-width:0}
-pre{padding:10px 12px;border:1px solid var(--border);background:var(--soft);border-radius:8px;overflow:auto;font: .82rem/1.55 var(--mono)}
-pre code{font:inherit}
-.trace{margin-top:14px}
-.table-wrap{overflow:auto}
-table{border-collapse:collapse;width:100%;font-size:.84rem}
-th,td{padding:6px 9px;text-align:left;border-bottom:1px solid var(--border)}
-th{background:var(--soft);font-weight:650}
-details{margin-top:14px;border:1px solid var(--border);border-radius:9px;background:var(--white)}
-summary{cursor:pointer;padding:10px 12px;font-size:.9rem;font-weight:650}
-details pre{margin:0 10px 10px}
-.sources,footer{font-size:.79rem;color:var(--muted)}
-.sources{margin-top:13px}
-footer{margin-top:28px;padding-top:11px;border-top:1px solid var(--border)}
-@media(max-width:780px){.sidebar{display:none}.main{margin-left:0}}
-@media(max-width:520px){.panels,.samples{grid-template-columns:1fr}.problem-head{display:block}.tag{margin-top:7px}.nav-link{min-height:41px}}
+.layout{display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr);min-height:100vh}
+.sidebar{position:sticky;top:0;height:100vh;height:100dvh;min-height:0;display:flex;flex-direction:column;background:var(--rail);border-right:1px solid var(--line)}
+.side-head{padding:20px 20px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+.brand{display:flex;flex:1;min-width:0;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+.mark{display:grid;place-items:center;flex:0 0 36px;height:36px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--accent);font:600 .84rem var(--mono)}
+.brand-name{font-weight:600;font-size:1rem;line-height:1.5}
+.brand-sub{font-size:.75rem;color:var(--muted);line-height:1.5}
+.catalog{min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:8px 12px 16px}
+.group-title{margin:12px 8px 4px;font-size:.73rem;font-weight:600;color:var(--muted)}
+.nav-link{min-height:36px;display:grid;grid-template-columns:48px minmax(0,1fr);align-items:center;gap:8px;border:1px solid transparent;border-inline-start:2px solid transparent;border-radius:6px;padding:4px 8px;color:var(--secondary);font-size:.86rem;line-height:1.35;text-decoration:none;transition:background-color 140ms var(--ease),color 140ms var(--ease)}
+.nav-link:hover{background:var(--soft);color:var(--ink)}
+.nav-link[aria-current]{border-inline-start-color:var(--active-line);background:var(--active);color:var(--ink);font-weight:600}
+.nav-id{color:var(--muted);font:.73rem var(--mono)}
+.nav-link[aria-current] .nav-id{color:var(--accent)}
+.side-foot{margin-top:auto;padding:12px 20px;border-top:1px solid var(--line);font-size:.76rem;color:var(--muted);line-height:1.5}
+.reader{min-width:0}
+.reader-bar{position:sticky;top:0;z-index:12;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px;padding:8px clamp(16px,4vw,48px);background:var(--paper);border-bottom:1px solid var(--line)}
+.reader-path{min-width:0;display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.84rem}
+.reader-path strong{color:var(--ink);font-weight:600}
+.reader-controls{display:none;align-items:center;gap:8px}
+.interactive .reader-controls{display:flex}
+.count{min-width:60px;text-align:center;color:var(--muted);font:.82rem var(--mono)}
+.icon-action,.toc-button{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--line);background:var(--paper);border-radius:8px;color:var(--secondary);text-decoration:none;cursor:pointer;font-weight:500;line-height:1.3}
+.icon-action{width:36px;height:36px}
+.icon-action:hover,.toc-button:hover{background:var(--soft);color:var(--ink)}
+.icon-action[aria-disabled="true"]{opacity:.4;pointer-events:none}
+.toc-button,.close-toc,.scrim{display:none}
+.content{max-width:1016px;padding:28px clamp(20px,5vw,64px) 56px;margin-inline:auto}
+.problem{min-width:0}
+.problem+.problem{margin-top:56px;padding-top:32px;border-top:1px solid var(--line)}
+.interactive .problem+.problem{margin-top:0;padding-top:0;border-top:0}
+.title-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.topic{margin-bottom:4px;color:var(--accent);font:.79rem/1.5 var(--mono)}
+.problem-title{font-size:clamp(1.9rem,4vw,2.75rem);letter-spacing:-.025em;overflow-wrap:anywhere}
+.english-name{margin-top:4px;color:var(--muted);font-size:.92rem;line-height:1.4}
+.lead{margin-top:16px;color:var(--secondary);font-size:1.03rem;max-width:46em}
+.contract{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);margin-top:16px;border-block:1px solid var(--line)}
+.contract div{padding:12px 16px 12px 0;min-width:0}
+.contract div+div{border-left:1px solid var(--line);padding-left:16px}
+.contract dt{color:var(--ink);font-size:.83rem;font-weight:600}
+.contract dd{margin-top:4px;color:var(--secondary);font-size:.9rem}
+.block{margin-top:28px}
+.section-title{display:flex;align-items:center;gap:8px;margin-bottom:12px;font-size:1.13rem}
+.section-number{font:.76rem var(--mono);color:var(--accent)}
+.steps{list-style:none;padding:0;counter-reset:step}
+.steps li{position:relative;counter-increment:step;padding-left:36px;max-width:48em}
+.steps li+li{margin-top:8px}
+.steps li::before{content:counter(step);position:absolute;inset:2px auto auto 0;display:grid;place-items:center;width:24px;height:24px;border:1px solid var(--line);border-radius:6px;background:var(--soft);color:var(--accent);font:.77rem var(--mono)}
+.worked{margin-top:24px;background:var(--example);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.worked-head{padding:12px 16px 8px}
+.worked-head h2{display:flex;align-items:center;gap:8px;font-size:1.1rem}
+.worked-head p{margin-top:4px;color:var(--secondary);font-size:.92rem}
+.table-wrap{max-width:100%;overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.86rem;line-height:1.5}
+th,td{padding:8px 16px;text-align:left;border-top:1px solid var(--line)}
+th{font-weight:600;color:var(--secondary);background:var(--soft)}
+td{overflow-wrap:anywhere}
+.samples{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+.sample-label{margin-bottom:4px;font-size:.8rem;font-weight:600;color:var(--muted)}
+pre{margin:0;overflow:auto;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--soft);color:var(--ink);font:.83rem/1.6 var(--mono);tab-size:4;white-space:pre}
+pre code{font:inherit;overflow-wrap:normal}
+.pitfalls{padding-left:20px;color:var(--secondary)}
+.pitfalls li+li{margin-top:6px}
+.fold{margin-top:12px;border:1px solid var(--line);border-radius:8px;background:var(--paper)}
+.fold summary{padding:12px 16px;color:var(--ink);cursor:pointer;font-weight:600;font-size:.9rem}
+.fold summary:hover{background:var(--soft)}
+.fold-body{padding:0 16px 16px;font-size:.92rem}
+.fold-body p+p{margin-top:8px}
+.fold-body a{display:inline-block;margin-top:8px}
+.fold pre{background:var(--code);color:var(--code-text);border:0;border-radius:6px}
+.source-line{margin-top:16px;font-size:.79rem;color:var(--muted)}
+.source-line a{margin-left:8px}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:24px;padding-top:16px;border-top:1px solid var(--line)}
+.pager a{min-width:0;max-width:48%;display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);text-decoration:none;font-size:.86rem;line-height:1.4}
+.pager a:hover{background:var(--soft)}
+.pager small{display:block;color:var(--muted);margin-bottom:2px;font-size:.71rem}
+.pager .next{margin-inline-start:auto}
+@media(max-width:760px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .sidebar{position:static;height:auto;border-right:0}
+  .interactive .sidebar{position:fixed;z-index:40;inset:0 auto 0 0;width:min(308px,calc(100% - 40px));height:100dvh;visibility:hidden;transform:translateX(-100%)}
+  .interactive .sidebar.open{visibility:visible;transform:none}
+  .interactive .toc-button,.interactive .close-toc{display:inline-flex}
+  .toc-button{padding:8px 10px;min-height:36px;font-size:.83rem}
+  .scrim:not([hidden]){display:block;position:fixed;z-index:30;inset:0;border:0;background:#171f1980;width:100%;height:100%;cursor:pointer}
+  .menu-open{overflow:hidden}
+  .reader-path .course-name,.reader-path .path-divider{display:none}
+  .reader-bar{padding-inline:12px;gap:8px}
+  .content{padding:20px 16px 40px}
+  .count{min-width:52px}
+}
+@media(max-width:480px){
+  .contract,.samples{grid-template-columns:minmax(0,1fr)}
+  .contract div{padding:10px 0}
+  .contract div+div{border-left:0;border-top:1px solid var(--line);padding-left:0}
+  .problem-title{font-size:1.87rem}
+  th,td{padding:8px 10px}
+  .reader-path .week{display:none}
+  .pager a{padding-inline:8px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important}}
 </style>
 </head>
 <body>
-<a class="skip" href="#bank">Skip to problems</a>
-<aside class="sidebar">
-  <a class="brand" href="#overview"><span class="brand-mark" aria-hidden="true">CPE</span><span><strong>Computer Lab</strong><small>13 review problems</small></span></a>
-  <nav aria-label="Problem index">
-    <a class="label" href="#lab-5">LAB 5</a>
-    <a class="nav-link" href="#uva-10055"><span class="nav-id">10055</span><span>Hashmat the Brave Warrior</span></a>
-    <a class="nav-link" href="#uva-11150"><span class="nav-id">11150</span><span>Cola</span></a>
-    <a class="nav-link" href="#uva-11332"><span class="nav-id">11332</span><span>Summing Digits</span></a>
-    <a class="nav-link" href="#uva-10783"><span class="nav-id">10783</span><span>Odd Sum</span></a>
-    <a class="label" href="#lab-6">LAB 6</a>
-    <a class="nav-link" href="#uva-10931"><span class="nav-id">10931</span><span>Parity</span></a>
-    <a class="nav-link" href="#uva-10929"><span class="nav-id">10929</span><span>You can say 11</span></a>
-    <a class="nav-link" href="#uva-10922"><span class="nav-id">10922</span><span>2 the 9s</span></a>
-    <a class="nav-link" href="#uva-272"><span class="nav-id">272</span><span>TEX Quotes</span></a>
-    <a class="label" href="#lab-7">LAB 7</a>
-    <a class="nav-link" href="#uva-100"><span class="nav-id">100</span><span>The 3n + 1 Problem</span></a>
-    <a class="nav-link" href="#uva-299"><span class="nav-id">299</span><span>Train Swapping</span></a>
-    <a class="nav-link" href="#uva-10101"><span class="nav-id">10101</span><span>Bangla Numbers</span></a>
-    <a class="nav-link" href="#uva-10035"><span class="nav-id">10035</span><span>Primary Arithmetic</span></a>
-    <a class="label" href="#lab-8">LAB 8</a>
-    <a class="nav-link" href="#uva-10071"><span class="nav-id">10071</span><span>Back to High School Physics</span></a>
-  </nav>
-</aside>
-<main class="main" id="overview">
-<div class="content">
-  <header class="hero">
-    <p class="label">COMPUTER LAB · LABS 5–8</p>
-    <h1>13 CPE Review Problems</h1>
-    <p>Read each English problem, follow a worked example, and compare your approach with a C++ solution. The problems follow the order of the class handouts.</p>
-    <nav class="jump" aria-label="Jump to a lab">
-      <a href="#lab-5">Lab 5 · 4 problems</a>
-      <a href="#lab-6">Lab 6 · 4 problems</a>
-      <a href="#lab-7">Lab 7 · 4 problems</a>
-      <a href="#lab-8">Lab 8 · 1 problem</a>
+<a class="skip" href="#lesson">跳到本題內容</a>
+<div class="layout">
+  <aside class="sidebar" id="catalog" aria-label="題目目錄">
+    <div class="side-head">
+      <a class="brand" href="#uva-10055" data-question="uva-10055">
+        <span class="mark" aria-hidden="true">CPE</span>
+        <span><span class="brand-name">計算機實驗</span><br><span class="brand-sub">期中複習 · 13 題</span></span>
+      </a>
+      <button class="icon-action close-toc" type="button" id="close-toc" aria-label="關閉題目目錄"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <nav class="catalog" aria-label="依週次選題">
+<section aria-label="第 5 週"><h2 class="group-title">第 5 週</h2>
+<a class="nav-link" href="#uva-10055" data-question="uva-10055"><span class="nav-id">10055</span><span>兩軍兵力差</span></a>
+<a class="nav-link" href="#uva-11150" data-question="uva-11150"><span class="nav-id">11150</span><span>空瓶換可樂</span></a>
+<a class="nav-link" href="#uva-11332" data-question="uva-11332"><span class="nav-id">11332</span><span>反覆加總各位數</span></a>
+<a class="nav-link" href="#uva-10783" data-question="uva-10783"><span class="nav-id">10783</span><span>區間內的奇數和</span></a>
+</section>
+<section aria-label="第 6 週"><h2 class="group-title">第 6 週</h2>
+<a class="nav-link" href="#uva-10931" data-question="uva-10931"><span class="nav-id">10931</span><span>二進位有幾個 1</span></a>
+<a class="nav-link" href="#uva-10929" data-question="uva-10929"><span class="nav-id">10929</span><span>判斷 11 的倍數</span></a>
+<a class="nav-link" href="#uva-10922" data-question="uva-10922"><span class="nav-id">10922</span><span>9 的倍數與 9-degree</span></a>
+<a class="nav-link" href="#uva-272" data-question="uva-272"><span class="nav-id">272</span><span>TeX 引號轉換</span></a>
+</section>
+<section aria-label="第 7 週"><h2 class="group-title">第 7 週</h2>
+<a class="nav-link" href="#uva-100" data-question="uva-100"><span class="nav-id">100</span><span>3n＋1 序列</span></a>
+<a class="nav-link" href="#uva-299" data-question="uva-299"><span class="nav-id">299</span><span>火車車廂交換</span></a>
+<a class="nav-link" href="#uva-10101" data-question="uva-10101"><span class="nav-id">10101</span><span>孟加拉數字表示法</span></a>
+<a class="nav-link" href="#uva-10035" data-question="uva-10035"><span class="nav-id">10035</span><span>直式加法進位次數</span></a>
+</section>
+<section aria-label="第 8 週"><h2 class="group-title">第 8 週</h2>
+<a class="nav-link" href="#uva-10071" data-question="uva-10071"><span class="nav-id">10071</span><span>等加速度下的位移</span></a>
+</section>
     </nav>
-  </header>
-  <div id="bank">
-    <section id="lab-5" aria-labelledby="lab-5-title">
-      <header class="lab-header"><p class="label">LAB 5</p><h2 id="lab-5-title">Integer input and loops</h2></header>
-      <article class="problem" id="uva-10055" aria-labelledby="title-10055">
-        <header class="problem-head">
-          <div><p class="label">UVa 10055</p><h3 id="title-10055">Hashmat the Brave Warrior</h3></div>
-          <span class="tag">Class exercise</span>
+    <p class="side-foot">第 5–8 週課堂題目<br>中文解說 · 英文讀題</p>
+  </aside>
+  <button class="scrim" id="scrim" type="button" tabindex="-1" aria-label="關閉題目目錄" hidden></button>
+  <div class="reader" id="reader">
+    <header class="reader-bar">
+      <div class="reader-path">
+        <button class="toc-button" id="open-toc" type="button" aria-controls="catalog" aria-expanded="false"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>題目目錄</button>
+        <span class="course-name">期中複習講義</span><span class="path-divider" aria-hidden="true">/</span><strong class="week" id="current-week">第 5 週</strong>
+      </div>
+      <nav class="reader-controls" aria-label="本題位置與切換">
+        <a class="icon-action" id="go-prev" aria-label="上一題" aria-disabled="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg></a>
+        <span class="count" id="current-count">01 / 13</span>
+        <a class="icon-action" id="go-next" href="#uva-11150" data-question="uva-11150" aria-label="下一題"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6l6 6-6 6"/></svg></a>
+      </nav>
+    </header>
+    <main class="content" id="lesson" tabindex="-1">
+      <article class="problem" id="uva-10055" data-lab="5" aria-labelledby="title-10055">
+        <header>
+          <p class="topic">UVa 10055 · 讀到檔案結尾、取絕對差</p>
+          <h1 class="problem-title" id="title-10055" tabindex="-1">兩軍兵力差</h1>
+          <p class="english-name" lang="en">Hashmat the Brave Warrior</p>
+          <p class="lead">每組給兩個軍隊人數，可能先給大數，也可能先給小數。你的程式要輸出兩者相差多少；人數一樣就印 0。</p>
         </header>
-        <p class="prompt">Given the sizes of two armies in either order, find the absolute difference between them.</p>
-        <div class="panels">
-          <section><h4>Input</h4><p>Read pairs of nonnegative integers until end of file. Each value is at most 2^32.</p></section>
-          <section><h4>Output</h4><p>Print one difference per pair. Equal army sizes produce 0.</p></section>
-        </div>
-        <p class="idea"><strong>Key idea:</strong> Subtract the smaller army size from the larger one.</p>
-        <ol class="method"><li>Use a 64-bit integer type: 2^32 exceeds the usual signed int limit.</li><li>Read both values together until end of file. Subtract the smaller from the larger.</li></ol>
-        <p class="watch"><strong>Watch for:</strong> Use long long. An input value can be 2^32, and equal sizes give zero.</p>
-        <section class="trace">
-          <h4>Worked example</h4>
-          <div class="table-wrap"><table aria-label="Worked example for UVa 10055"><thead><tr><th scope="col">a</th><th scope="col">b</th><th scope="col">Difference</th></tr></thead><tbody><tr><td>14</td><td>10</td><td>14 − 10 = 4</td></tr><tr><td>123</td><td>123</td><td>0</td></tr></tbody></table></div>
+        <dl class="contract">
+          <div><dt>輸入</dt><dd>每行兩個非負整數 <code>a b</code>，上限是 2³²。沒有測資組數，也沒有結束標記；讀到 EOF（檔案結尾）為止。</dd></div>
+          <div><dt>輸出</dt><dd>每組印一行非負的差值，不必印題號或任何說明文字。</dd></div>
+        </dl>
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
+          <ol class="steps"><li>用 <code>while (cin &gt;&gt; a &gt;&gt; b)</code> 同時讀兩個值。只有成功讀到完整一組，才會進入迴圈。</li><li>比較 <code>a</code> 和 <code>b</code>，用較大的減去較小的。程式裡的 <code>a &gt;= b ? a - b : b - a</code> 意思就是「條件成立用左邊，否則用右邊」。</li><li>用 <code>long long</code> 存兩個人數及差值。2³² 是 4,294,967,296，超過常見 32 位元 <code>int</code> 的正數上限。</li></ol>
+        </section>
+        <section class="worked" aria-labelledby="example-10055">
+          <div class="worked-head"><h2 id="example-10055"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>先比較，再相減</p></div>
+          <div class="table-wrap"><table aria-labelledby="example-10055"><thead><tr><th scope="col">第一個數</th><th scope="col">第二個數</th><th scope="col">選哪個式子</th><th scope="col">輸出</th></tr></thead><tbody><tr><td>14</td><td>10</td><td>14 − 10</td><td>4</td></tr><tr><td>10</td><td>14</td><td>14 − 10</td><td>4</td></tr><tr><td>123</td><td>123</td><td>123 − 123</td><td>0</td></tr></tbody></table></div>
         </section>
         <div class="samples">
-          <div><h4>Sample input</h4><pre>10 12
+          <div><h3 class="sample-label">範例輸入</h3><pre>10 12
 14 10</pre></div>
-          <div><h4>Sample output</h4><pre>2
+          <div><h3 class="sample-label">範例輸出</h3><pre lang="en">2
 4</pre></div>
         </div>
-        <details><summary>View C++ reference solution</summary><pre><code>#include &lt;iostream&gt;
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">03</span>容易錯在哪</h2>
+          <ul class="pitfalls"><li><code>10 14</code> 和 <code>14 10</code> 都應印 4；只寫 <code>a - b</code> 會在其中一組印出負數。</li><li><code>0 0</code> 也是一筆資料，應印 0。EOF 指的是沒有更多輸入，不是讀到零。</li></ul>
+        </section>
+        <section class="block" aria-label="程式與英文題目">
+          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 int main() {
@@ -144,68 +215,98 @@ int main() {
     while (cin &gt;&gt; a &gt;&gt; b) {
         cout &lt;&lt; (a &gt;= b ? a - b : b - a) &lt;&lt; &#x27;\n&#x27;;
     }
-}</code></pre></details>
-        <p class="sources">Class handout: Lab 5, page 1. <a href="https://onlinejudge.org/external/100/10055.pdf" target="_blank" rel="noopener">Original English statement</a></p>
+}</code></pre></div></details>
+          <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
+            <p>Given the sizes of two armies in either order, find the absolute difference between them.</p>
+            <p><strong>Input:</strong> Read pairs of nonnegative integers until end of file. Each value is at most 2^32.</p>
+            <p><strong>Output:</strong> Print one difference per pair. Equal army sizes produce 0.</p>
+            <a href="https://onlinejudge.org/external/100/10055.pdf" target="_blank" rel="noopener">Original problem statement</a>
+          </div></details>
+        </section>
+        <p class="source-line">第 5 週講義，第 1 頁 · 課堂練習<a href="https://onlinejudge.org/external/100/10055.pdf" target="_blank" rel="noopener">英文原題</a></p>
+        <nav class="pager" aria-label="前後題"><a class="next" href="#uva-11150" data-question="uva-11150"><span><small>下一題</small>空瓶換可樂</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6l6 6-6 6"/></svg></a></nav>
       </article>
-      <article class="problem" id="uva-11150" aria-labelledby="title-11150">
-        <header class="problem-head">
-          <div><p class="label">UVa 11150</p><h3 id="title-11150">Cola</h3></div>
-          <span class="tag">CPE 2010-12-23</span>
+      <article class="problem" id="uva-11150" data-lab="5" aria-labelledby="title-11150">
+        <header>
+          <p class="topic">UVa 11150 · 從換瓶流程找出公式</p>
+          <h1 class="problem-title" id="title-11150" tabindex="-1">空瓶換可樂</h1>
+          <p class="english-name" lang="en">Cola</p>
+          <p class="lead">先買 <code>N</code> 瓶可樂，喝完後可用 3 個空瓶換 1 瓶新的。你可以借空瓶，但最後必須還清。問包含原本買的在內，最多總共能喝幾瓶。</p>
         </header>
-        <p class="prompt">You buy N bottles of cola. The store trades three empty bottles for one full bottle. You may borrow empties if you repay them. Find the maximum number of bottles you can drink.</p>
-        <div class="panels">
-          <section><h4>Input</h4><p>Read one integer N per line until end of file (1 ≤ N ≤ 200).</p></section>
-          <section><h4>Output</h4><p>For each N, print the maximum total, including the bottles you bought.</p></section>
-        </div>
-        <p class="idea"><strong>Key idea:</strong> Every extra drink costs two empty bottles overall. The total is N + N / 2 with integer division.</p>
-        <ol class="method"><li>Drinking the original N bottles gives N empty bottles.</li><li>Each trade followed by drinking costs two empties overall: you hand in three and get one empty back.</li><li>If two empties remain, borrow one for a final trade and return the empty you get back. This allows exactly floor(N / 2) extra drinks.</li></ol>
-        <p class="watch"><strong>Watch for:</strong> At two empty bottles, borrowing one makes a final trade possible. Return the empty bottle from that drink. With one empty bottle, a final trade would leave you unable to repay two borrowed empties.</p>
-        <section class="trace">
-          <h4>Worked example</h4>
-          <div class="table-wrap"><table aria-label="Worked example for UVa 11150"><thead><tr><th scope="col">N</th><th scope="col">Extra drinks</th><th scope="col">Total</th></tr></thead><tbody><tr><td>1</td><td>0</td><td>1</td></tr><tr><td>2</td><td>1 (borrow and repay one empty)</td><td>3</td></tr><tr><td>8</td><td>4</td><td>12</td></tr></tbody></table></div>
+        <dl class="contract">
+          <div><dt>輸入</dt><dd>每行一個整數 <code>N</code>，1 ≤ N ≤ 200；讀到 EOF。</dd></div>
+          <div><dt>輸出</dt><dd>每行印一個整數，表示最多喝到的總瓶數。</dd></div>
+        </dl>
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
+          <ol class="steps"><li>原本買的 <code>N</code> 瓶全部喝完後，手上有 <code>N</code> 個空瓶。</li><li>每換 1 瓶要交 3 個空瓶，喝完又得到 1 個空瓶，所以一輪實際消耗 2 個。只要空瓶足夠，就一直換。</li><li>如果最後剛好剩 2 個，借 1 個湊成 3 個再換。喝完後剩下的 1 個還給對方，借瓶就還清了。</li><li>因此最多多喝 <code>N / 2</code> 瓶，總數是 <code>N + N / 2</code>。這裡兩邊都是整數，<code>9 / 2</code> 的結果是 4。</li></ol>
+        </section>
+        <section class="worked" aria-labelledby="example-11150">
+          <div class="worked-head"><h2 id="example-11150"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>買 8 瓶時，最後可以喝到 12 瓶</p></div>
+          <div class="table-wrap"><table aria-labelledby="example-11150"><thead><tr><th scope="col">動作</th><th scope="col">手上的空瓶</th><th scope="col">累計喝掉</th></tr></thead><tbody><tr><td>先喝完買來的 8 瓶</td><td>8</td><td>8</td></tr><tr><td>連換 3 次，每次淨少 2 個空瓶</td><td>8 → 6 → 4 → 2</td><td>11</td></tr><tr><td>借 1 個再換，喝完把 1 個還掉</td><td>2 → 3 → 0（還清後）</td><td>12</td></tr></tbody></table></div>
         </section>
         <div class="samples">
-          <div><h4>Sample input</h4><pre>8
+          <div><h3 class="sample-label">範例輸入</h3><pre>8
 9</pre></div>
-          <div><h4>Sample output</h4><pre>12
+          <div><h3 class="sample-label">範例輸出</h3><pre lang="en">12
 13</pre></div>
         </div>
-        <details><summary>View C++ reference solution</summary><pre><code>#include &lt;iostream&gt;
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">03</span>容易錯在哪</h2>
+          <ul class="pitfalls"><li>只剩 1 個空瓶時，借 2 個換完只會拿回 1 個，還不清，不能再多喝。</li><li>答案要加上最開始買的 <code>N</code> 瓶；不能只印換到的瓶數。</li></ul>
+        </section>
+        <section class="block" aria-label="程式與英文題目">
+          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 int main() {
     int n;
     while (cin &gt;&gt; n) cout &lt;&lt; n + n / 2 &lt;&lt; &#x27;\n&#x27;;
-}</code></pre></details>
-        <p class="sources">Class handout: Lab 5, page 6. <a href="https://onlinejudge.org/external/111/11150.pdf" target="_blank" rel="noopener">Original English statement</a></p>
+}</code></pre></div></details>
+          <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
+            <p>You buy N bottles of cola. The store trades three empty bottles for one full bottle. You may borrow empties if you repay them. Find the maximum number of bottles you can drink.</p>
+            <p><strong>Input:</strong> Read one integer N per line until end of file (1 ≤ N ≤ 200).</p>
+            <p><strong>Output:</strong> For each N, print the maximum total, including the bottles you bought.</p>
+            <a href="https://onlinejudge.org/external/111/11150.pdf" target="_blank" rel="noopener">Original problem statement</a>
+          </div></details>
+        </section>
+        <p class="source-line">第 5 週講義，第 6 頁 · CPE 出題紀錄 2010-12-23<a href="https://onlinejudge.org/external/111/11150.pdf" target="_blank" rel="noopener">英文原題</a></p>
+        <nav class="pager" aria-label="前後題"><a class="prev" href="#uva-10055" data-question="uva-10055"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg><span><small>上一題</small>兩軍兵力差</span></a><a class="next" href="#uva-11332" data-question="uva-11332"><span><small>下一題</small>反覆加總各位數</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6l6 6-6 6"/></svg></a></nav>
       </article>
-      <article class="problem" id="uva-11332" aria-labelledby="title-11332">
-        <header class="problem-head">
-          <div><p class="label">UVa 11332</p><h3 id="title-11332">Summing Digits</h3></div>
-          <span class="tag">CPE 2022-10-18</span>
+      <article class="problem" id="uva-11332" data-lab="5" aria-labelledby="title-11332">
+        <header>
+          <p class="topic">UVa 11332 · 用 % 10 拆出個位數</p>
+          <h1 class="problem-title" id="title-11332" tabindex="-1">反覆加總各位數</h1>
+          <p class="english-name" lang="en">Summing Digits</p>
+          <p class="lead">把一個數字的每一位相加，再對新的總和做同一件事，直到結果只剩一位數。例如 9875 的第一輪結果是 9＋8＋7＋5＝29，還要繼續算。</p>
         </header>
-        <p class="prompt">Replace a positive integer with the sum of its decimal digits. Repeat until one digit remains.</p>
-        <div class="panels">
-          <section><h4>Input</h4><p>Read one integer N per line, with 1 ≤ N ≤ 2,000,000,000 for each case. A 0 ends the input.</p></section>
-          <section><h4>Output</h4><p>For each case, print the remaining digit on its own line. Do not process the final 0.</p></section>
-        </div>
-        <p class="idea"><strong>Key idea:</strong> Add all the digits, then repeat with the sum until it has only one digit.</p>
-        <ol class="method"><li>If the value is already below 10, it is the answer.</li><li>Use n % 10 to read the rightmost digit and n /= 10 to remove it.</li><li>Accumulate the digits in a fresh total, replace n, and repeat.</li></ol>
-        <p class="watch"><strong>Watch for:</strong> Start each new digit sum at zero. An input of 0 ends the input and produces no output.</p>
-        <section class="trace">
-          <h4>Worked example</h4>
-          <div class="table-wrap"><table aria-label="Worked example for UVa 11332"><thead><tr><th scope="col">Before</th><th scope="col">Digit sum</th><th scope="col">After</th></tr></thead><tbody><tr><td>1234567892</td><td>47</td><td>47</td></tr><tr><td>47</td><td>4 + 7</td><td>11</td></tr><tr><td>11</td><td>1 + 1</td><td>2</td></tr></tbody></table></div>
+        <dl class="contract">
+          <div><dt>輸入</dt><dd>每行一個正整數 <code>n</code>，最大 2,000,000,000。讀到 <code>0</code> 就結束。</dd></div>
+          <div><dt>輸出</dt><dd>對每組資料印一行最後的個位數。結束標記 <code>0</code> 不輸出。</dd></div>
+        </dl>
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
+          <ol class="steps"><li>當 <code>n &gt;= 10</code>，代表還有兩位以上，需要再做一輪加總。每輪先設 <code>total = 0</code>。</li><li>用 <code>n % 10</code> 取得最右一位；例如 <code>9875 % 10</code> 得到 5。再用 <code>n /= 10</code> 去掉那一位，9875 變成 987。</li><li>一直拆到 <code>n == 0</code>，再把 <code>total</code> 放回 <code>n</code> 開下一輪。這就是為什麼要用另一個變數累加：<code>n</code> 正在被拆掉。</li><li>剩下 1 到 9 時停止，直接印出結果。輸入一開始就是一位數，也直接印。</li></ol>
+        </section>
+        <section class="worked" aria-labelledby="example-11332">
+          <div class="worked-head"><h2 id="example-11332"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>9875 經過三輪後變成 2</p></div>
+          <div class="table-wrap"><table aria-labelledby="example-11332"><thead><tr><th scope="col">輪次</th><th scope="col">這輪的數</th><th scope="col">把各位相加</th><th scope="col">下一輪的數</th></tr></thead><tbody><tr><td>1</td><td>9875</td><td>5＋7＋8＋9</td><td>29</td></tr><tr><td>2</td><td>29</td><td>9＋2</td><td>11</td></tr><tr><td>3</td><td>11</td><td>1＋1</td><td>2</td></tr></tbody></table></div>
         </section>
         <div class="samples">
-          <div><h4>Sample input</h4><pre>11
+          <div><h3 class="sample-label">範例輸入</h3><pre>11
 47
 1234567892
 0</pre></div>
-          <div><h4>Sample output</h4><pre>2
+          <div><h3 class="sample-label">範例輸出</h3><pre lang="en">2
 2
 2</pre></div>
         </div>
-        <details><summary>View C++ reference solution</summary><pre><code>#include &lt;iostream&gt;
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">03</span>容易錯在哪</h2>
+          <ul class="pitfalls"><li>每進入新一輪要重設 <code>total</code>。例如上一輪累加到 29，下一輪要從 0 開始加 9 和 2。</li><li>拆位時從右到左，但加法的順序不影響總和。</li></ul>
+        </section>
+        <section class="block" aria-label="程式與英文題目">
+          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 int main() {
@@ -221,36 +322,51 @@ int main() {
         }
         cout &lt;&lt; n &lt;&lt; &#x27;\n&#x27;;
     }
-}</code></pre></details>
-        <p class="sources">Class handout: Lab 5, page 12. <a href="https://onlinejudge.org/external/113/11332.pdf" target="_blank" rel="noopener">Original English statement</a></p>
+}</code></pre></div></details>
+          <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
+            <p>Replace a positive integer with the sum of its decimal digits. Repeat until one digit remains.</p>
+            <p><strong>Input:</strong> Read one integer N per line, with 1 ≤ N ≤ 2,000,000,000 for each case. A 0 ends the input.</p>
+            <p><strong>Output:</strong> For each case, print the remaining digit on its own line. Do not process the final 0.</p>
+            <a href="https://onlinejudge.org/external/113/11332.pdf" target="_blank" rel="noopener">Original problem statement</a>
+          </div></details>
+        </section>
+        <p class="source-line">第 5 週講義，第 12 頁 · CPE 出題紀錄 2022-10-18<a href="https://onlinejudge.org/external/113/11332.pdf" target="_blank" rel="noopener">英文原題</a></p>
+        <nav class="pager" aria-label="前後題"><a class="prev" href="#uva-11150" data-question="uva-11150"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg><span><small>上一題</small>空瓶換可樂</span></a><a class="next" href="#uva-10783" data-question="uva-10783"><span><small>下一題</small>區間內的奇數和</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6l6 6-6 6"/></svg></a></nav>
       </article>
-      <article class="problem" id="uva-10783" aria-labelledby="title-10783">
-        <header class="problem-head">
-          <div><p class="label">UVa 10783</p><h3 id="title-10783">Odd Sum</h3></div>
-          <span class="tag">CPE 2014-05-27</span>
+      <article class="problem" id="uva-10783" data-lab="5" aria-labelledby="title-10783">
+        <header>
+          <p class="topic">UVa 10783 · 包含端點、每組歸零</p>
+          <h1 class="problem-title" id="title-10783" tabindex="-1">區間內的奇數和</h1>
+          <p class="english-name" lang="en">Odd Sum</p>
+          <p class="lead">給你一個從 <code>a</code> 到 <code>b</code> 的整數區間，把其中所有奇數相加。左右端點也是區間的一部分。</p>
         </header>
-        <p class="prompt">Write a program that adds all odd integers in the inclusive interval from a to b. Include an endpoint if it is odd.</p>
-        <div class="panels">
-          <section><h4>Input</h4><p>The first line contains T, the number of cases (1 ≤ T ≤ 100). Each case supplies a and b on separate lines, with 0 ≤ a ≤ b ≤ 100.</p></section>
-          <section><h4>Output</h4><p>Print one line per case in the form Case k: S, where k starts at 1 and S is the sum. Print 0 for an interval with no odd numbers.</p></section>
-        </div>
-        <p class="idea"><strong>Key idea:</strong> Scan the inclusive interval and add only odd values.</p>
-        <ol class="method"><li>Read the case count first. Reset total to zero for each interval.</li><li>Loop from a through b, including b. The test x % 2 != 0 selects odd values.</li><li>Print the case label, a space after the colon, and the total.</li></ol>
-        <p class="watch"><strong>Watch for:</strong> Include both endpoints. Reset the sum for each case and start the case number at 1.</p>
-        <section class="trace">
-          <h4>Worked example</h4>
-          <div class="table-wrap"><table aria-label="Worked example for UVa 10783"><thead><tr><th scope="col">x in [2, 6]</th><th scope="col">Action</th><th scope="col">total</th></tr></thead><tbody><tr><td>2</td><td>Skip</td><td>0</td></tr><tr><td>3</td><td>Add 3</td><td>3</td></tr><tr><td>4</td><td>Skip</td><td>3</td></tr><tr><td>5</td><td>Add 5</td><td>8</td></tr><tr><td>6</td><td>Skip</td><td>8</td></tr></tbody></table></div>
+        <dl class="contract">
+          <div><dt>輸入</dt><dd>第一個整數 <code>T</code> 是測資組數（1 ≤ T ≤ 100）。每組有 <code>a</code> 和 <code>b</code> 兩個整數，0 ≤ a ≤ b ≤ 100，原題分兩行給。</dd></div>
+          <div><dt>輸出</dt><dd>每組印 <code>Case k: S</code>，<code>k</code> 從 1 起算，<code>S</code> 是奇數總和。冒號後有一個空格。</dd></div>
+        </dl>
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
+          <ol class="steps"><li>先讀 <code>T</code>，再用外層迴圈逐組讀 <code>a</code> 和 <code>b</code>。每組的總和要重新設成 0。</li><li>用內層迴圈從 <code>a</code> 走到 <code>b</code>，條件寫 <code>x &lt;= b</code>，這樣才會檢查右端點。</li><li>用 <code>x % 2 != 0</code> 判斷奇數；只有奇數加進總和。最後印出測資編號與結果。</li></ol>
+        </section>
+        <section class="worked" aria-labelledby="example-10783">
+          <div class="worked-head"><h2 id="example-10783"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>從 3 加到 7，只加奇數</p></div>
+          <div class="table-wrap"><table aria-labelledby="example-10783"><thead><tr><th scope="col">x</th><th scope="col">要不要加</th><th scope="col">目前總和</th></tr></thead><tbody><tr><td>3</td><td>加 3</td><td>3</td></tr><tr><td>4</td><td>跳過</td><td>3</td></tr><tr><td>5</td><td>加 5</td><td>8</td></tr><tr><td>6</td><td>跳過</td><td>8</td></tr><tr><td>7</td><td>加 7</td><td>15</td></tr></tbody></table></div>
         </section>
         <div class="samples">
-          <div><h4>Sample input</h4><pre>2
+          <div><h3 class="sample-label">範例輸入</h3><pre>2
 1
 5
 3
 5</pre></div>
-          <div><h4>Sample output</h4><pre>Case 1: 9
+          <div><h3 class="sample-label">範例輸出</h3><pre lang="en">Case 1: 9
 Case 2: 8</pre></div>
         </div>
-        <details><summary>View C++ reference solution</summary><pre><code>#include &lt;iostream&gt;
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">03</span>容易錯在哪</h2>
+          <ul class="pitfalls"><li>如果 <code>a == b</code>，仍要檢查一次。例：<code>[7, 7]</code> 的答案是 7，<code>[8, 8]</code> 是 0。</li><li>不要把「奇數和」寫成「奇數有幾個」。例如 3、5、7 要加成 15。</li></ul>
+        </section>
+        <section class="block" aria-label="程式與英文題目">
+          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 int main() {
@@ -264,37 +380,49 @@ int main() {
         }
         cout &lt;&lt; &quot;Case &quot; &lt;&lt; k &lt;&lt; &quot;: &quot; &lt;&lt; total &lt;&lt; &#x27;\n&#x27;;
     }
-}</code></pre></details>
-        <p class="sources">Class handout: Lab 5, page 17. <a href="https://onlinejudge.org/external/107/10783.pdf" target="_blank" rel="noopener">Original English statement</a></p>
+}</code></pre></div></details>
+          <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
+            <p>Write a program that adds all odd integers in the inclusive interval from a to b. Include an endpoint if it is odd.</p>
+            <p><strong>Input:</strong> The first line contains T, the number of cases (1 ≤ T ≤ 100). Each case supplies a and b on separate lines, with 0 ≤ a ≤ b ≤ 100.</p>
+            <p><strong>Output:</strong> Print one line per case in the form Case k: S, where k starts at 1 and S is the sum. Print 0 for an interval with no odd numbers.</p>
+            <a href="https://onlinejudge.org/external/107/10783.pdf" target="_blank" rel="noopener">Original problem statement</a>
+          </div></details>
+        </section>
+        <p class="source-line">第 5 週講義，第 17 頁 · CPE 出題紀錄 2014-05-27<a href="https://onlinejudge.org/external/107/10783.pdf" target="_blank" rel="noopener">英文原題</a></p>
+        <nav class="pager" aria-label="前後題"><a class="prev" href="#uva-11332" data-question="uva-11332"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg><span><small>上一題</small>反覆加總各位數</span></a><a class="next" href="#uva-10931" data-question="uva-10931"><span><small>下一題</small>二進位有幾個 1</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6l6 6-6 6"/></svg></a></nav>
       </article>
-    </section>
-    <section id="lab-6" aria-labelledby="lab-6-title">
-      <header class="lab-header"><p class="label">LAB 6</p><h2 id="lab-6-title">Digits, divisibility, and text</h2></header>
-      <article class="problem" id="uva-10931" aria-labelledby="title-10931">
-        <header class="problem-head">
-          <div><p class="label">UVa 10931</p><h3 id="title-10931">Parity</h3></div>
-          <span class="tag">CPE 2022-12-13</span>
+      <article class="problem" id="uva-10931" data-lab="6" aria-labelledby="title-10931">
+        <header>
+          <p class="topic">UVa 10931 · 除以 2 取餘數、字元轉換</p>
+          <h1 class="problem-title" id="title-10931" tabindex="-1">二進位有幾個 1</h1>
+          <p class="english-name" lang="en">Parity</p>
+          <p class="lead">每組給一個十進位整數 <code>n</code>。要印出它的二進位表示，以及其中有幾個 1。題目的輸出格式有「(mod 2)」，但數字欄要放完整的 1 的個數。</p>
         </header>
-        <p class="prompt">Convert each input integer to binary and count the 1 bits. The required sentence shows the full count before the literal text (mod 2), even when the count is greater than 1.</p>
-        <div class="panels">
-          <section><h4>Input</h4><p>Read one integer per line. Each value to process is between 1 and 2,147,483,647. Stop at 0 and produce no line for it.</p></section>
-          <section><h4>Output</h4><p>For a binary representation B with P ones, print The parity of B is P (mod 2). Use no leading zeros in B.</p></section>
-        </div>
-        <p class="idea"><strong>Key idea:</strong> Divide by 2 repeatedly. Put each remainder at the front of the binary string and count the ones.</p>
-        <ol class="method"><li>The remainder n % 2 is the next bit. Add that numeric bit to the count.</li><li>Convert the bit to a character with char(&#x27;0&#x27; + bit). Prepend it because the remainders arrive from right to left.</li><li>Use integer division n /= 2 to remove the processed bit.</li></ol>
-        <p class="watch"><strong>Watch for:</strong> In char(&#x27;0&#x27; + bit), &#x27;0&#x27; is the character for the digit zero. Adding 1 produces the character code for &#x27;1&#x27;. For input 21, the binary result is 10101 and the printed count is 3.</p>
-        <section class="trace">
-          <h4>Worked example</h4>
-          <div class="table-wrap"><table aria-label="Worked example for UVa 10931"><thead><tr><th scope="col">n</th><th scope="col">bit</th><th scope="col">binary after prepending</th><th scope="col">ones</th></tr></thead><tbody><tr><td>10</td><td>0</td><td>0</td><td>0</td></tr><tr><td>5</td><td>1</td><td>10</td><td>1</td></tr><tr><td>2</td><td>0</td><td>010</td><td>1</td></tr><tr><td>1</td><td>1</td><td>1010</td><td>2</td></tr></tbody></table></div>
+        <dl class="contract">
+          <div><dt>輸入</dt><dd>每行一個 1 到 2,147,483,647 的整數。讀到 <code>0</code> 結束。</dd></div>
+          <div><dt>輸出</dt><dd>用 <code>The parity of B is P (mod 2).</code> 印一行，<code>B</code> 是無前導零的二進位字串，<code>P</code> 是其中 1 的個數。句點也要印。</dd></div>
+        </dl>
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
+          <ol class="steps"><li>用 <code>bit = n % 2</code> 取得目前最右邊的二進位位元。因為餘數只會是 0 或 1，可直接用 <code>ones += bit</code> 來計數。</li><li><code>&#x27;0&#x27;</code> 是字元 0，跟整數 <code>0</code> 不一樣。<code>char(&#x27;0&#x27; + bit)</code> 把數字 0 或 1 變成可以放進字串的 <code>&#x27;0&#x27;</code> 或 <code>&#x27;1&#x27;</code>。</li><li>餘數先拿到的是低位，所以下一個餘數要加到字串前面：<code>binary = char(&#x27;0&#x27; + bit) + binary</code>。例如已有 <code>1</code>，下一個拿到 0，就變成 <code>01</code>。</li><li>再用 <code>n /= 2</code> 去掉這個位元。重複到 <code>n == 0</code>，這組字串就組完了。</li></ol>
+        </section>
+        <section class="worked" aria-labelledby="example-10931">
+          <div class="worked-head"><h2 id="example-10931"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>用 21 走一遍轉換</p></div>
+          <div class="table-wrap"><table aria-labelledby="example-10931"><thead><tr><th scope="col">本輪的 n</th><th scope="col">n % 2</th><th scope="col">插到前面後</th><th scope="col">目前 1 的個數</th><th scope="col">n / 2</th></tr></thead><tbody><tr><td>21</td><td>1</td><td>1</td><td>1</td><td>10</td></tr><tr><td>10</td><td>0</td><td>01</td><td>1</td><td>5</td></tr><tr><td>5</td><td>1</td><td>101</td><td>2</td><td>2</td></tr><tr><td>2</td><td>0</td><td>0101</td><td>2</td><td>1</td></tr><tr><td>1</td><td>1</td><td>10101</td><td>3</td><td>0</td></tr></tbody></table></div>
         </section>
         <div class="samples">
-          <div><h4>Sample input</h4><pre>10
+          <div><h3 class="sample-label">範例輸入</h3><pre>10
 21
 0</pre></div>
-          <div><h4>Sample output</h4><pre>The parity of 1010 is 2 (mod 2).
+          <div><h3 class="sample-label">範例輸出</h3><pre lang="en">The parity of 1010 is 2 (mod 2).
 The parity of 10101 is 3 (mod 2).</pre></div>
         </div>
-        <details><summary>View C++ reference solution</summary><pre><code>#include &lt;iostream&gt;
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">03</span>容易錯在哪</h2>
+          <ul class="pitfalls"><li>最後要印 <code>ones</code>，不要先算 <code>ones % 2</code>。21 的輸出要印 3，即使 3 除以 2 的餘數是 1。</li><li>每組資料要清空 <code>binary</code>，並把 <code>ones</code> 重設成 0。</li></ul>
+        </section>
+        <section class="block" aria-label="程式與英文題目">
+          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
 #include &lt;string&gt;
 using namespace std;
 
@@ -312,34 +440,49 @@ int main() {
         cout &lt;&lt; &quot;The parity of &quot; &lt;&lt; binary &lt;&lt; &quot; is &quot; &lt;&lt; ones
              &lt;&lt; &quot; (mod 2).\n&quot;;
     }
-}</code></pre></details>
-        <p class="sources">Class handout: Lab 6, page 2. <a href="https://onlinejudge.org/external/109/10931.pdf" target="_blank" rel="noopener">Original English statement</a></p>
+}</code></pre></div></details>
+          <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
+            <p>Convert each input integer to binary and count the 1 bits. The required sentence shows the full count before the literal text (mod 2), even when the count is greater than 1.</p>
+            <p><strong>Input:</strong> Read one integer per line. Each value to process is between 1 and 2,147,483,647. Stop at 0 and produce no line for it.</p>
+            <p><strong>Output:</strong> For a binary representation B with P ones, print The parity of B is P (mod 2). Use no leading zeros in B.</p>
+            <a href="https://onlinejudge.org/external/109/10931.pdf" target="_blank" rel="noopener">Original problem statement</a>
+          </div></details>
+        </section>
+        <p class="source-line">第 6 週講義，第 2 頁 · CPE 出題紀錄 2022-12-13<a href="https://onlinejudge.org/external/109/10931.pdf" target="_blank" rel="noopener">英文原題</a></p>
+        <nav class="pager" aria-label="前後題"><a class="prev" href="#uva-10783" data-question="uva-10783"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg><span><small>上一題</small>區間內的奇數和</span></a><a class="next" href="#uva-10929" data-question="uva-10929"><span><small>下一題</small>判斷 11 的倍數</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6l6 6-6 6"/></svg></a></nav>
       </article>
-      <article class="problem" id="uva-10929" aria-labelledby="title-10929">
-        <header class="problem-head">
-          <div><p class="label">UVa 10929</p><h3 id="title-10929">You can say 11</h3></div>
-          <span class="tag">CPE 2011-12-20</span>
+      <article class="problem" id="uva-10929" data-lab="6" aria-labelledby="title-10929">
+        <header>
+          <p class="topic">UVa 10929 · 超長字串、交錯加減</p>
+          <h1 class="problem-title" id="title-10929" tabindex="-1">判斷 11 的倍數</h1>
+          <p class="english-name" lang="en">You can say 11</p>
+          <p class="lead">判斷一個十進位正整數是否能被 11 整除。它可能長達 1,000 位，所以先用字串存原本的數，再用各位數計算。</p>
         </header>
-        <p class="prompt">Determine whether each positive decimal integer is divisible by 11. An input value can be too large for an integer type.</p>
-        <div class="panels">
-          <section><h4>Input</h4><p>Read one positive decimal integer per line, up to 1,000 digits. A line containing 0 ends input.</p></section>
-          <section><h4>Output</h4><p>For a multiple, print N is a multiple of 11. Otherwise print N is not a multiple of 11. Use the original input for N.</p></section>
-        </div>
-        <p class="idea"><strong>Key idea:</strong> Alternate plus and minus signs over the digits. The number is divisible by 11 exactly when that sum is.</p>
-        <ol class="method"><li>Keep the original number in a string.</li><li>Convert each digit with n[i] - &#x27;0&#x27;. Add digits at even indices and subtract digits at odd indices.</li><li>Because 10 is congruent to −1 modulo 11, the alternating sum is divisible by 11 exactly when the original value is.</li></ol>
-        <p class="watch"><strong>Watch for:</strong> Keep the input as a string because it can have 1,000 digits. The alternating sum can be negative or zero; sum % 11 == 0 still works.</p>
-        <section class="trace">
-          <h4>Worked example</h4>
-          <div class="table-wrap"><table aria-label="Worked example for UVa 10929"><thead><tr><th scope="col">Index</th><th scope="col">Digit</th><th scope="col">Running sum</th></tr></thead><tbody><tr><td>0</td><td>5</td><td>+5 = 5</td></tr><tr><td>1</td><td>6</td><td>5 − 6 = −1</td></tr><tr><td>2</td><td>9</td><td>−1 + 9 = 8</td></tr><tr><td>3</td><td>5</td><td>8 − 5 = 3</td></tr><tr><td>4</td><td>8</td><td>3 + 8 = 11</td></tr></tbody></table></div>
+        <dl class="contract">
+          <div><dt>輸入</dt><dd>每行一個最多 1,000 位的正整數；單獨的 <code>0</code> 表示結束。</dd></div>
+          <div><dt>輸出</dt><dd>可以整除就印 <code>N is a multiple of 11.</code>，否則印 <code>N is not a multiple of 11.</code>。<code>N</code> 要原樣輸出。</dd></div>
+        </dl>
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
+          <ol class="steps"><li>從字串左邊開始，把第 0、2、4… 格的數字加起來，第 1、3、5… 格的數字減掉。<code>n[i] - &#x27;0&#x27;</code> 把字元轉回數字。</li><li>為什麼可行？10 和 −1 對 11 同餘，因為兩者相差 11。10 的次方對 11 就會在 1 和 −1 之間交替，所以展開每一位後，只要交錯加減就能判斷整除。</li><li>左邊或右邊起算可能讓整個結果變號，但不影響它能不能被 11 整除。最後只檢查 <code>sum % 11 == 0</code>。</li></ol>
+        </section>
+        <section class="worked" aria-labelledby="example-10929">
+          <div class="worked-head"><h2 id="example-10929"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>56958 的交錯總和是 11</p></div>
+          <div class="table-wrap"><table aria-labelledby="example-10929"><thead><tr><th scope="col">位置 i</th><th scope="col">這一位</th><th scope="col">這步怎麼算</th><th scope="col">目前 sum</th></tr></thead><tbody><tr><td>0</td><td>5</td><td>0 ＋ 5</td><td>5</td></tr><tr><td>1</td><td>6</td><td>5 − 6</td><td>−1</td></tr><tr><td>2</td><td>9</td><td>−1 ＋ 9</td><td>8</td></tr><tr><td>3</td><td>5</td><td>8 − 5</td><td>3</td></tr><tr><td>4</td><td>8</td><td>3 ＋ 8</td><td>11</td></tr></tbody></table></div>
         </section>
         <div class="samples">
-          <div><h4>Sample input</h4><pre>112233
+          <div><h3 class="sample-label">範例輸入</h3><pre>112233
 112234
 0</pre></div>
-          <div><h4>Sample output</h4><pre>112233 is a multiple of 11.
+          <div><h3 class="sample-label">範例輸出</h3><pre lang="en">112233 is a multiple of 11.
 112234 is not a multiple of 11.</pre></div>
         </div>
-        <details><summary>View C++ reference solution</summary><pre><code>#include &lt;iostream&gt;
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">03</span>容易錯在哪</h2>
+          <ul class="pitfalls"><li>可以直接取餘數的是「各位數算出的小總和」。原數最多 1,000 位，不能先轉 <code>int</code> 或 <code>long long</code> 再做 <code>% 11</code>。</li><li>總和可能是 0 或負數；例如 −11 仍然能被 11 整除。別寫成 <code>sum == 11</code>。</li></ul>
+        </section>
+        <section class="block" aria-label="程式與英文題目">
+          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
 #include &lt;string&gt;
 using namespace std;
 
@@ -354,36 +497,51 @@ int main() {
         cout &lt;&lt; n &lt;&lt; (sum % 11 == 0 ? &quot; is a multiple of 11.\n&quot;
                                    : &quot; is not a multiple of 11.\n&quot;);
     }
-}</code></pre></details>
-        <p class="sources">Class handout: Lab 6, page 7. <a href="https://onlinejudge.org/external/109/10929.pdf" target="_blank" rel="noopener">Original English statement</a></p>
+}</code></pre></div></details>
+          <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
+            <p>Determine whether each positive decimal integer is divisible by 11. An input value can be too large for an integer type.</p>
+            <p><strong>Input:</strong> Read one positive decimal integer per line, up to 1,000 digits. A line containing 0 ends input.</p>
+            <p><strong>Output:</strong> For a multiple, print N is a multiple of 11. Otherwise print N is not a multiple of 11. Use the original input for N.</p>
+            <a href="https://onlinejudge.org/external/109/10929.pdf" target="_blank" rel="noopener">Original problem statement</a>
+          </div></details>
+        </section>
+        <p class="source-line">第 6 週講義，第 7 頁 · CPE 出題紀錄 2011-12-20<a href="https://onlinejudge.org/external/109/10929.pdf" target="_blank" rel="noopener">英文原題</a></p>
+        <nav class="pager" aria-label="前後題"><a class="prev" href="#uva-10931" data-question="uva-10931"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg><span><small>上一題</small>二進位有幾個 1</span></a><a class="next" href="#uva-10922" data-question="uva-10922"><span><small>下一題</small>9 的倍數與 9-degree</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6l6 6-6 6"/></svg></a></nav>
       </article>
-      <article class="problem" id="uva-10922" aria-labelledby="title-10922">
-        <header class="problem-head">
-          <div><p class="label">UVa 10922</p><h3 id="title-10922">2 the 9s</h3></div>
-          <span class="tag">CPE 2015-03-24</span>
+      <article class="problem" id="uva-10922" data-lab="6" aria-labelledby="title-10922">
+        <header>
+          <p class="topic">UVa 10922 · 分清楚 sum、temp 與輪次</p>
+          <h1 class="problem-title" id="title-10922" tabindex="-1">9 的倍數與 9-degree</h1>
+          <p class="english-name" lang="en">2 the 9s</p>
+          <p class="lead">先判斷原數是不是 9 的倍數。若是，反覆把各位數相加，數到結果變成 9 為止，這個輪數就是 <code>9-degree</code>。依題目定義，原數就是 9 時，degree 是 1。</p>
         </header>
-        <p class="prompt">Determine whether a positive decimal integer is divisible by 9. For a multiple of 9, repeatedly replace it with the sum of its decimal digits and report how many rounds are needed to reach 9. The degree of 9 itself is 1.</p>
-        <div class="panels">
-          <section><h4>Input</h4><p>Read one positive integer per line, with at most 1,000 digits. A line containing 0 ends the input and is not processed.</p></section>
-          <section><h4>Output</h4><p>For a multiple, print N is a multiple of 9 and has 9-degree D. Otherwise print N is not a multiple of 9. Replace N with the original input and D with the degree.</p></section>
-        </div>
-        <p class="idea"><strong>Key idea:</strong> Add the digits once to test divisibility by 9. If it is a multiple, count the digit-sum rounds until reaching 9.</p>
-        <ol class="method"><li>Read the large number as a string. The first digit sum is at most 9,000, so an int can hold it. Subtract &#x27;0&#x27; from each digit character.</li><li>Test sum % 9. If the remainder is nonzero, the original number is not divisible by 9.</li><li>Count the first digit sum as round 1. Each time sum still has multiple digits, start temp at zero, collect its digits into temp, and then replace sum with temp and increment degree.</li></ol>
-        <p class="watch"><strong>Watch for:</strong> When sum starts at 189, temp starts at 0. Taking the digits 9, 8, and 1 makes temp go 0 → 9 → 17 → 18 while sum shrinks to 0. Copy temp back into sum and increase degree once.</p>
-        <section class="trace">
-          <h4>Worked example</h4>
-          <div class="table-wrap"><table aria-label="Worked example for UVa 10922"><thead><tr><th scope="col">Round</th><th scope="col">Value before</th><th scope="col">Digits added</th><th scope="col">Value after</th></tr></thead><tbody><tr><td>1</td><td>21 copies of 9</td><td>21 × 9</td><td>189</td></tr><tr><td>2</td><td>189</td><td>9 + 8 + 1</td><td>18</td></tr><tr><td>3</td><td>18</td><td>8 + 1</td><td>9</td></tr></tbody></table></div>
+        <dl class="contract">
+          <div><dt>輸入</dt><dd>每行一個最多 1,000 位的正整數；單獨的 <code>0</code> 表示結束。</dd></div>
+          <div><dt>輸出</dt><dd>不是 9 的倍數就印 <code>N is not a multiple of 9.</code>；是的話印 <code>N is a multiple of 9 and has 9-degree D.</code>。保留原本的 <code>N</code>。</dd></div>
+        </dl>
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
+          <ol class="steps"><li>用 <code>string n</code> 存原數，再逐一用 <code>c - &#x27;0&#x27;</code> 加進 <code>sum</code>。1,000 位的第一次總和最多 9,000，所以這個總和用 <code>int</code> 就夠。</li><li>因為 10 除以 9 餘 1，每一位的位權都不影響對 9 的餘數。若 <code>sum % 9 != 0</code>，原數就不是 9 的倍數。</li><li>第一次把字串加總已算一輪，因此 <code>degree = 1</code>。如果 <code>sum</code> 仍有兩位以上，就用 <code>sum % 10</code> 取位數，加進新一輪的 <code>temp</code>，再把 <code>sum</code> 除以 10。</li><li>拆完時 <code>sum</code> 暫時會變 0，這時才執行 <code>sum = temp</code>，用新總和換掉舊數，再做一次 <code>++degree</code>。</li></ol>
+        </section>
+        <section class="worked" aria-labelledby="example-10922">
+          <div class="worked-head"><h2 id="example-10922"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>21 個 9，第一輪就已經算進 degree</p></div>
+          <div class="table-wrap"><table aria-labelledby="example-10922"><thead><tr><th scope="col">第幾輪</th><th scope="col">加總前</th><th scope="col">這輪計算</th><th scope="col">加總後</th><th scope="col">degree</th></tr></thead><tbody><tr><td>1</td><td>21 個 9</td><td>21 × 9</td><td>189</td><td>1</td></tr><tr><td>2</td><td>189</td><td>9 ＋ 8 ＋ 1</td><td>18</td><td>2</td></tr><tr><td>3</td><td>18</td><td>8 ＋ 1</td><td>9</td><td>3</td></tr></tbody></table></div>
         </section>
         <div class="samples">
-          <div><h4>Sample input</h4><pre>18
+          <div><h3 class="sample-label">範例輸入</h3><pre>18
 9999
 20
 0</pre></div>
-          <div><h4>Sample output</h4><pre>18 is a multiple of 9 and has 9-degree 1.
+          <div><h3 class="sample-label">範例輸出</h3><pre lang="en">18 is a multiple of 9 and has 9-degree 1.
 9999 is a multiple of 9 and has 9-degree 2.
 20 is not a multiple of 9.</pre></div>
         </div>
-        <details><summary>View C++ reference solution</summary><pre><code>#include &lt;iostream&gt;
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">03</span>容易錯在哪</h2>
+          <ul class="pitfalls"><li>以 189 為例，<code>sum</code> 會走 189 → 18 → 1 → 0；<code>temp</code> 同時走 0 → 9 → 17 → 18。最後把 18 寫回 <code>sum</code>。</li><li>一次完整的加總才增加一次 degree；拆出三個位數，不是增加三次。每輪也要重新把 <code>temp</code> 設為 0。</li></ul>
+        </section>
+        <section class="block" aria-label="程式與英文題目">
+          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
 #include &lt;string&gt;
 using namespace std;
 
@@ -409,33 +567,48 @@ int main() {
         cout &lt;&lt; n &lt;&lt; &quot; is a multiple of 9 and has 9-degree &quot;
              &lt;&lt; degree &lt;&lt; &quot;.\n&quot;;
     }
-}</code></pre></details>
-        <p class="sources">Class handout: Lab 6, page 13. <a href="https://onlinejudge.org/external/109/10922.pdf" target="_blank" rel="noopener">Original English statement</a></p>
+}</code></pre></div></details>
+          <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
+            <p>Determine whether a positive decimal integer is divisible by 9. For a multiple of 9, repeatedly replace it with the sum of its decimal digits and report how many rounds are needed to reach 9. The degree of 9 itself is 1.</p>
+            <p><strong>Input:</strong> Read one positive integer per line, with at most 1,000 digits. A line containing 0 ends the input and is not processed.</p>
+            <p><strong>Output:</strong> For a multiple, print N is a multiple of 9 and has 9-degree D. Otherwise print N is not a multiple of 9. Replace N with the original input and D with the degree.</p>
+            <a href="https://onlinejudge.org/external/109/10922.pdf" target="_blank" rel="noopener">Original problem statement</a>
+          </div></details>
+        </section>
+        <p class="source-line">第 6 週講義，第 13 頁 · CPE 出題紀錄 2015-03-24<a href="https://onlinejudge.org/external/109/10922.pdf" target="_blank" rel="noopener">英文原題</a></p>
+        <nav class="pager" aria-label="前後題"><a class="prev" href="#uva-10929" data-question="uva-10929"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg><span><small>上一題</small>判斷 11 的倍數</span></a><a class="next" href="#uva-272" data-question="uva-272"><span><small>下一題</small>TeX 引號轉換</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6l6 6-6 6"/></svg></a></nav>
       </article>
-      <article class="problem" id="uva-272" aria-labelledby="title-272">
-        <header class="problem-head">
-          <div><p class="label">UVa 272</p><h3 id="title-272">TEX Quotes</h3></div>
-          <span class="tag">CPE 2011-05-25</span>
+      <article class="problem" id="uva-272" data-lab="6" aria-labelledby="title-272">
+        <header>
+          <p class="topic">UVa 272 · 逐字元讀入、跨行保留狀態</p>
+          <h1 class="problem-title" id="title-272" tabindex="-1">TeX 引號轉換</h1>
+          <p class="english-name" lang="en">TEX Quotes</p>
+          <p class="lead">把文字裡普通的雙引號換成 TeX 格式：第一個雙引號換成兩個反引號（grave accents），第二個換成兩個單引號（apostrophes），後面照此交替。</p>
         </header>
-        <p class="prompt">Convert plain double quotation marks to TeX-style pairs. An opening quote becomes two grave accents; a closing quote becomes two apostrophes.</p>
-        <div class="panels">
-          <section><h4>Input</h4><p>Read the complete text until end of file. Quotation pairs may span lines.</p></section>
-          <section><h4>Output</h4><p>Copy every other character unchanged, including line breaks and spaces. Alternate opening and closing replacements across the entire input.</p></section>
-        </div>
-        <p class="idea"><strong>Key idea:</strong> Replace each double quote according to whether it opens or closes a pair.</p>
-        <ol class="method"><li>Use cin.get(c) to read every character, including whitespace.</li><li>Keep one boolean that tells whether the next double quote is opening.</li><li>After replacing a quote, flip the boolean. Do not reset it at a newline.</li></ol>
-        <p class="watch"><strong>Watch for:</strong> A quotation can span multiple lines. Keep the same opening/closing flag when you read a newline.</p>
-        <section class="trace">
-          <h4>Worked example</h4>
-          <div class="table-wrap"><table aria-label="Worked example for UVa 272"><thead><tr><th scope="col">Event</th><th scope="col">Replacement</th><th scope="col">Next quote</th></tr></thead><tbody><tr><td>First quote</td><td>``</td><td>Closing</td></tr><tr><td>Line break</td><td>Unchanged</td><td>Closing</td></tr><tr><td>Next quote</td><td>&#x27;&#x27;</td><td>Opening</td></tr></tbody></table></div>
+        <dl class="contract">
+          <div><dt>輸入</dt><dd>輸入是多行文字，讀到 EOF。同一對雙引號可能跨行。</dd></div>
+          <div><dt>輸出</dt><dd>只有雙引號要換。其他字元、空格、標點、換行都原樣輸出。</dd></div>
+        </dl>
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
+          <ol class="steps"><li>用 <code>cin.get(c)</code> 一次讀一個字元。跟 <code>cin &gt;&gt; c</code> 不同，這種寫法會保留空格和換行。</li><li>設 <code>opening = true</code>，意思是「下一個雙引號是開頭」。碰到雙引號時，按 <code>opening</code> 選擇要輸出哪種符號。</li><li>每處理完一個雙引號才做 <code>opening = !opening</code>。一般字元直接輸出，不改狀態。</li></ol>
+        </section>
+        <section class="worked" aria-labelledby="example-272">
+          <div class="worked-head"><h2 id="example-272"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>跨行時，不會把關閉引號當成新的一對</p></div>
+          <div class="table-wrap"><table aria-labelledby="example-272"><thead><tr><th scope="col">讀到的事件</th><th scope="col">輸出什麼</th><th scope="col">下一個雙引號</th></tr></thead><tbody><tr><td>第一個雙引號</td><td>兩個反引號</td><td>關閉</td></tr><tr><td>普通文字或換行</td><td>照原樣輸出</td><td>仍是關閉</td></tr><tr><td>下一個雙引號</td><td>兩個單引號</td><td>開頭</td></tr></tbody></table></div>
         </section>
         <div class="samples">
-          <div><h4>Sample input</h4><pre>She said &quot;hello&quot;.
+          <div><h3 class="sample-label">範例輸入</h3><pre>She said &quot;hello&quot;.
 &quot;Bye!&quot;</pre></div>
-          <div><h4>Sample output</h4><pre>She said ``hello&#x27;&#x27;.
+          <div><h3 class="sample-label">範例輸出</h3><pre lang="en">She said ``hello&#x27;&#x27;.
 ``Bye!&#x27;&#x27;</pre></div>
         </div>
-        <details><summary>View C++ reference solution</summary><pre><code>#include &lt;iostream&gt;
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">03</span>容易錯在哪</h2>
+          <ul class="pitfalls"><li>狀態要跨行保存。讀到換行不能把 <code>opening</code> 重設成 <code>true</code>。</li><li>程式用 <code>char(96)</code> 表示反引號；右邊的兩個單引號與兩個反引號是不同字元。</li></ul>
+        </section>
+        <section class="block" aria-label="程式與英文題目">
+          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 int main() {
@@ -450,36 +623,48 @@ int main() {
             cout &lt;&lt; c;
         }
     }
-}</code></pre></details>
-        <p class="sources">Class handout: Lab 6, page 19. <a href="https://onlinejudge.org/external/2/272.pdf" target="_blank" rel="noopener">Original English statement</a></p>
+}</code></pre></div></details>
+          <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
+            <p>Convert plain double quotation marks to TeX-style pairs. An opening quote becomes two grave accents; a closing quote becomes two apostrophes.</p>
+            <p><strong>Input:</strong> Read the complete text until end of file. Quotation pairs may span lines.</p>
+            <p><strong>Output:</strong> Copy every other character unchanged, including line breaks and spaces. Alternate opening and closing replacements across the entire input.</p>
+            <a href="https://onlinejudge.org/external/2/272.pdf" target="_blank" rel="noopener">Original problem statement</a>
+          </div></details>
+        </section>
+        <p class="source-line">第 6 週講義，第 19 頁 · CPE 出題紀錄 2011-05-25<a href="https://onlinejudge.org/external/2/272.pdf" target="_blank" rel="noopener">英文原題</a></p>
+        <nav class="pager" aria-label="前後題"><a class="prev" href="#uva-10922" data-question="uva-10922"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg><span><small>上一題</small>9 的倍數與 9-degree</span></a><a class="next" href="#uva-100" data-question="uva-100"><span><small>下一題</small>3n＋1 序列</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6l6 6-6 6"/></svg></a></nav>
       </article>
-    </section>
-    <section id="lab-7" aria-labelledby="lab-7-title">
-      <header class="lab-header"><p class="label">LAB 7</p><h2 id="lab-7-title">Sequences, sorting, and carries</h2></header>
-      <article class="problem" id="uva-100" aria-labelledby="title-100">
-        <header class="problem-head">
-          <div><p class="label">UVa 100</p><h3 id="title-100">The 3n + 1 Problem</h3></div>
-          <span class="tag">CPE 2025-09-30</span>
+      <article class="problem" id="uva-100" data-lab="7" aria-labelledby="title-100">
+        <header>
+          <p class="topic">UVa 100 · 算每個起點的長度，再取最大</p>
+          <h1 class="problem-title" id="title-100" tabindex="-1">3n＋1 序列</h1>
+          <p class="english-name" lang="en">The 3n + 1 Problem</p>
+          <p class="lead">從任一正整數 <code>n</code> 開始：偶數除以 2，奇數變成 3n＋1，直到變成 1。給你兩個端點，找區間中「序列長度」（cycle length）最大的長度。</p>
         </header>
-        <p class="prompt">Start at n. Until reaching 1, replace an odd n with 3n + 1 and an even n with n / 2. The cycle length counts all terms, including the start and 1. Find the maximum cycle length over each inclusive interval.</p>
-        <div class="panels">
-          <section><h4>Input</h4><p>Read pairs i and j until end of file (0 &lt; i, j &lt; 1,000,000). The endpoints can arrive in either order.</p></section>
-          <section><h4>Output</h4><p>Print i and j in their original order, then the maximum cycle length. Separate the three numbers with one space.</p></section>
-        </div>
-        <p class="idea"><strong>Key idea:</strong> Compute the cycle length of every number in the interval and keep the maximum.</p>
-        <ol class="method"><li>Set the length of 1 to 1. For other values, the length is one plus the length of the next value.</li><li>Use long long for intermediate values and cache known lengths below 1,000,000.</li><li>Normalize the endpoints only for the loop. Print the original i and j.</li></ol>
-        <p class="watch"><strong>Watch for:</strong> You may need to swap the endpoints to loop over the range. Print them in the same order as the input. Count the final 1.</p>
-        <section class="trace">
-          <h4>Worked example</h4>
-          <div class="table-wrap"><table aria-label="Worked example for UVa 100"><thead><tr><th scope="col">Start</th><th scope="col">Sequence</th><th scope="col">Length</th></tr></thead><tbody><tr><td>1</td><td>1</td><td>1</td></tr><tr><td>4</td><td>4 → 2 → 1</td><td>3</td></tr><tr><td>5</td><td>5 → 16 → 8 → 4 → 2 → 1</td><td>6</td></tr></tbody></table></div>
+        <dl class="contract">
+          <div><dt>輸入</dt><dd>每行兩個正整數 <code>i j</code>，都小於 1,000,000，順序可能顛倒。讀到 EOF。</dd></div>
+          <div><dt>輸出</dt><dd>每組印 <code>i j maxLength</code>。前兩個數一定要用輸入時的原順序。</dd></div>
+        </dl>
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
+          <ol class="steps"><li>單獨看一個起點。<code>n == 1</code> 時長度是 1；其他時候，長度等於「目前這一項」加上下一個數的長度。</li><li>區間迴圈從 <code>min(i, j)</code> 走到 <code>max(i, j)</code>（含端點）。每算完一個長度，就更新最大值。</li><li>不同起點可能走到同一段。例如 6 的序列後面會走到 5，就可以沿用 5 已經算好的長度。參考解用 <code>memo</code> 記錄小於 1,000,000 的長度，這叫記憶化（memoization）。</li><li>用 <code>long long</code> 存中間的 <code>n</code>。即使起點不到 1,000,000，做 <code>3 * n + 1</code> 後也可能變得很大。</li></ol>
+        </section>
+        <section class="worked" aria-labelledby="example-100">
+          <div class="worked-head"><h2 id="example-100"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>輸入 6 4，算區間 [4, 6]</p></div>
+          <div class="table-wrap"><table aria-labelledby="example-100"><thead><tr><th scope="col">起點</th><th scope="col">序列</th><th scope="col">長度</th></tr></thead><tbody><tr><td>4</td><td>4 → 2 → 1</td><td>3</td></tr><tr><td>5</td><td>5 → 16 → 8 → 4 → 2 → 1</td><td>6</td></tr><tr><td>6</td><td>6 → 3 → 10 → 5 → 16 → 8 → 4 → 2 → 1</td><td>9</td></tr></tbody></table></div>
         </section>
         <div class="samples">
-          <div><h4>Sample input</h4><pre>1 10
+          <div><h3 class="sample-label">範例輸入</h3><pre>1 10
 100 200</pre></div>
-          <div><h4>Sample output</h4><pre>1 10 20
+          <div><h3 class="sample-label">範例輸出</h3><pre lang="en">1 10 20
 100 200 125</pre></div>
         </div>
-        <details><summary>View C++ reference solution</summary><pre><code>#include &lt;algorithm&gt;
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">03</span>容易錯在哪</h2>
+          <ul class="pitfalls"><li>長度數的是序列裡的項數，開頭與最後的 1 都要算。例如 4 → 2 → 1 長度是 3。</li><li>調整順序只為了好跑迴圈；輸出 <code>6 4</code> 時，仍要印 <code>6 4 9</code>。</li></ul>
+        </section>
+        <section class="block" aria-label="程式與英文題目">
+          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;algorithm&gt;
 #include &lt;iostream&gt;
 #include &lt;vector&gt;
 using namespace std;
@@ -504,36 +689,51 @@ int main() {
         }
         cout &lt;&lt; i &lt;&lt; &#x27; &#x27; &lt;&lt; j &lt;&lt; &#x27; &#x27; &lt;&lt; best &lt;&lt; &#x27;\n&#x27;;
     }
-}</code></pre></details>
-        <p class="sources">Class handout: Lab 7, page 1. <a href="https://onlinejudge.org/external/1/100.pdf" target="_blank" rel="noopener">Original English statement</a></p>
+}</code></pre></div></details>
+          <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
+            <p>Start at n. Until reaching 1, replace an odd n with 3n + 1 and an even n with n / 2. The cycle length counts all terms, including the start and 1. Find the maximum cycle length over each inclusive interval.</p>
+            <p><strong>Input:</strong> Read pairs i and j until end of file (0 &lt; i, j &lt; 1,000,000). The endpoints can arrive in either order.</p>
+            <p><strong>Output:</strong> Print i and j in their original order, then the maximum cycle length. Separate the three numbers with one space.</p>
+            <a href="https://onlinejudge.org/external/1/100.pdf" target="_blank" rel="noopener">Original problem statement</a>
+          </div></details>
+        </section>
+        <p class="source-line">第 7 週講義，第 1 頁 · CPE 出題紀錄 2025-09-30<a href="https://onlinejudge.org/external/1/100.pdf" target="_blank" rel="noopener">英文原題</a></p>
+        <nav class="pager" aria-label="前後題"><a class="prev" href="#uva-272" data-question="uva-272"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg><span><small>上一題</small>TeX 引號轉換</span></a><a class="next" href="#uva-299" data-question="uva-299"><span><small>下一題</small>火車車廂交換</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6l6 6-6 6"/></svg></a></nav>
       </article>
-      <article class="problem" id="uva-299" aria-labelledby="title-299">
-        <header class="problem-head">
-          <div><p class="label">UVa 299</p><h3 id="title-299">Train Swapping</h3></div>
-          <span class="tag">CPE 2017-09-26</span>
+      <article class="problem" id="uva-299" data-lab="7" aria-labelledby="title-299">
+        <header>
+          <p class="topic">UVa 299 · 相鄰交換與逆序對</p>
+          <h1 class="problem-title" id="title-299" tabindex="-1">火車車廂交換</h1>
+          <p class="english-name" lang="en">Train Swapping</p>
+          <p class="lead">車廂要按號碼從小排到大，但一次只能交換相鄰兩節。題目問最少需要交換幾次。</p>
         </header>
-        <p class="prompt">Sort the numbered train carriages using only swaps of adjacent carriages. Report the smallest possible number of swaps.</p>
-        <div class="panels">
-          <section><h4>Input</h4><p>Read the number of cases T. Each case gives a length L (0 ≤ L ≤ 50) followed by a permutation of 1 through L.</p></section>
-          <section><h4>Output</h4><p>Print Optimal train swapping takes S swaps. for every case, substituting the minimum swap count for S.</p></section>
-        </div>
-        <p class="idea"><strong>Key idea:</strong> The minimum number of adjacent swaps equals the number of out-of-order pairs.</p>
-        <ol class="method"><li>An inversion is an out-of-order pair: the earlier carriage has a larger number.</li><li>Swapping an adjacent inverted pair removes exactly one inversion. Sorting this way uses exactly as many swaps as the original inversion count.</li><li>With at most 50 carriages, two nested loops can count all inversions directly.</li></ol>
-        <p class="watch"><strong>Watch for:</strong> Only adjacent swaps count. For [3, 1, 4, 2], the three inverted pairs require exactly three swaps.</p>
-        <section class="trace">
-          <h4>Worked example</h4>
-          <div class="table-wrap"><table aria-label="Worked example for UVa 299"><thead><tr><th scope="col">Order</th><th scope="col">Inverted pairs</th><th scope="col">Minimum swaps</th></tr></thead><tbody><tr><td>3 1 4 2</td><td>(3,1), (3,2), (4,2)</td><td>3</td></tr><tr><td>1 2 3 4</td><td>None</td><td>0</td></tr></tbody></table></div>
+        <dl class="contract">
+          <div><dt>輸入</dt><dd>先讀測資組數 <code>T</code>。每組給車廂數 <code>L</code>（0 ≤ L ≤ 50），再給 1 到 <code>L</code> 的一個排列。</dd></div>
+          <div><dt>輸出</dt><dd>每組印 <code>Optimal train swapping takes S swaps.</code>，<code>S</code> 是最少次數。原格式即使 <code>S</code> 是 1 也用 <code>swaps</code>。</dd></div>
+        </dl>
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
+          <ol class="steps"><li>定義逆序對（inversion）：前面一節的號碼，比後面那一節大。它們不必相鄰。</li><li>交換相鄰且順序顛倒的一對，會剛好消掉一個逆序對。其他車廂都在這兩節的同一邊，所以它們的相對先後不受影響。</li><li>排好後逆序對數目是 0。只交換顛倒的相鄰車廂就能一次少一對，因此初始逆序對有幾個，最少就要換幾次。</li><li>用兩層迴圈枚舉 <code>i &lt; j</code>。只要 <code>a[i] &gt; a[j]</code>，答案就加 1。<code>L ≤ 50</code>，直接枚舉就夠。</li></ol>
+        </section>
+        <section class="worked" aria-labelledby="example-299">
+          <div class="worked-head"><h2 id="example-299"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>3 1 4 2 只要三次相鄰交換</p></div>
+          <div class="table-wrap"><table aria-labelledby="example-299"><thead><tr><th scope="col">次數</th><th scope="col">交換哪一對</th><th scope="col">交換後</th></tr></thead><tbody><tr><td>0</td><td>起始排列</td><td>3 1 4 2</td></tr><tr><td>1</td><td>3 和 1</td><td>1 3 4 2</td></tr><tr><td>2</td><td>4 和 2</td><td>1 3 2 4</td></tr><tr><td>3</td><td>3 和 2</td><td>1 2 3 4</td></tr></tbody></table></div>
         </section>
         <div class="samples">
-          <div><h4>Sample input</h4><pre>2
+          <div><h3 class="sample-label">範例輸入</h3><pre>2
 3
 1 3 2
 4
 4 3 2 1</pre></div>
-          <div><h4>Sample output</h4><pre>Optimal train swapping takes 1 swaps.
+          <div><h3 class="sample-label">範例輸出</h3><pre lang="en">Optimal train swapping takes 1 swaps.
 Optimal train swapping takes 6 swaps.</pre></div>
         </div>
-        <details><summary>View C++ reference solution</summary><pre><code>#include &lt;iostream&gt;
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">03</span>容易錯在哪</h2>
+          <ul class="pitfalls"><li>逆序對不必相鄰；例如 <code>3 1 4 2</code> 裡的 3 和 2 也算一對。</li><li>沒有車廂或本來就排好，答案是 0。</li></ul>
+        </section>
+        <section class="block" aria-label="程式與英文題目">
+          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
 #include &lt;vector&gt;
 using namespace std;
 
@@ -552,33 +752,48 @@ int main() {
         cout &lt;&lt; &quot;Optimal train swapping takes &quot; &lt;&lt; inversions
              &lt;&lt; &quot; swaps.\n&quot;;
     }
-}</code></pre></details>
-        <p class="sources">Class handout: Lab 7, page 8. <a href="https://onlinejudge.org/external/2/299.pdf" target="_blank" rel="noopener">Original English statement</a></p>
+}</code></pre></div></details>
+          <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
+            <p>Sort the numbered train carriages using only swaps of adjacent carriages. Report the smallest possible number of swaps.</p>
+            <p><strong>Input:</strong> Read the number of cases T. Each case gives a length L (0 ≤ L ≤ 50) followed by a permutation of 1 through L.</p>
+            <p><strong>Output:</strong> Print Optimal train swapping takes S swaps. for every case, substituting the minimum swap count for S.</p>
+            <a href="https://onlinejudge.org/external/2/299.pdf" target="_blank" rel="noopener">Original problem statement</a>
+          </div></details>
+        </section>
+        <p class="source-line">第 7 週講義，第 8 頁 · CPE 出題紀錄 2017-09-26<a href="https://onlinejudge.org/external/2/299.pdf" target="_blank" rel="noopener">英文原題</a></p>
+        <nav class="pager" aria-label="前後題"><a class="prev" href="#uva-100" data-question="uva-100"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg><span><small>上一題</small>3n＋1 序列</span></a><a class="next" href="#uva-10101" data-question="uva-10101"><span><small>下一題</small>孟加拉數字表示法</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6l6 6-6 6"/></svg></a></nav>
       </article>
-      <article class="problem" id="uva-10101" aria-labelledby="title-10101">
-        <header class="problem-head">
-          <div><p class="label">UVa 10101</p><h3 id="title-10101">Bangla Numbers</h3></div>
-          <span class="tag">CPE 2018-12-18</span>
+      <article class="problem" id="uva-10101" data-lab="7" aria-labelledby="title-10101">
+        <header>
+          <p class="topic">UVa 10101 · 由大到小拆單位、遞迴 kuti</p>
+          <h1 class="problem-title" id="title-10101" tabindex="-1">孟加拉數字表示法</h1>
+          <p class="english-name" lang="en">Bangla Numbers</p>
+          <p class="lead">把十進位數拆成孟加拉數字單位。從大到小是 <code>kuti = 10,000,000</code>、<code>lakh = 100,000</code>、<code>hajar = 1,000</code>、<code>shata = 100</code>。數字夠大時，<code>kuti</code> 可以重複出現。</p>
         </header>
-        <p class="prompt">Express each input using Bangla number units: kuti (10,000,000), lakh (100,000), hajar (1,000), and shata (100). A value can contain more than one kuti.</p>
-        <div class="panels">
-          <section><h4>Input</h4><p>Read nonnegative integers up to 999,999,999,999,999 until end of file. Zero is a normal case.</p></section>
-          <section><h4>Output</h4><p>For each input, print the 1-based case number right-aligned in a field of width four, then a period and the converted value. Put one space before each number or unit.</p></section>
-        </div>
-        <p class="idea"><strong>Key idea:</strong> Split the number by its largest Bangla unit. Format the part before kuti recursively.</p>
-        <ol class="method"><li>Use long long. For n ≥ 10,000,000, recursively format the quotient, then print kuti and process the remainder.</li><li>For the smaller units, print a group only when it is nonzero.</li><li>Use setw(4) for the case number. Print 0 for the whole input zero, but omit zero remainder groups.</li></ol>
-        <p class="watch"><strong>Watch for:</strong> Keep the case number right-aligned in four columns. A value such as 10^14 produces two kuti units. Zero is a real input.</p>
-        <section class="trace">
-          <h4>Worked example</h4>
-          <div class="table-wrap"><table aria-label="Worked example for UVa 10101"><thead><tr><th scope="col">Input</th><th scope="col">Decomposition</th><th scope="col">Output value</th></tr></thead><tbody><tr><td>23764</td><td>23 × 1,000 + 7 × 100 + 64</td><td>23 hajar 7 shata 64</td></tr><tr><td>100000000000000</td><td>10,000,000 × 10,000,000</td><td>1 kuti kuti</td></tr></tbody></table></div>
+        <dl class="contract">
+          <div><dt>輸入</dt><dd>每行一個非負整數，最大 999,999,999,999,999；讀到 EOF。<code>0</code> 是一筆有效資料。</dd></div>
+          <div><dt>輸出</dt><dd>每組先印右對齊、寬度 4 的測資編號和句點，再印拆出的數字與單位，項目以空格隔開。</dd></div>
+        </dl>
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
+          <ol class="steps"><li>用 <code>long long</code> 存數字。拿一個單位做整數除法，商是這個單位有幾份，餘數留給下一個較小的單位。</li><li>先處理 <code>kuti</code>：如果 <code>n &gt;= 10000000</code>，先用同一個函式印商，再印 <code>kuti</code>，最後處理餘數。這就是遞迴（recursion），用同一個拆數規則處理更小的商。</li><li>接著依序處理 <code>lakh</code>、<code>hajar</code>、<code>shata</code>。商是 0 就跳過；小於 100 的尾數若非零，直接印。</li><li>用 <code>setw(4)</code> 只設定下一個輸出欄位的寬度，適合用在編號。原數是 0 時，在編號後明確印 <code>0</code>。</li></ol>
+        </section>
+        <section class="worked" aria-labelledby="example-10101">
+          <div class="worked-head"><h2 id="example-10101"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>23764 由大到小拆</p></div>
+          <div class="table-wrap"><table aria-labelledby="example-10101"><thead><tr><th scope="col">單位</th><th scope="col">整數除法的商</th><th scope="col">餘數</th><th scope="col">這段輸出</th></tr></thead><tbody><tr><td>hajar（1000）</td><td>23</td><td>764</td><td>23 hajar</td></tr><tr><td>shata（100）</td><td>7</td><td>64</td><td>7 shata</td></tr><tr><td>尾數</td><td>—</td><td>—</td><td>64</td></tr></tbody></table></div>
         </section>
         <div class="samples">
-          <div><h4>Sample input</h4><pre>0
+          <div><h3 class="sample-label">範例輸入</h3><pre>0
 23764</pre></div>
-          <div><h4>Sample output</h4><pre>   1. 0
+          <div><h3 class="sample-label">範例輸出</h3><pre lang="en">   1. 0
    2. 23 hajar 7 shata 64</pre></div>
         </div>
-        <details><summary>View C++ reference solution</summary><pre><code>#include &lt;iomanip&gt;
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">03</span>容易錯在哪</h2>
+          <ul class="pitfalls"><li>10¹⁴ 除以 10⁷ 後，商又是 10⁷，所以結果是 <code>1 kuti kuti</code>。只印一個 <code>kuti</code> 會少一層。</li><li>編號前的空格和句點是輸出的一部分；輸入 0 也不能當成結束。</li></ul>
+        </section>
+        <section class="block" aria-label="程式與英文題目">
+          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iomanip&gt;
 #include &lt;iostream&gt;
 using namespace std;
 
@@ -612,36 +827,51 @@ int main() {
         else printBangla(n);
         cout &lt;&lt; &#x27;\n&#x27;;
     }
-}</code></pre></details>
-        <p class="sources">Class handout: Lab 7, page 16. <a href="https://cpe.mcu.edu.tw/cpe/problemPdf/10101.pdf" target="_blank" rel="noopener">Original English statement</a></p>
+}</code></pre></div></details>
+          <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
+            <p>Express each input using Bangla number units: kuti (10,000,000), lakh (100,000), hajar (1,000), and shata (100). A value can contain more than one kuti.</p>
+            <p><strong>Input:</strong> Read nonnegative integers up to 999,999,999,999,999 until end of file. Zero is a normal case.</p>
+            <p><strong>Output:</strong> For each input, print the 1-based case number right-aligned in a field of width four, then a period and the converted value. Put one space before each number or unit.</p>
+            <a href="https://cpe.mcu.edu.tw/cpe/problemPdf/10101.pdf" target="_blank" rel="noopener">Original problem statement</a>
+          </div></details>
+        </section>
+        <p class="source-line">第 7 週講義，第 16 頁 · CPE 出題紀錄 2018-12-18<a href="https://cpe.mcu.edu.tw/cpe/problemPdf/10101.pdf" target="_blank" rel="noopener">英文原題</a></p>
+        <nav class="pager" aria-label="前後題"><a class="prev" href="#uva-299" data-question="uva-299"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg><span><small>上一題</small>火車車廂交換</span></a><a class="next" href="#uva-10035" data-question="uva-10035"><span><small>下一題</small>直式加法進位次數</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6l6 6-6 6"/></svg></a></nav>
       </article>
-      <article class="problem" id="uva-10035" aria-labelledby="title-10035">
-        <header class="problem-head">
-          <div><p class="label">UVa 10035</p><h3 id="title-10035">Primary Arithmetic</h3></div>
-          <span class="tag">CPE 2023-03-21</span>
+      <article class="problem" id="uva-10035" data-lab="7" aria-labelledby="title-10035">
+        <header>
+          <p class="topic">UVa 10035 · 個位數、傳遞 carry</p>
+          <h1 class="problem-title" id="title-10035" tabindex="-1">直式加法進位次數</h1>
+          <p class="english-name" lang="en">Primary Arithmetic</p>
+          <p class="lead">模擬兩個非負整數的直式加法。每一欄的和到 10 或以上，就會向左進位一次。題目要的是總進位次數。</p>
         </header>
-        <p class="prompt">Count the carries that occur during ordinary decimal addition. Work from the units column toward the left, passing a carry of 1 to the next column whenever the current column totals 10 or more.</p>
-        <div class="panels">
-          <section><h4>Input</h4><p>Each line contains two nonnegative decimal integers of fewer than 10 digits. Stop when both numbers are 0. A single zero operand is valid.</p></section>
-          <section><h4>Output</h4><p>For zero carries print No carry operation. For exactly one print 1 carry operation. For C &gt; 1 print C carry operations. Preserve the punctuation.</p></section>
-        </div>
-        <p class="idea"><strong>Key idea:</strong> Add one decimal column at a time, carrying a 1 into the next column when needed.</p>
-        <ol class="method"><li>Read the current digit of each operand with % 10. Add the carry from the column to the right.</li><li>The new carry is 1 if the column sum is at least 10; otherwise it is 0. Count the new carry, then remove both processed digits with / 10.</li><li>Use the singular output for one carry and the plural output for two or more.</li></ol>
-        <p class="watch"><strong>Watch for:</strong> Use the exact output text for zero, one, and several carries. A line with just one zero operand is still a case.</p>
-        <section class="trace">
-          <h4>Worked example</h4>
-          <div class="table-wrap"><table aria-label="Worked example for UVa 10035"><thead><tr><th scope="col">Column in 95 + 7</th><th scope="col">Digit sum</th><th scope="col">New carry</th><th scope="col">Count</th></tr></thead><tbody><tr><td>Units</td><td>5 + 7 + 0 = 12</td><td>1</td><td>1</td></tr><tr><td>Tens</td><td>9 + 0 + 1 = 10</td><td>1</td><td>2</td></tr></tbody></table></div>
+        <dl class="contract">
+          <div><dt>輸入</dt><dd>每行兩個少於 10 位的非負整數。只有 <code>0 0</code> 同時出現才結束。</dd></div>
+          <div><dt>輸出</dt><dd>零次印 <code>No carry operation.</code>；一次印 <code>1 carry operation.</code>；兩次以上印 <code>C carry operations.</code>。</dd></div>
+        </dl>
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
+          <ol class="steps"><li>每組先設 <code>carry = 0</code> 和 <code>count = 0</code>。用 <code>a % 10</code> 和 <code>b % 10</code> 取得目前兩個個位數。</li><li>當前欄的總和是「兩個位數＋右邊傳來的 <code>carry</code>」。總和至少是 10，就把新 <code>carry</code> 設為 1，並把 <code>count</code> 加 1；否則新 <code>carry</code> 是 0。</li><li>把兩個數都除以 10 去掉處理完的那一位。只要任一個數仍有位數，就要繼續；比較短的數缺位時，它的個位數就是 0。</li></ol>
+        </section>
+        <section class="worked" aria-labelledby="example-10035">
+          <div class="worked-head"><h2 id="example-10035"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>95＋7 有兩次進位</p></div>
+          <div class="table-wrap"><table aria-labelledby="example-10035"><thead><tr><th scope="col">欄位</th><th scope="col">取到的兩個位數</th><th scope="col">右邊傳來</th><th scope="col">本欄加總</th><th scope="col">累計次數</th></tr></thead><tbody><tr><td>個位</td><td>5、7</td><td>0</td><td>12，向左進位</td><td>1</td></tr><tr><td>十位</td><td>9、0</td><td>1</td><td>10，向左進位</td><td>2</td></tr></tbody></table></div>
         </section>
         <div class="samples">
-          <div><h4>Sample input</h4><pre>123 456
+          <div><h3 class="sample-label">範例輸入</h3><pre>123 456
 555 555
 123 594
 0 0</pre></div>
-          <div><h4>Sample output</h4><pre>No carry operation.
+          <div><h3 class="sample-label">範例輸出</h3><pre lang="en">No carry operation.
 3 carry operations.
 1 carry operation.</pre></div>
         </div>
-        <details><summary>View C++ reference solution</summary><pre><code>#include &lt;iostream&gt;
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">03</span>容易錯在哪</h2>
+          <ul class="pitfalls"><li><code>95 + 7</code> 的十位是 9＋0＋1，最後的 1 是個位傳來的進位，不能漏掉。</li><li>最高位向左進位已在該欄被計數；新出現的最高位數字 1 不會再多算一次。單數、複數與句點照題目印。</li></ul>
+        </section>
+        <section class="block" aria-label="程式與英文題目">
+          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 int main() {
@@ -659,50 +889,176 @@ int main() {
         else if (count == 1) cout &lt;&lt; &quot;1 carry operation.\n&quot;;
         else cout &lt;&lt; count &lt;&lt; &quot; carry operations.\n&quot;;
     }
-}</code></pre></details>
-        <p class="sources">Class handout: Lab 7, page 23. <a href="https://onlinejudge.org/external/100/10035.pdf" target="_blank" rel="noopener">Original English statement</a></p>
+}</code></pre></div></details>
+          <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
+            <p>Count the carries that occur during ordinary decimal addition. Work from the units column toward the left, passing a carry of 1 to the next column whenever the current column totals 10 or more.</p>
+            <p><strong>Input:</strong> Each line contains two nonnegative decimal integers of fewer than 10 digits. Stop when both numbers are 0. A single zero operand is valid.</p>
+            <p><strong>Output:</strong> For zero carries print No carry operation. For exactly one print 1 carry operation. For C &gt; 1 print C carry operations. Preserve the punctuation.</p>
+            <a href="https://onlinejudge.org/external/100/10035.pdf" target="_blank" rel="noopener">Original problem statement</a>
+          </div></details>
+        </section>
+        <p class="source-line">第 7 週講義，第 23 頁 · CPE 出題紀錄 2023-03-21<a href="https://onlinejudge.org/external/100/10035.pdf" target="_blank" rel="noopener">英文原題</a></p>
+        <nav class="pager" aria-label="前後題"><a class="prev" href="#uva-10101" data-question="uva-10101"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg><span><small>上一題</small>孟加拉數字表示法</span></a><a class="next" href="#uva-10071" data-question="uva-10071"><span><small>下一題</small>等加速度下的位移</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6l6 6-6 6"/></svg></a></nav>
       </article>
-    </section>
-    <section id="lab-8" aria-labelledby="lab-8-title">
-      <header class="lab-header"><p class="label">LAB 8</p><h2 id="lab-8-title">Physics and arithmetic</h2></header>
-      <article class="problem" id="uva-10071" aria-labelledby="title-10071">
-        <header class="problem-head">
-          <div><p class="label">UVa 10071</p><h3 id="title-10071">Back to High School Physics</h3></div>
-          <span class="tag">CPE 2017-12-19</span>
+      <article class="problem" id="uva-10071" data-lab="8" aria-labelledby="title-10071">
+        <header>
+          <p class="topic">UVa 10071 · 中點速度就是平均速度</p>
+          <h1 class="problem-title" id="title-10071" tabindex="-1">等加速度下的位移</h1>
+          <p class="english-name" lang="en">Back to High School Physics</p>
+          <p class="lead">已知粒子做等加速度運動，在時間 <code>t</code> 的速度是 <code>v</code>。求從時間 0 到時間 <code>2t</code> 的位移，位移有正負方向。</p>
         </header>
-        <p class="prompt">A particle moves with constant acceleration. Its velocity at time t is v. Determine its signed displacement from time 0 to time 2t.</p>
-        <div class="panels">
-          <section><h4>Input</h4><p>Read pairs v and t until end of file, where −100 ≤ v ≤ 100 and 0 ≤ t ≤ 200. A pair of zeros is a valid case.</p></section>
-          <section><h4>Output</h4><p>Print the displacement as a single integer for each input pair.</p></section>
-        </div>
-        <p class="idea"><strong>Key idea:</strong> Multiply the midpoint velocity v by the full time 2t.</p>
-        <ol class="method"><li>With constant acceleration, the velocity at the midpoint t equals the average velocity over the interval from 0 to 2t.</li><li>Displacement equals average velocity times elapsed time, so calculate 2 * v * t.</li><li>Process all pairs to EOF, including zero and negative values.</li></ol>
-        <p class="watch"><strong>Watch for:</strong> The formula also works for a negative v or t = 0. Even 0 0 is a normal input line.</p>
-        <section class="trace">
-          <h4>Worked example</h4>
-          <div class="table-wrap"><table aria-label="Worked example for UVa 10071"><thead><tr><th scope="col">v</th><th scope="col">t</th><th scope="col">2 × v × t</th></tr></thead><tbody><tr><td>5</td><td>12</td><td>120</td></tr><tr><td>−10</td><td>3</td><td>−60</td></tr><tr><td>7</td><td>0</td><td>0</td></tr></tbody></table></div>
+        <dl class="contract">
+          <div><dt>輸入</dt><dd>每行兩個整數 <code>v t</code>，−100 ≤ v ≤ 100，0 ≤ t ≤ 200；讀到 EOF。</dd></div>
+          <div><dt>輸出</dt><dd>每組印一行整數位移。</dd></div>
+        </dl>
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
+          <ol class="steps"><li>要算的是一整段時間 <code>2t</code>。題目給的速度 <code>v</code> 正好出現在這段時間的中點 <code>t</code>。</li><li>等加速度代表速度隨時間線性變化，所以整段的平均速度等於中點的速度。也可以想成速度對時間的直線圖，兩端速度的平均值會落在中間。</li><li>用「位移＝平均速度 × 經過時間」，直接算 <code>2 * v * t</code>，不必知道初速度或加速度。</li></ol>
+        </section>
+        <section class="worked" aria-labelledby="example-10071">
+          <div class="worked-head"><h2 id="example-10071"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>每組都直接代入 2 × v × t</p></div>
+          <div class="table-wrap"><table aria-labelledby="example-10071"><thead><tr><th scope="col">v</th><th scope="col">t</th><th scope="col">代入</th><th scope="col">位移</th></tr></thead><tbody><tr><td>5</td><td>12</td><td>2 × 5 × 12</td><td>120</td></tr><tr><td>−10</td><td>3</td><td>2 × (−10) × 3</td><td>−60</td></tr><tr><td>7</td><td>0</td><td>2 × 7 × 0</td><td>0</td></tr></tbody></table></div>
         </section>
         <div class="samples">
-          <div><h4>Sample input</h4><pre>0 0
+          <div><h3 class="sample-label">範例輸入</h3><pre>0 0
 5 12</pre></div>
-          <div><h4>Sample output</h4><pre>0
+          <div><h3 class="sample-label">範例輸出</h3><pre lang="en">0
 120</pre></div>
         </div>
-        <details><summary>View C++ reference solution</summary><pre><code>#include &lt;iostream&gt;
+        <section class="block">
+          <h2 class="section-title"><span class="section-number" aria-hidden="true">03</span>容易錯在哪</h2>
+          <ul class="pitfalls"><li>這裡是位移（displacement），速度為負時可以印負數，不能取絕對值。</li><li><code>0 0</code> 要正常印 0，這題讀到 EOF 才停止。</li></ul>
+        </section>
+        <section class="block" aria-label="程式與英文題目">
+          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 int main() {
     int v, t;
     while (cin &gt;&gt; v &gt;&gt; t) cout &lt;&lt; 2 * v * t &lt;&lt; &#x27;\n&#x27;;
-}</code></pre></details>
-        <p class="sources">Class handout: Lab 8, page 2. <a href="https://onlinejudge.org/external/100/10071.pdf" target="_blank" rel="noopener">Original English statement</a></p>
+}</code></pre></div></details>
+          <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
+            <p>A particle moves with constant acceleration. Its velocity at time t is v. Determine its signed displacement from time 0 to time 2t.</p>
+            <p><strong>Input:</strong> Read pairs v and t until end of file, where −100 ≤ v ≤ 100 and 0 ≤ t ≤ 200. A pair of zeros is a valid case.</p>
+            <p><strong>Output:</strong> Print the displacement as a single integer for each input pair.</p>
+            <a href="https://onlinejudge.org/external/100/10071.pdf" target="_blank" rel="noopener">Original problem statement</a>
+          </div></details>
+        </section>
+        <p class="source-line">第 8 週講義，第 2 頁 · CPE 出題紀錄 2017-12-19<a href="https://onlinejudge.org/external/100/10071.pdf" target="_blank" rel="noopener">英文原題</a></p>
+        <nav class="pager" aria-label="前後題"><a class="prev" href="#uva-10035" data-question="uva-10035"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 6l-6 6 6 6"/></svg><span><small>上一題</small>直式加法進位次數</span></a></nav>
       </article>
-    </section>
+    </main>
   </div>
-  <footer>
-    All 13 problems come from Labs 5–8. <a href="https://cpe.mcu.edu.tw/cpe/test_data/problems" target="_blank" rel="noopener">CPE archive</a> · <a href="#overview">Back to top</a>
-  </footer>
 </div>
-</main>
+<script>
+(() => {
+  const articles = [...document.querySelectorAll("article.problem")];
+  if (!articles.length) return;
+  const byId = new Map(articles.map((article, i) => [article.id, i]));
+  const catalog = document.getElementById("catalog");
+  const catalogNav = catalog.querySelector("nav");
+  const reader = document.getElementById("reader");
+  const open = document.getElementById("open-toc");
+  const close = document.getElementById("close-toc");
+  const scrim = document.getElementById("scrim");
+  const prev = document.getElementById("go-prev");
+  const next = document.getElementById("go-next");
+  const narrow = matchMedia("(max-width: 760px)");
+  let active = -1;
+
+  function selectedIndex() {
+    const hash = location.hash.slice(1);
+    if (hash === "lesson" && active >= 0) return active;
+    if (byId.has(hash)) return byId.get(hash);
+    if (/^lab-[5-8]$/.test(hash)) {
+      const position = articles.findIndex(article => article.dataset.lab === hash.slice(4));
+      if (position >= 0) return position;
+    }
+    return 0;
+  }
+  function showMenu(visible, focus = false) {
+    const enabled = visible && narrow.matches;
+    catalog.classList.toggle("open", enabled);
+    open.setAttribute("aria-expanded", String(enabled));
+    scrim.hidden = !enabled;
+    reader.inert = enabled;
+    document.body.classList.toggle("menu-open", enabled);
+    if (enabled) close.focus();
+    else if (focus) open.focus();
+  }
+  function setNeighbor(link, i) {
+    if (i < 0 || i >= articles.length) {
+      link.removeAttribute("href");
+      link.removeAttribute("data-question");
+      link.setAttribute("aria-disabled", "true");
+    } else {
+      const id = articles[i].id;
+      link.href = "#" + id;
+      link.dataset.question = id;
+      link.removeAttribute("aria-disabled");
+    }
+  }
+  function render(i, focus = false) {
+    if (i < 0 || i >= articles.length) return;
+    if (active !== i) {
+      active = i;
+      for (const [index, article] of articles.entries()) article.hidden = index !== i;
+      for (const link of catalogNav.querySelectorAll("a")) {
+        if (link.dataset.question === articles[i].id) link.setAttribute("aria-current", "page");
+        else link.removeAttribute("aria-current");
+      }
+      document.getElementById("current-week").textContent = "第 " + articles[i].dataset.lab + " 週";
+      document.getElementById("current-count").textContent = String(i + 1).padStart(2, "0") + " / " + articles.length;
+      setNeighbor(prev, i - 1);
+      setNeighbor(next, i + 1);
+      document.title = articles[i].querySelector("h1").textContent + " · CPE 期中複習";
+    }
+    if (focus) {
+      showMenu(false);
+      window.scrollTo({top:0, behavior:"instant"});
+      articles[i].querySelector("h1").focus({preventScroll:true});
+    }
+    const link = catalogNav.querySelector("[aria-current]");
+    if (link && link.getClientRects().length) {
+      const item = link.getBoundingClientRect();
+      const viewport = catalogNav.getBoundingClientRect();
+      if (item.bottom > viewport.bottom) catalogNav.scrollTop += item.bottom - viewport.bottom + 8;
+      else if (item.top < viewport.top) catalogNav.scrollTop += item.top - viewport.top - 8;
+    }
+  }
+  document.addEventListener("click", event => {
+    const link = event.target.closest("a[data-question]");
+    if (!link || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
+    const i = byId.get(link.dataset.question);
+    if (i === undefined) return;
+    event.preventDefault();
+    const hash = "#" + articles[i].id;
+    if (location.hash !== hash) history.pushState(null, "", hash);
+    render(i, true);
+  });
+  window.addEventListener("hashchange", () => {
+    if (location.hash !== "#lesson" && selectedIndex() !== active) render(selectedIndex(), true);
+  });
+  window.addEventListener("popstate", () => {
+    if (selectedIndex() !== active) render(selectedIndex(), true);
+  });
+  open.addEventListener("click", () => showMenu(true));
+  close.addEventListener("click", () => showMenu(false, true));
+  scrim.addEventListener("click", () => showMenu(false, true));
+  narrow.addEventListener("change", () => showMenu(false));
+  document.addEventListener("keydown", event => {
+    if (!catalog.classList.contains("open")) return;
+    if (event.key === "Escape") showMenu(false, true);
+    if (event.key === "Tab") {
+      const first = catalog.querySelector(".brand");
+      const last = catalogNav.querySelectorAll("a")[articles.length - 1];
+      if (event.shiftKey && document.activeElement === first) {event.preventDefault();last?.focus();}
+      else if (!event.shiftKey && document.activeElement === last) {event.preventDefault();first.focus();}
+    }
+  });
+  document.documentElement.classList.add("interactive");
+  render(selectedIndex());
+})();
+</script>
 </body>
 </html>
