@@ -92,6 +92,7 @@ pre code{font:inherit;overflow-wrap:normal}
 .fold summary:hover{background:var(--soft)}
 .fold-body{padding:0 16px 16px;font-size:.92rem}
 .fold-body p+p{margin-top:8px}
+.solution-source{margin:0 0 10px;color:var(--muted);font-size:.82rem}
 .fold-body a{display:inline-block;margin-top:8px}
 .fold pre{background:var(--code);color:var(--code-text);border:0;border-radius:6px}
 .source-line{margin-top:16px;font-size:.79rem;color:var(--muted)}
@@ -190,11 +191,11 @@ pre code{font:inherit;overflow-wrap:normal}
         </dl>
         <section class="block">
           <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
-          <ol class="steps"><li>用 <code>while (cin &gt;&gt; a &gt;&gt; b)</code> 同時讀兩個值。只有成功讀到完整一組，才會進入迴圈。</li><li>比較 <code>a</code> 和 <code>b</code>，用較大的減去較小的。程式裡的 <code>a &gt;= b ? a - b : b - a</code> 意思就是「條件成立用左邊，否則用右邊」。</li><li>用 <code>long long</code> 存兩個人數及差值。2³² 是 4,294,967,296，超過常見 32 位元 <code>int</code> 的正數上限。</li></ol>
+          <ol class="steps"><li>用 <code>while (cin &gt;&gt; a &gt;&gt; b)</code> 同時讀兩個值。只有成功讀到完整一組，才會進入迴圈。</li><li>先算 <code>a - b</code>，再用 <code>abs(a - b)</code> 取絕對值。例如 <code>10 - 14</code> 得到 −4，<code>abs(-4)</code> 就是 4。老師引入 <code>&lt;cstdlib&gt;</code> 來使用 <code>abs</code>。</li><li>用 <code>long long</code> 存兩個人數。2³² 是 4,294,967,296，超過常見 32 位元 <code>int</code> 的正數上限。</li></ol>
         </section>
         <section class="worked" aria-labelledby="example-10055">
-          <div class="worked-head"><h2 id="example-10055"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>先比較，再相減</p></div>
-          <div class="table-wrap"><table aria-labelledby="example-10055"><thead><tr><th scope="col">第一個數</th><th scope="col">第二個數</th><th scope="col">選哪個式子</th><th scope="col">輸出</th></tr></thead><tbody><tr><td>14</td><td>10</td><td>14 − 10</td><td>4</td></tr><tr><td>10</td><td>14</td><td>14 − 10</td><td>4</td></tr><tr><td>123</td><td>123</td><td>123 − 123</td><td>0</td></tr></tbody></table></div>
+          <div class="worked-head"><h2 id="example-10055"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>先相減，再用 abs 取絕對值</p></div>
+          <div class="table-wrap"><table aria-labelledby="example-10055"><thead><tr><th scope="col">第一個數</th><th scope="col">第二個數</th><th scope="col">abs 裡面算出多少</th><th scope="col">輸出</th></tr></thead><tbody><tr><td>14</td><td>10</td><td>14 − 10</td><td>4</td></tr><tr><td>10</td><td>14</td><td>10 − 14</td><td>4</td></tr><tr><td>123</td><td>123</td><td>123 − 123</td><td>0</td></tr></tbody></table></div>
         </section>
         <div class="samples">
           <div><h3 class="sample-label">範例輸入</h3><pre>10 12
@@ -207,14 +208,17 @@ pre code{font:inherit;overflow-wrap:normal}
           <ul class="pitfalls"><li><code>10 14</code> 和 <code>14 10</code> 都應印 4；只寫 <code>a - b</code> 會在其中一組印出負數。</li><li><code>0 0</code> 也是一筆資料，應印 0。EOF 指的是沒有更多輸入，不是讀到零。</li></ul>
         </section>
         <section class="block" aria-label="程式與英文題目">
-          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
+          <details class="fold"><summary>老師的 C++ 參考解</summary><div class="fold-body"><p class="solution-source">第 5 週講義，第 5 頁</p><pre><code>#include &lt;iostream&gt;
+#include &lt;cstdlib&gt;
+
 using namespace std;
 
 int main() {
     long long a, b;
-    while (cin &gt;&gt; a &gt;&gt; b) {
-        cout &lt;&lt; (a &gt;= b ? a - b : b - a) &lt;&lt; &#x27;\n&#x27;;
+    while(cin&gt;&gt;a&gt;&gt;b){
+        cout&lt;&lt;abs(a-b)&lt;&lt;endl;
     }
+    return 0;
 }</code></pre></div></details>
           <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
             <p>Given the sizes of two armies in either order, find the absolute difference between them.</p>
@@ -239,7 +243,7 @@ int main() {
         </dl>
         <section class="block">
           <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
-          <ol class="steps"><li>原本買的 <code>N</code> 瓶全部喝完後，手上有 <code>N</code> 個空瓶。</li><li>每換 1 瓶要交 3 個空瓶，喝完又得到 1 個空瓶，所以一輪實際消耗 2 個。只要空瓶足夠，就一直換。</li><li>如果最後剛好剩 2 個，借 1 個湊成 3 個再換。喝完後剩下的 1 個還給對方，借瓶就還清了。</li><li>因此最多多喝 <code>N / 2</code> 瓶，總數是 <code>N + N / 2</code>。這裡兩邊都是整數，<code>9 / 2</code> 的結果是 4。</li></ol>
+          <ol class="steps"><li>原本買的 <code>N</code> 瓶全部喝完後，手上有 <code>N</code> 個空瓶。</li><li>每換 1 瓶要交 3 個空瓶，喝完又得到 1 個空瓶，所以一輪實際消耗 2 個。只要空瓶足夠，就一直換。</li><li>如果最後剛好剩 2 個，借 1 個湊成 3 個再換。喝完後剩下的 1 個還給對方，借瓶就還清了。</li><li>老師把買來的瓶數存為 <code>n</code>。每輪用掉 2 個空瓶，最多多喝 <code>n / 2</code> 瓶，所以程式直接印 <code>n + n / 2</code>。整數除法會捨去小數，<code>9 / 2</code> 的結果是 4。</li></ol>
         </section>
         <section class="worked" aria-labelledby="example-11150">
           <div class="worked-head"><h2 id="example-11150"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>買 8 瓶時，最後可以喝到 12 瓶</p></div>
@@ -256,12 +260,17 @@ int main() {
           <ul class="pitfalls"><li>只剩 1 個空瓶時，借 2 個換完只會拿回 1 個，還不清，不能再多喝。</li><li>答案要加上最開始買的 <code>N</code> 瓶；不能只印換到的瓶數。</li></ul>
         </section>
         <section class="block" aria-label="程式與英文題目">
-          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
+          <details class="fold"><summary>老師的 C++ 參考解</summary><div class="fold-body"><p class="solution-source">第 5 週講義，第 11 頁</p><pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 int main() {
     int n;
-    while (cin &gt;&gt; n) cout &lt;&lt; n + n / 2 &lt;&lt; &#x27;\n&#x27;;
+
+    while (cin &gt;&gt; n) {
+        cout &lt;&lt; n + n / 2 &lt;&lt; endl;
+    }
+
+    return 0;
 }</code></pre></div></details>
           <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
             <p>You buy N bottles of cola. The store trades three empty bottles for one full bottle. You may borrow empties if you repay them. Find the maximum number of bottles you can drink.</p>
@@ -286,7 +295,7 @@ int main() {
         </dl>
         <section class="block">
           <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
-          <ol class="steps"><li>當 <code>n &gt;= 10</code>，代表還有兩位以上，需要再做一輪加總。每輪先設 <code>total = 0</code>。</li><li>用 <code>n % 10</code> 取得最右一位；例如 <code>9875 % 10</code> 得到 5。再用 <code>n /= 10</code> 去掉那一位，9875 變成 987。</li><li>一直拆到 <code>n == 0</code>，再把 <code>total</code> 放回 <code>n</code> 開下一輪。這就是為什麼要用另一個變數累加：<code>n</code> 正在被拆掉。</li><li>剩下 1 到 9 時停止，直接印出結果。輸入一開始就是一位數，也直接印。</li></ol>
+          <ol class="steps"><li>當 <code>n &gt;= 10</code>，代表還有兩位以上，需要再做一輪加總。每輪先設 <code>sum = 0</code>。</li><li>用 <code>n % 10</code> 取得最右一位；例如 <code>9875 % 10</code> 得到 5。再用 <code>n /= 10</code> 去掉那一位，9875 變成 987。</li><li>一直拆到 <code>n == 0</code>，再把 <code>sum</code> 放回 <code>n</code> 開下一輪。<code>n</code> 會一路被除到 0，<code>sum</code> 則保留這輪加出來的總和。</li><li>剩下 1 到 9 時停止，直接印出結果。輸入一開始就是一位數，也直接印。</li></ol>
         </section>
         <section class="worked" aria-labelledby="example-11332">
           <div class="worked-head"><h2 id="example-11332"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>9875 經過三輪後變成 2</p></div>
@@ -303,24 +312,28 @@ int main() {
         </div>
         <section class="block">
           <h2 class="section-title"><span class="section-number" aria-hidden="true">03</span>容易錯在哪</h2>
-          <ul class="pitfalls"><li>每進入新一輪要重設 <code>total</code>。例如上一輪累加到 29，下一輪要從 0 開始加 9 和 2。</li><li>拆位時從右到左，但加法的順序不影響總和。</li></ul>
+          <ul class="pitfalls"><li>每進入新一輪要重設 <code>sum</code>。例如上一輪累加到 29，下一輪要從 0 開始加 9 和 2。</li><li>拆位時從右到左，但加法的順序不影響總和。</li></ul>
         </section>
         <section class="block" aria-label="程式與英文題目">
-          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
+          <details class="fold"><summary>老師的 C++ 參考解</summary><div class="fold-body"><p class="solution-source">第 5 週講義，第 16 頁。講義截圖少了結束 <code>main</code> 的 <code>}</code>，此處已補上。</p><pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 int main() {
-    long long n;
+    int n;
+
     while (cin &gt;&gt; n &amp;&amp; n != 0) {
         while (n &gt;= 10) {
-            int total = 0;
+            int sum = 0;
+
             while (n &gt; 0) {
-                total += n % 10;
+                sum += n % 10;
                 n /= 10;
             }
-            n = total;
+
+            n = sum;
         }
-        cout &lt;&lt; n &lt;&lt; &#x27;\n&#x27;;
+
+        cout &lt;&lt; n &lt;&lt; endl;
     }
 }</code></pre></div></details>
           <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
@@ -346,7 +359,7 @@ int main() {
         </dl>
         <section class="block">
           <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
-          <ol class="steps"><li>先讀 <code>T</code>，再用外層迴圈逐組讀 <code>a</code> 和 <code>b</code>。每組的總和要重新設成 0。</li><li>用內層迴圈從 <code>a</code> 走到 <code>b</code>，條件寫 <code>x &lt;= b</code>，這樣才會檢查右端點。</li><li>用 <code>x % 2 != 0</code> 判斷奇數；只有奇數加進總和。最後印出測資編號與結果。</li></ol>
+          <ol class="steps"><li>先讀 <code>T</code>，把 <code>Case</code> 設為 1。<code>while (T--)</code> 用遞減前的值判斷是否還有下一組。每組讀入 <code>a</code> 和 <code>b</code>，並把 <code>sum</code> 從 0 開始算。</li><li>用 <code>for</code> 讓 <code>i</code> 從 <code>a</code> 走到 <code>b</code>。條件 <code>i &lt;= b</code> 讓右端點也被檢查。</li><li>若 <code>i % 2 != 0</code>，<code>i</code> 就是奇數，做 <code>sum += i</code>。整組算完才印 <code>Case</code> 和 <code>sum</code>，然後用 <code>Case++</code> 準備下一組。</li></ol>
         </section>
         <section class="worked" aria-labelledby="example-10783">
           <div class="worked-head"><h2 id="example-10783"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>從 3 加到 7，只加奇數</p></div>
@@ -366,20 +379,32 @@ Case 2: 8</pre></div>
           <ul class="pitfalls"><li>如果 <code>a == b</code>，仍要檢查一次。例：<code>[7, 7]</code> 的答案是 7，<code>[8, 8]</code> 是 0。</li><li>不要把「奇數和」寫成「奇數有幾個」。例如 3、5、7 要加成 15。</li></ul>
         </section>
         <section class="block" aria-label="程式與英文題目">
-          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
+          <details class="fold"><summary>老師的 C++ 參考解</summary><div class="fold-body"><p class="solution-source">第 5 週講義，第 21 頁</p><pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 int main() {
     int T;
-    if (!(cin &gt;&gt; T)) return 0;
-    for (int k = 1; k &lt;= T; ++k) {
-        int a, b, total = 0;
+    cin &gt;&gt; T;
+
+    int Case = 1;
+
+    while (T--) {
+        int a, b;
+        int sum = 0;
+
         cin &gt;&gt; a &gt;&gt; b;
-        for (int x = a; x &lt;= b; ++x) {
-            if (x % 2 != 0) total += x;
+
+        for (int i = a; i &lt;= b; i++) {
+            if (i % 2 != 0) {
+                sum += i;
+            }
         }
-        cout &lt;&lt; &quot;Case &quot; &lt;&lt; k &lt;&lt; &quot;: &quot; &lt;&lt; total &lt;&lt; &#x27;\n&#x27;;
+
+        cout &lt;&lt; &quot;Case &quot; &lt;&lt; Case &lt;&lt; &quot;: &quot; &lt;&lt; sum &lt;&lt; endl;
+        Case++;
     }
+
+    return 0;
 }</code></pre></div></details>
           <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
             <p>Write a program that adds all odd integers in the inclusive interval from a to b. Include an endpoint if it is odd.</p>
@@ -404,11 +429,11 @@ int main() {
         </dl>
         <section class="block">
           <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
-          <ol class="steps"><li>用 <code>bit = n % 2</code> 取得目前最右邊的二進位位元。因為餘數只會是 0 或 1，可直接用 <code>ones += bit</code> 來計數。</li><li><code>&#x27;0&#x27;</code> 是字元 0，跟整數 <code>0</code> 不一樣。<code>char(&#x27;0&#x27; + bit)</code> 把數字 0 或 1 變成可以放進字串的 <code>&#x27;0&#x27;</code> 或 <code>&#x27;1&#x27;</code>。</li><li>餘數先拿到的是低位，所以下一個餘數要加到字串前面：<code>binary = char(&#x27;0&#x27; + bit) + binary</code>。例如已有 <code>1</code>，下一個拿到 0，就變成 <code>01</code>。</li><li>再用 <code>n /= 2</code> 去掉這個位元。重複到 <code>n == 0</code>，這組字串就組完了。</li></ol>
+          <ol class="steps"><li>用 <code>int r = n % 2</code> 取得目前最右邊的二進位位元。<code>r</code> 只會是 0 或 1，只有 <code>r == 1</code> 時才做 <code>count++</code>。</li><li><code>'0'</code> 是字元 0。<code>char(r + '0')</code> 把數字 <code>r</code> 轉成可以接到字串的字元。<code>r</code> 是 0 時得到 <code>'0'</code>，是 1 時得到 <code>'1'</code>。</li><li>先取到的是低位，所以老師把每次取得的位元放在前面，寫成 <code>binary = char(r + '0') + binary</code>。例如已有 <code>1</code>，下一個取到 0 就變成 <code>01</code>。</li><li>用 <code>n /= 2</code> 去掉已經處理的位元。等 <code>n</code> 變成 0，印出 <code>binary</code> 和 <code>count</code>。</li></ol>
         </section>
         <section class="worked" aria-labelledby="example-10931">
           <div class="worked-head"><h2 id="example-10931"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>用 21 走一遍轉換</p></div>
-          <div class="table-wrap"><table aria-labelledby="example-10931"><thead><tr><th scope="col">本輪的 n</th><th scope="col">n % 2</th><th scope="col">插到前面後</th><th scope="col">目前 1 的個數</th><th scope="col">n / 2</th></tr></thead><tbody><tr><td>21</td><td>1</td><td>1</td><td>1</td><td>10</td></tr><tr><td>10</td><td>0</td><td>01</td><td>1</td><td>5</td></tr><tr><td>5</td><td>1</td><td>101</td><td>2</td><td>2</td></tr><tr><td>2</td><td>0</td><td>0101</td><td>2</td><td>1</td></tr><tr><td>1</td><td>1</td><td>10101</td><td>3</td><td>0</td></tr></tbody></table></div>
+          <div class="table-wrap"><table aria-labelledby="example-10931"><thead><tr><th scope="col">本輪的 n</th><th scope="col">r = n % 2</th><th scope="col">插到前面後</th><th scope="col">目前 1 的個數</th><th scope="col">n / 2</th></tr></thead><tbody><tr><td>21</td><td>1</td><td>1</td><td>1</td><td>10</td></tr><tr><td>10</td><td>0</td><td>01</td><td>1</td><td>5</td></tr><tr><td>5</td><td>1</td><td>101</td><td>2</td><td>2</td></tr><tr><td>2</td><td>0</td><td>0101</td><td>2</td><td>1</td></tr><tr><td>1</td><td>1</td><td>10101</td><td>3</td><td>0</td></tr></tbody></table></div>
         </section>
         <div class="samples">
           <div><h3 class="sample-label">範例輸入</h3><pre>10
@@ -419,27 +444,36 @@ The parity of 10101 is 3 (mod 2).</pre></div>
         </div>
         <section class="block">
           <h2 class="section-title"><span class="section-number" aria-hidden="true">03</span>容易錯在哪</h2>
-          <ul class="pitfalls"><li>最後要印 <code>ones</code>，不要先算 <code>ones % 2</code>。21 的輸出要印 3，即使 3 除以 2 的餘數是 1。</li><li>每組資料要清空 <code>binary</code>，並把 <code>ones</code> 重設成 0。</li></ul>
+          <ul class="pitfalls"><li>最後要印 <code>count</code>，不要先算 <code>count % 2</code>。21 的輸出要印 3，即使 3 除以 2 的餘數是 1。</li><li>每組資料要清空 <code>binary</code>，並把 <code>count</code> 重設成 0。</li></ul>
         </section>
         <section class="block" aria-label="程式與英文題目">
-          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
-#include &lt;string&gt;
+          <details class="fold"><summary>老師的 C++ 參考解</summary><div class="fold-body"><p class="solution-source">第 6 週講義，第 6 頁。老師使用的 <code>&lt;bits/stdc++.h&gt;</code> 是 GNU C++ 的標頭檔。</p><pre><code>#include &lt;bits/stdc++.h&gt;
 using namespace std;
 
 int main() {
-    long long n;
+    int n;
+
     while (cin &gt;&gt; n &amp;&amp; n != 0) {
-        string binary;
-        int ones = 0;
+        string binary = &quot;&quot;;
+        int count = 0;
+
         while (n &gt; 0) {
-            int bit = n % 2;
-            ones += bit;
-            binary = char(&#x27;0&#x27; + bit) + binary;
+            int r = n % 2;
+
+            if (r == 1) {
+                count++;
+            }
+
+            binary = char(r + &#x27;0&#x27;) + binary;
             n /= 2;
         }
-        cout &lt;&lt; &quot;The parity of &quot; &lt;&lt; binary &lt;&lt; &quot; is &quot; &lt;&lt; ones
-             &lt;&lt; &quot; (mod 2).\n&quot;;
+
+        cout &lt;&lt; &quot;The parity of &quot; &lt;&lt; binary
+             &lt;&lt; &quot; is &quot; &lt;&lt; count
+             &lt;&lt; &quot; (mod 2).&quot; &lt;&lt; endl;
     }
+
+    return 0;
 }</code></pre></div></details>
           <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
             <p>Convert each input integer to binary and count the 1 bits. The required sentence shows the full count before the literal text (mod 2), even when the count is greater than 1.</p>
@@ -464,7 +498,7 @@ int main() {
         </dl>
         <section class="block">
           <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
-          <ol class="steps"><li>從字串左邊開始，把第 0、2、4… 格的數字加起來，第 1、3、5… 格的數字減掉。<code>n[i] - &#x27;0&#x27;</code> 把字元轉回數字。</li><li>為什麼可行？10 和 −1 對 11 同餘，因為兩者相差 11。10 的次方對 11 就會在 1 和 −1 之間交替，所以展開每一位後，只要交錯加減就能判斷整除。</li><li>左邊或右邊起算可能讓整個結果變號，但不影響它能不能被 11 整除。最後只檢查 <code>sum % 11 == 0</code>。</li></ol>
+          <ol class="steps"><li>從字串左邊開始，把第 0、2、4… 格的數字加起來，第 1、3、5… 格的數字減掉。老師用 <code>i % 2 == 0</code> 來分辨這兩種索引。<code>n[i] - &#x27;0&#x27;</code> 把字元轉回數字。</li><li>為什麼可行？10 和 −1 對 11 同餘，因為兩者相差 11。10 的次方對 11 就會在 1 和 −1 之間交替，所以展開每一位後，只要交錯加減就能判斷整除。</li><li>左邊或右邊起算可能讓整個結果變號，但不影響它能不能被 11 整除。最後只檢查 <code>sum % 11 == 0</code>。</li></ol>
         </section>
         <section class="worked" aria-labelledby="example-10929">
           <div class="worked-head"><h2 id="example-10929"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>56958 的交錯總和是 11</p></div>
@@ -482,21 +516,31 @@ int main() {
           <ul class="pitfalls"><li>可以直接取餘數的是「各位數算出的小總和」。原數最多 1,000 位，不能先轉 <code>int</code> 或 <code>long long</code> 再做 <code>% 11</code>。</li><li>總和可能是 0 或負數；例如 −11 仍然能被 11 整除。別寫成 <code>sum == 11</code>。</li></ul>
         </section>
         <section class="block" aria-label="程式與英文題目">
-          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
-#include &lt;string&gt;
+          <details class="fold"><summary>老師的 C++ 參考解</summary><div class="fold-body"><p class="solution-source">第 6 週講義，第 12 頁。老師使用的 <code>&lt;bits/stdc++.h&gt;</code> 是 GNU C++ 的標頭檔。</p><pre><code>#include &lt;bits/stdc++.h&gt;
 using namespace std;
 
 int main() {
     string n;
+
     while (cin &gt;&gt; n &amp;&amp; n != &quot;0&quot;) {
         int sum = 0;
-        for (size_t i = 0; i &lt; n.size(); ++i) {
-            int digit = n[i] - &#x27;0&#x27;;
-            sum += (i % 2 == 0) ? digit : -digit;
+
+        for (int i = 0; i &lt; n.size(); i++) {
+            if (i % 2 == 0) {
+                sum += n[i] - &#x27;0&#x27;;
+            } else {
+                sum -= n[i] - &#x27;0&#x27;;
+            }
         }
-        cout &lt;&lt; n &lt;&lt; (sum % 11 == 0 ? &quot; is a multiple of 11.\n&quot;
-                                   : &quot; is not a multiple of 11.\n&quot;);
+
+        if (sum % 11 == 0) {
+            cout &lt;&lt; n &lt;&lt; &quot; is a multiple of 11.&quot; &lt;&lt; endl;
+        } else {
+            cout &lt;&lt; n &lt;&lt; &quot; is not a multiple of 11.&quot; &lt;&lt; endl;
+        }
     }
+
+    return 0;
 }</code></pre></div></details>
           <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
             <p>Determine whether each positive decimal integer is divisible by 11. An input value can be too large for an integer type.</p>
@@ -521,7 +565,7 @@ int main() {
         </dl>
         <section class="block">
           <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
-          <ol class="steps"><li>用 <code>string n</code> 存原數，再逐一用 <code>c - &#x27;0&#x27;</code> 加進 <code>sum</code>。1,000 位的第一次總和最多 9,000，所以這個總和用 <code>int</code> 就夠。</li><li>因為 10 除以 9 餘 1，每一位的位權都不影響對 9 的餘數。若 <code>sum % 9 != 0</code>，原數就不是 9 的倍數。</li><li>第一次把字串加總已算一輪，因此 <code>degree = 1</code>。如果 <code>sum</code> 仍有兩位以上，就用 <code>sum % 10</code> 取位數，加進新一輪的 <code>temp</code>，再把 <code>sum</code> 除以 10。</li><li>拆完時 <code>sum</code> 暫時會變 0，這時才執行 <code>sum = temp</code>，用新總和換掉舊數，再做一次 <code>++degree</code>。</li></ol>
+          <ol class="steps"><li>用 <code>string n</code> 存原數，再逐一用 <code>n[i] - &#x27;0&#x27;</code> 加進 <code>sum</code>。1,000 位的第一次總和最多 9,000，所以這個總和用 <code>int</code> 就夠。</li><li>因為 10 除以 9 餘 1，每一位的位權都不影響對 9 的餘數。若 <code>sum % 9 != 0</code>，原數就不是 9 的倍數。</li><li>第一次把字串加總已算一輪，因此 <code>degree = 1</code>。如果 <code>sum</code> 仍有兩位以上，就用 <code>sum % 10</code> 取位數，加進新一輪的 <code>temp</code>，再把 <code>sum</code> 除以 10。</li><li>拆完時 <code>sum</code> 暫時會變 0，這時才執行 <code>sum = temp</code>，用新總和換掉舊數，再做一次 <code>degree++</code>。</li></ol>
         </section>
         <section class="worked" aria-labelledby="example-10922">
           <div class="worked-head"><h2 id="example-10922"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>21 個 9，第一輪就已經算進 degree</p></div>
@@ -541,32 +585,41 @@ int main() {
           <ul class="pitfalls"><li>以 189 為例，<code>sum</code> 會走 189 → 18 → 1 → 0；<code>temp</code> 同時走 0 → 9 → 17 → 18。最後把 18 寫回 <code>sum</code>。</li><li>一次完整的加總才增加一次 degree；拆出三個位數，不是增加三次。每輪也要重新把 <code>temp</code> 設為 0。</li></ul>
         </section>
         <section class="block" aria-label="程式與英文題目">
-          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
-#include &lt;string&gt;
+          <details class="fold"><summary>老師的 C++ 參考解</summary><div class="fold-body"><p class="solution-source">第 6 週講義，第 18 頁。老師使用的 <code>&lt;bits/stdc++.h&gt;</code> 是 GNU C++ 的標頭檔。</p><pre><code>#include &lt;bits/stdc++.h&gt;
 using namespace std;
 
 int main() {
     string n;
+
     while (cin &gt;&gt; n &amp;&amp; n != &quot;0&quot;) {
         int sum = 0;
-        for (char c : n) sum += c - &#x27;0&#x27;;
-        if (sum % 9 != 0) {
-            cout &lt;&lt; n &lt;&lt; &quot; is not a multiple of 9.\n&quot;;
-            continue;
-        }
         int degree = 1;
-        while (sum &gt;= 10) {
-            int temp = 0;
-            while (sum &gt; 0) {
-                temp += sum % 10;
-                sum /= 10;
-            }
-            sum = temp;
-            ++degree;
+
+        for (int i = 0; i &lt; n.size(); i++) {
+            sum += n[i] - &#x27;0&#x27;;
         }
-        cout &lt;&lt; n &lt;&lt; &quot; is a multiple of 9 and has 9-degree &quot;
-             &lt;&lt; degree &lt;&lt; &quot;.\n&quot;;
+
+        if (sum % 9 != 0) {
+            cout &lt;&lt; n &lt;&lt; &quot; is not a multiple of 9.&quot; &lt;&lt; endl;
+        } else {
+            while (sum &gt;= 10) {
+                int temp = 0;
+
+                while (sum &gt; 0) {
+                    temp += sum % 10;
+                    sum /= 10;
+                }
+
+                sum = temp;
+                degree++;
+            }
+
+            cout &lt;&lt; n &lt;&lt; &quot; is a multiple of 9 and has 9-degree &quot;
+                 &lt;&lt; degree &lt;&lt; &quot;.&quot; &lt;&lt; endl;
+        }
     }
+
+    return 0;
 }</code></pre></div></details>
           <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
             <p>Determine whether a positive decimal integer is divisible by 9. For a multiple of 9, repeatedly replace it with the sum of its decimal digits and report how many rounds are needed to reach 9. The degree of 9 itself is 1.</p>
@@ -591,7 +644,7 @@ int main() {
         </dl>
         <section class="block">
           <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
-          <ol class="steps"><li>用 <code>cin.get(c)</code> 一次讀一個字元。跟 <code>cin &gt;&gt; c</code> 不同，這種寫法會保留空格和換行。</li><li>設 <code>opening = true</code>，意思是「下一個雙引號是開頭」。碰到雙引號時，按 <code>opening</code> 選擇要輸出哪種符號。</li><li>每處理完一個雙引號才做 <code>opening = !opening</code>。一般字元直接輸出，不改狀態。</li></ol>
+          <ol class="steps"><li>用 <code>cin.get(c)</code> 一次讀一個字元。跟 <code>cin &gt;&gt; c</code> 不同，這種寫法會保留空格和換行。</li><li>設 <code>flag = true</code>，意思是「下一個雙引號是開頭」。碰到雙引號時，按 <code>flag</code> 選擇要輸出哪種符號。</li><li>每處理完一個雙引號才做 <code>flag = !flag</code>。一般字元直接輸出，不改狀態。</li></ol>
         </section>
         <section class="worked" aria-labelledby="example-272">
           <div class="worked-head"><h2 id="example-272"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>跨行時，不會把關閉引號當成新的一對</p></div>
@@ -605,24 +658,30 @@ int main() {
         </div>
         <section class="block">
           <h2 class="section-title"><span class="section-number" aria-hidden="true">03</span>容易錯在哪</h2>
-          <ul class="pitfalls"><li>狀態要跨行保存。讀到換行不能把 <code>opening</code> 重設成 <code>true</code>。</li><li>程式用 <code>char(96)</code> 表示反引號；右邊的兩個單引號與兩個反引號是不同字元。</li></ul>
+          <ul class="pitfalls"><li>狀態要跨行保存。讀到換行不能把 <code>flag</code> 重設成 <code>true</code>。</li><li>老師直接輸出 <code>&quot;&#96;&#96;&quot;</code> 或 <code>&quot;''&quot;</code>。前者是兩個反引號，後者是兩個單引號。</li></ul>
         </section>
         <section class="block" aria-label="程式與英文題目">
-          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
+          <details class="fold"><summary>老師的 C++ 參考解</summary><div class="fold-body"><p class="solution-source">第 6 週講義，第 25 頁。老師使用的 <code>&lt;bits/stdc++.h&gt;</code> 是 GNU C++ 的標頭檔。</p><pre><code>#include &lt;bits/stdc++.h&gt;
 using namespace std;
 
 int main() {
-    bool opening = true;
     char c;
+    bool flag = true;
+
     while (cin.get(c)) {
         if (c == &#x27;&quot;&#x27;) {
-            if (opening) cout &lt;&lt; char(96) &lt;&lt; char(96);
-            else cout &lt;&lt; &quot;&#x27;&#x27;&quot;;
-            opening = !opening;
+            if (flag) {
+                cout &lt;&lt; &quot;``&quot;;
+            } else {
+                cout &lt;&lt; &quot;&#x27;&#x27;&quot;;
+            }
+            flag = !flag;
         } else {
             cout &lt;&lt; c;
         }
     }
+
+    return 0;
 }</code></pre></div></details>
           <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
             <p>Convert plain double quotation marks to TeX-style pairs. An opening quote becomes two grave accents; a closing quote becomes two apostrophes.</p>
@@ -647,7 +706,7 @@ int main() {
         </dl>
         <section class="block">
           <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
-          <ol class="steps"><li>單獨看一個起點。<code>n == 1</code> 時長度是 1；其他時候，長度等於「目前這一項」加上下一個數的長度。</li><li>區間迴圈從 <code>min(i, j)</code> 走到 <code>max(i, j)</code>（含端點）。每算完一個長度，就更新最大值。</li><li>不同起點可能走到同一段。例如 6 的序列後面會走到 5，就可以沿用 5 已經算好的長度。參考解用 <code>memo</code> 記錄小於 1,000,000 的長度，這叫記憶化（memoization）。</li><li>用 <code>long long</code> 存中間的 <code>n</code>。即使起點不到 1,000,000，做 <code>3 * n + 1</code> 後也可能變得很大。</li></ol>
+          <ol class="steps"><li>用 <code>a = min(i, j)</code> 和 <code>b = max(i, j)</code> 決定區間。從 <code>k = a</code> 走到 <code>b</code>，每個 <code>k</code> 都是一次新的起點。</li><li>每次先設 <code>long long n = k</code> 和 <code>count = 1</code>。起點本身就算一項。用 <code>long long</code> 是因為中間的 <code>3 * n + 1</code> 可能很大。</li><li>只要 <code>n != 1</code> 就繼續。偶數用 <code>n / 2</code>，奇數用 <code>3 * n + 1</code>，每得到一項就做 <code>count++</code>。</li><li>算完一個起點才做 <code>ans = max(ans, count)</code>。所有起點都算完後，印出原本的 <code>i</code>、<code>j</code> 和最大的 <code>ans</code>。</li></ol>
         </section>
         <section class="worked" aria-labelledby="example-100">
           <div class="worked-head"><h2 id="example-100"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>輸入 6 4，算區間 [4, 6]</p></div>
@@ -664,31 +723,38 @@ int main() {
           <ul class="pitfalls"><li>長度數的是序列裡的項數，開頭與最後的 1 都要算。例如 4 → 2 → 1 長度是 3。</li><li>調整順序只為了好跑迴圈；輸出 <code>6 4</code> 時，仍要印 <code>6 4 9</code>。</li></ul>
         </section>
         <section class="block" aria-label="程式與英文題目">
-          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;algorithm&gt;
-#include &lt;iostream&gt;
-#include &lt;vector&gt;
+          <details class="fold"><summary>老師的 C++ 參考解</summary><div class="fold-body"><p class="solution-source">第 7 週講義，第 7 頁</p><pre><code>#include &lt;iostream&gt;
+#include &lt;algorithm&gt;
 using namespace std;
 
-vector&lt;int&gt; memo(1000000);
-
-int cycle(long long n) {
-    if (n &lt; 1000000 &amp;&amp; memo[n]) return memo[n];
-    long long next = n % 2 ? 3 * n + 1 : n / 2;
-    int length = 1 + cycle(next);
-    if (n &lt; 1000000) memo[n] = length;
-    return length;
-}
-
 int main() {
-    memo[1] = 1;
     int i, j;
+
     while (cin &gt;&gt; i &gt;&gt; j) {
-        int best = 0;
-        for (int n = min(i, j); n &lt;= max(i, j); ++n) {
-            best = max(best, cycle(n));
+        int a = min(i, j);
+        int b = max(i, j);
+        int ans = 0;
+
+        for (int k = a; k &lt;= b; k++) {
+            long long n = k;
+            int count = 1;
+
+            while (n != 1) {
+                if (n % 2 == 0) {
+                    n = n / 2;
+                } else {
+                    n = 3 * n + 1;
+                }
+                count++;
+            }
+
+            ans = max(ans, count);
         }
-        cout &lt;&lt; i &lt;&lt; &#x27; &#x27; &lt;&lt; j &lt;&lt; &#x27; &#x27; &lt;&lt; best &lt;&lt; &#x27;\n&#x27;;
+
+        cout &lt;&lt; i &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt; &quot; &quot; &lt;&lt; ans &lt;&lt; endl;
     }
+
+    return 0;
 }</code></pre></div></details>
           <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
             <p>Start at n. Until reaching 1, replace an odd n with 3n + 1 and an even n with n / 2. The cycle length counts all terms, including the start and 1. Find the maximum cycle length over each inclusive interval.</p>
@@ -713,7 +779,7 @@ int main() {
         </dl>
         <section class="block">
           <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
-          <ol class="steps"><li>定義逆序對（inversion）：前面一節的號碼，比後面那一節大。它們不必相鄰。</li><li>交換相鄰且順序顛倒的一對，會剛好消掉一個逆序對。其他車廂都在這兩節的同一邊，所以它們的相對先後不受影響。</li><li>排好後逆序對數目是 0。只交換顛倒的相鄰車廂就能一次少一對，因此初始逆序對有幾個，最少就要換幾次。</li><li>用兩層迴圈枚舉 <code>i &lt; j</code>。只要 <code>a[i] &gt; a[j]</code>，答案就加 1。<code>L ≤ 50</code>，直接枚舉就夠。</li></ol>
+          <ol class="steps"><li>老師用泡沫排序（bubble sort）。每輪從左往右比較相鄰的 <code>a[j]</code> 和 <code>a[j + 1]</code>。只有左邊比較大時才交換，並做 <code>count++</code>。</li><li>交換時先用 <code>temp</code> 暫存左邊的號碼，再把右邊搬到左邊，最後把 <code>temp</code> 放到右邊。先存起來才能保留左邊原來的值。</li><li>每輪會把還沒排好的最大值推到右端，因此下一輪可以少檢查一格。老師用 <code>j &lt; n - 1 - i</code>，其中 <code>i</code> 是已完成的輪數。</li><li>逆序對是「大的在小的前面」的一對車廂。每交換一組順序顛倒的相鄰車廂，恰好消掉一個逆序對，其他車廂的相對順序不變。排好時逆序對歸零，所以這個 <code>count</code> 就是最少交換次數。</li></ol>
         </section>
         <section class="worked" aria-labelledby="example-299">
           <div class="worked-head"><h2 id="example-299"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>3 1 4 2 只要三次相鄰交換</p></div>
@@ -733,25 +799,41 @@ Optimal train swapping takes 6 swaps.</pre></div>
           <ul class="pitfalls"><li>逆序對不必相鄰；例如 <code>3 1 4 2</code> 裡的 3 和 2 也算一對。</li><li>沒有車廂或本來就排好，答案是 0。</li></ul>
         </section>
         <section class="block" aria-label="程式與英文題目">
-          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
-#include &lt;vector&gt;
+          <details class="fold"><summary>老師的 C++ 參考解</summary><div class="fold-body"><p class="solution-source">第 7 週講義，第 15 頁</p><pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 int main() {
-    int cases;
-    if (!(cin &gt;&gt; cases)) return 0;
-    while (cases--) {
+    int T;
+    cin &gt;&gt; T;
+
+    while (T--) {
         int n;
         cin &gt;&gt; n;
-        vector&lt;int&gt; a(n);
-        for (int &amp;x : a) cin &gt;&gt; x;
-        int inversions = 0;
-        for (int i = 0; i &lt; n; ++i)
-            for (int j = i + 1; j &lt; n; ++j)
-                if (a[i] &gt; a[j]) ++inversions;
-        cout &lt;&lt; &quot;Optimal train swapping takes &quot; &lt;&lt; inversions
-             &lt;&lt; &quot; swaps.\n&quot;;
+
+        int a[50];
+
+        for (int i = 0; i &lt; n; i++) {
+            cin &gt;&gt; a[i];
+        }
+
+        int count = 0;
+
+        for (int i = 0; i &lt; n - 1; i++) {
+            for (int j = 0; j &lt; n - 1 - i; j++) {
+                if (a[j] &gt; a[j + 1]) {
+                    int temp = a[j];
+                    a[j] = a[j + 1];
+                    a[j + 1] = temp;
+                    count++;
+                }
+            }
+        }
+
+        cout &lt;&lt; &quot;Optimal train swapping takes &quot;
+             &lt;&lt; count &lt;&lt; &quot; swaps.&quot; &lt;&lt; endl;
     }
+
+    return 0;
 }</code></pre></div></details>
           <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
             <p>Sort the numbered train carriages using only swaps of adjacent carriages. Report the smallest possible number of swaps.</p>
@@ -776,7 +858,7 @@ int main() {
         </dl>
         <section class="block">
           <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
-          <ol class="steps"><li>用 <code>long long</code> 存數字。拿一個單位做整數除法，商是這個單位有幾份，餘數留給下一個較小的單位。</li><li>先處理 <code>kuti</code>：如果 <code>n &gt;= 10000000</code>，先用同一個函式印商，再印 <code>kuti</code>，最後處理餘數。這就是遞迴（recursion），用同一個拆數規則處理更小的商。</li><li>接著依序處理 <code>lakh</code>、<code>hajar</code>、<code>shata</code>。商是 0 就跳過；小於 100 的尾數若非零，直接印。</li><li>用 <code>setw(4)</code> 只設定下一個輸出欄位的寬度，適合用在編號。原數是 0 時，在編號後明確印 <code>0</code>。</li></ol>
+          <ol class="steps"><li>用 <code>long long</code> 存數字。拿一個單位做整數除法，商是這個單位有幾份，餘數留給下一個較小的單位。</li><li>先處理 <code>kuti</code>：如果 <code>n &gt;= 10000000</code>，先呼叫 <code>bangla(n / 10000000)</code> 印出商，再印 <code>kuti</code>，最後處理餘數。這就是遞迴（recursion），用同一個拆數規則處理更小的商。</li><li>接著依序處理 <code>lakh</code>、<code>hajar</code>、<code>shata</code>。商是 0 就跳過；小於 100 的尾數若非零，直接印。</li><li>用 <code>setw(4)</code> 只設定下一個輸出欄位的寬度，適合用在編號。原數是 0 時，在編號後明確印 <code>0</code>。</li></ol>
         </section>
         <section class="worked" aria-labelledby="example-10101">
           <div class="worked-head"><h2 id="example-10101"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>23764 由大到小拆</p></div>
@@ -793,40 +875,54 @@ int main() {
           <ul class="pitfalls"><li>10¹⁴ 除以 10⁷ 後，商又是 10⁷，所以結果是 <code>1 kuti kuti</code>。只印一個 <code>kuti</code> 會少一層。</li><li>編號前的空格和句點是輸出的一部分；輸入 0 也不能當成結束。</li></ul>
         </section>
         <section class="block" aria-label="程式與英文題目">
-          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iomanip&gt;
-#include &lt;iostream&gt;
+          <details class="fold"><summary>老師的 C++ 參考解</summary><div class="fold-body"><p class="solution-source">第 7 週講義，第 22 頁</p><pre><code>#include &lt;iostream&gt;
+#include &lt;iomanip&gt;
 using namespace std;
 
-void printBangla(long long n) {
+void bangla(long long n) {
     if (n &gt;= 10000000) {
-        printBangla(n / 10000000);
+        bangla(n / 10000000);
         cout &lt;&lt; &quot; kuti&quot;;
         n %= 10000000;
     }
+
     if (n &gt;= 100000) {
-        cout &lt;&lt; &#x27; &#x27; &lt;&lt; n / 100000 &lt;&lt; &quot; lakh&quot;;
+        cout &lt;&lt; &quot; &quot; &lt;&lt; n / 100000 &lt;&lt; &quot; lakh&quot;;
         n %= 100000;
     }
+
     if (n &gt;= 1000) {
-        cout &lt;&lt; &#x27; &#x27; &lt;&lt; n / 1000 &lt;&lt; &quot; hajar&quot;;
+        cout &lt;&lt; &quot; &quot; &lt;&lt; n / 1000 &lt;&lt; &quot; hajar&quot;;
         n %= 1000;
     }
+
     if (n &gt;= 100) {
-        cout &lt;&lt; &#x27; &#x27; &lt;&lt; n / 100 &lt;&lt; &quot; shata&quot;;
+        cout &lt;&lt; &quot; &quot; &lt;&lt; n / 100 &lt;&lt; &quot; shata&quot;;
         n %= 100;
     }
-    if (n != 0) cout &lt;&lt; &#x27; &#x27; &lt;&lt; n;
+
+    if (n &gt; 0) {
+        cout &lt;&lt; &quot; &quot; &lt;&lt; n;
+    }
 }
 
 int main() {
     long long n;
-    int k = 1;
+    int t = 1;
+
     while (cin &gt;&gt; n) {
-        cout &lt;&lt; setw(4) &lt;&lt; k++ &lt;&lt; &#x27;.&#x27;;
-        if (n == 0) cout &lt;&lt; &quot; 0&quot;;
-        else printBangla(n);
-        cout &lt;&lt; &#x27;\n&#x27;;
+        cout &lt;&lt; setw(4) &lt;&lt; t++ &lt;&lt; &quot;.&quot;;
+
+        if (n == 0) {
+            cout &lt;&lt; &quot; 0&quot;;
+        } else {
+            bangla(n);
+        }
+
+        cout &lt;&lt; endl;
     }
+
+    return 0;
 }</code></pre></div></details>
           <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
             <p>Express each input using Bangla number units: kuti (10,000,000), lakh (100,000), hajar (1,000), and shata (100). A value can contain more than one kuti.</p>
@@ -871,24 +967,44 @@ int main() {
           <ul class="pitfalls"><li><code>95 + 7</code> 的十位是 9＋0＋1，最後的 1 是個位傳來的進位，不能漏掉。</li><li>最高位向左進位已在該欄被計數；新出現的最高位數字 1 不會再多算一次。單數、複數與句點照題目印。</li></ul>
         </section>
         <section class="block" aria-label="程式與英文題目">
-          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
+          <details class="fold"><summary>老師的 C++ 參考解</summary><div class="fold-body"><p class="solution-source">第 7 週講義，第 29 頁</p><pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 int main() {
-    unsigned long long a, b;
-    while (cin &gt;&gt; a &gt;&gt; b &amp;&amp; (a != 0 || b != 0)) {
-        int carry = 0, count = 0;
+    int a, b;
+
+    while (cin &gt;&gt; a &gt;&gt; b) {
+        if (a == 0 &amp;&amp; b == 0) {
+            break;
+        }
+
+        int carry = 0;
+        int count = 0;
+
         while (a &gt; 0 || b &gt; 0) {
-            int column = (a % 10) + (b % 10) + carry;
-            carry = (column &gt;= 10);
-            count += carry;
+            int sum = a % 10 + b % 10 + carry;
+
+            if (sum &gt;= 10) {
+                carry = 1;
+                count++;
+            } else {
+                carry = 0;
+            }
+
             a /= 10;
             b /= 10;
         }
-        if (count == 0) cout &lt;&lt; &quot;No carry operation.\n&quot;;
-        else if (count == 1) cout &lt;&lt; &quot;1 carry operation.\n&quot;;
-        else cout &lt;&lt; count &lt;&lt; &quot; carry operations.\n&quot;;
+
+        if (count == 0) {
+            cout &lt;&lt; &quot;No carry operation.&quot; &lt;&lt; endl;
+        } else if (count == 1) {
+            cout &lt;&lt; &quot;1 carry operation.&quot; &lt;&lt; endl;
+        } else {
+            cout &lt;&lt; count &lt;&lt; &quot; carry operations.&quot; &lt;&lt; endl;
+        }
     }
+
+    return 0;
 }</code></pre></div></details>
           <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
             <p>Count the carries that occur during ordinary decimal addition. Work from the units column toward the left, passing a carry of 1 to the next column whenever the current column totals 10 or more.</p>
@@ -913,7 +1029,7 @@ int main() {
         </dl>
         <section class="block">
           <h2 class="section-title"><span class="section-number" aria-hidden="true">01</span>解題步驟</h2>
-          <ol class="steps"><li>要算的是一整段時間 <code>2t</code>。題目給的速度 <code>v</code> 正好出現在這段時間的中點 <code>t</code>。</li><li>等加速度代表速度隨時間線性變化，所以整段的平均速度等於中點的速度。也可以想成速度對時間的直線圖，兩端速度的平均值會落在中間。</li><li>用「位移＝平均速度 × 經過時間」，直接算 <code>2 * v * t</code>，不必知道初速度或加速度。</li></ol>
+          <ol class="steps"><li>要算的是一整段時間 <code>2t</code>。題目給的速度 <code>v</code> 正好出現在這段時間的中點 <code>t</code>。</li><li>等加速度代表速度隨時間線性變化，所以整段的平均速度等於中點的速度。也可以想成速度對時間的直線圖，兩端速度的平均值會落在中間。</li><li>用「位移＝平均速度 × 經過時間」，直接算 <code>2 * v * t</code>。老師用 <code>long long v, t</code> 讀入速度與時間，再直接印出這個算式的結果。</li></ol>
         </section>
         <section class="worked" aria-labelledby="example-10071">
           <div class="worked-head"><h2 id="example-10071"><span class="section-number" aria-hidden="true">02</span>跟著算一次</h2><p>每組都直接代入 2 × v × t</p></div>
@@ -930,12 +1046,17 @@ int main() {
           <ul class="pitfalls"><li>這裡是位移（displacement），速度為負時可以印負數，不能取絕對值。</li><li><code>0 0</code> 要正常印 0，這題讀到 EOF 才停止。</li></ul>
         </section>
         <section class="block" aria-label="程式與英文題目">
-          <details class="fold"><summary>C++ 參考解</summary><div class="fold-body"><pre><code>#include &lt;iostream&gt;
+          <details class="fold"><summary>老師的 C++ 參考解</summary><div class="fold-body"><p class="solution-source">第 8 週講義，第 7 頁</p><pre><code>#include &lt;iostream&gt;
 using namespace std;
 
 int main() {
-    int v, t;
-    while (cin &gt;&gt; v &gt;&gt; t) cout &lt;&lt; 2 * v * t &lt;&lt; &#x27;\n&#x27;;
+    long long v, t;
+
+    while (cin &gt;&gt; v &gt;&gt; t) {
+        cout &lt;&lt; 2 * v * t &lt;&lt; endl;
+    }
+
+    return 0;
 }</code></pre></div></details>
           <details class="fold"><summary>英文題意與輸入輸出</summary><div class="fold-body" lang="en">
             <p>A particle moves with constant acceleration. Its velocity at time t is v. Determine its signed displacement from time 0 to time 2t.</p>
